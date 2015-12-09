@@ -122,7 +122,7 @@ if($_POST['submit'] == 'Submit')
 
 	<p>Hive Queen</p>
 
-        <p tyle="font-size:14px;background-color:#D5F4F3;">Web interface tool for Linux client administration based on ansible</p>
+        <p style="font-size:17px;background-color:#D5F4F3;">Web interface tool for Linux client administration based on ansible</p>
 
 	<td align=right width=20% style='font-size:17px;background-color:#D5F4F3;color:#000000;'>
 
