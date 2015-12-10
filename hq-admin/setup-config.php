@@ -26,7 +26,7 @@ define('HQ_SETUP_CONFIG', true);
  *
  * Set this to error_reporting( -1 ) for debugging
  */
-error_reporting(0);
+error_reporting(-1);
 
 define( 'ABSPATH', dirname( dirname( __FILE__ ) ) . '/' );
 
@@ -247,7 +247,7 @@ switch($step) {
                 hq_die( $hqdb->error->get_error_message() . $tryagain_link );
 
         // Fetch or generate keys and salts.
-        <!--
+        /* goyo disable:
         $no_api = isset( $_POST['noapi'] );
         if ( ! $no_api ) {
                 $secret_keys = hq_remote_get( 'https://api.wordpress.org/secret-key/1.1/salt/' );
@@ -264,7 +264,7 @@ switch($step) {
                         $secret_keys[$k] = substr( $v, 28, 64 );
                 }
         }
-        -->
+        */
 
         $key = 0;
         // Not a PHP5-style by-reference foreach, as this file must be parseable by PHP4.
