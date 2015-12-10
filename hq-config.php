@@ -59,5 +59,5 @@ if ( !defined('ABSPATH') )
         define('ABSPATH', dirname(__FILE__) . '/');
 
 /** Sets up HiveQueen vars and included files. */
-require_once(ABSPATH . 'hq-settings.php');
+//require_once(ABSPATH . 'hq-settings.php');
 
