@@ -69,12 +69,14 @@ if ( HQ_CACHE )
 hq_set_lang_dir();
 
 // Load early HiveQueen files.
+/* TODO: by the way
 require( ABSPATH . HQINC . '/compat.php' );
 require( ABSPATH . HQINC . '/functions.php' );
 require( ABSPATH . HQINC . '/class-hq.php' );
 require( ABSPATH . HQINC . '/class-hq-error.php' );
 require( ABSPATH . HQINC . '/plugin.php' );
 require( ABSPATH . HQINC . '/pomo/mo.php' );
+*/
 
 // Include the hqdb class and, if present, a db.php database drop-in.
 require_hq_db();
@@ -116,7 +118,7 @@ require_once( ABSPATH . HQINC . '/l10n.php' );
 hq_not_installed();
 
 // Load most of HiveQueen.
-// TODO: disable all
+/* TODO: disable all
 require( ABSPATH . HQINC . '/class-hq-walker.php' );
 require( ABSPATH . HQINC . '/class-hq-ajax-response.php' );
 require( ABSPATH . HQINC . '/formatting.php' );
