@@ -69,25 +69,24 @@ if ( HQ_CACHE )
 hq_set_lang_dir();
 
 // Load early HiveQueen files.
-/* TODO: by the way
-require( ABSPATH . HQINC . '/compat.php' );
-require( ABSPATH . HQINC . '/functions.php' );
-require( ABSPATH . HQINC . '/class-hq.php' );
+// TODO: by the way
+//require( ABSPATH . HQINC . '/compat.php' );
+//require( ABSPATH . HQINC . '/functions.php' );
+//equire( ABSPATH . HQINC . '/class-hq.php' );
 require( ABSPATH . HQINC . '/class-hq-error.php' );
-require( ABSPATH . HQINC . '/plugin.php' );
-require( ABSPATH . HQINC . '/pomo/mo.php' );
-*/
+//require( ABSPATH . HQINC . '/plugin.php' );
+//require( ABSPATH . HQINC . '/pomo/mo.php' );
 
 // Include the hqdb class and, if present, a db.php database drop-in.
 require_hq_db();
 
 // Set the database table prefix and the format specifiers for database table columns.
 $GLOBALS['table_prefix'] = $table_prefix;
-wp_set_hqdb_vars();
+hq_set_hqdb_vars();
 
 // Start the HiveQueen object cache, or an external object cache if the drop-in is present.
-// ????
-hq_start_object_cache();
+// TODO: disable ????
+//hq_start_object_cache();
 
 // Attach the default filters.
 /* TODO: disable 
@@ -111,8 +110,8 @@ if ( SHORTINIT )
         return false;
 
 // Load the L10n library.
-// ???
-require_once( ABSPATH . HQINC . '/l10n.php' );
+// TODO: ??? disbled by the way
+//require_once( ABSPATH . HQINC . '/l10n.php' );
 
 // Run the installer if WordPress is not installed.
 hq_not_installed();

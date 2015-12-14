@@ -416,14 +416,15 @@ function hq_using_ext_object_cache( $using = null ) {
 /**
  * Start the HiveQueen object cache.
  *
- * If an object-cache.php file exists in the wp-content directory,
+ * If an object-cache.php file exists in the hp-content directory,
  * it uses that drop-in as an external object cache.
  *
- * @since 3.0.0
+ * @since 0.0.1
  * @access private
  *
  * @global int $blog_id Blog ID.
  */
+/* TODO: no cache 
 function hq_start_object_cache() {
         global $blog_id;
 
@@ -437,23 +438,23 @@ function hq_start_object_cache() {
 
                 $first_init = true;
         } elseif ( ! hq_using_ext_object_cache() && file_exists( HQ_CONTENT_DIR . '/object-cache.php' ) ) {
-                /*
-                 * Sometimes advanced-cache.php can load object-cache.php before
-                 * it is loaded here. This breaks the function_exists check above
-                 * and can result in `$_hq_using_ext_object_cache` being set
-                 * incorrectly. Double check if an external cache exists.
-                 */
+                //
+                // Sometimes advanced-cache.php can load object-cache.php before
+                // it is loaded here. This breaks the function_exists check above
+                // and can result in `$_hq_using_ext_object_cache` being set
+                // incorrectly. Double check if an external cache exists.
+                // 
                 hq_using_ext_object_cache( true );
         }
 
         if ( ! hq_using_ext_object_cache() )
                 require_once ( ABSPATH . HQINC . '/cache.php' );
 
-        /*
-         * If cache supports reset, reset instead of init if already
-         * initialized. Reset signals to the cache that global IDs
-         * have changed and it may need to update keys and cleanup caches.
-         */
+        // 
+        // If cache supports reset, reset instead of init if already
+        // initialized. Reset signals to the cache that global IDs
+        // have changed and it may need to update keys and cleanup caches.
+        //
         if ( ! $first_init && function_exists( 'hq_cache_switch_to_blog' ) )
                 hq_cache_switch_to_blog( $blog_id );
         elseif ( function_exists( 'hq_cache_init' ) )
@@ -465,6 +466,7 @@ function hq_start_object_cache() {
                 hq_cache_add_non_persistent_groups( array( 'comment', 'counts', 'plugins' ) );
         }
 }
+*/
 
 /**
  * Redirect to the installer if HiveQueen is not installed.
@@ -473,7 +475,8 @@ function hq_start_object_cache() {
  * @access private
  */
 function hq_not_installed() {
-        if ( ! is_blog_installed() && ! defined( 'HQ_INSTALLING' ) ) {
+        //if ( ! is_blog_installed() && ! defined( 'HQ_INSTALLING' ) ) {
+        if ( ! is_hq_installed() && ! defined( 'HQ_INSTALLING' ) ) {
                 nocache_headers();
 
                 require( ABSPATH . HQINC . '/kses.php' );
