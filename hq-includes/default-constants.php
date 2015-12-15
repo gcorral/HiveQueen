@@ -136,24 +136,27 @@ function hq_functionality_constants() {
 function hq_templating_constants() {
         /**
          * Filesystem path to the current active template directory
-         * @since 1.5.0
+         * @since 0.0.1
          */
-        define('TEMPLATEPATH', get_template_directory());
+        //TODO: ???
+        //define('TEMPLATEPATH', get_template_directory());
 
         /**
          * Filesystem path to the current active template stylesheet directory
-         * @since 2.1.0
+         * @since 0.0.1
          */
-        define('STYLESHEETPATH', get_stylesheet_directory());
+        //TODO: ???
+        //define('STYLESHEETPATH', get_stylesheet_directory());
 
         /**
          * Slug of the default theme for this install.
          * Used as the default theme when installing new sites.
          * Will be used as the fallback if the current theme doesn't exist.
-         * @since 3.0.0
+         * @since 0.0.1
          */
-        if ( !defined('HQ_DEFAULT_THEME') )
-                define( 'HQ_DEFAULT_THEME', 'twentyfifteen' );
+        //TODO: ???
+        //if ( !defined('HQ_DEFAULT_THEME') )
+        //        define( 'HQ_DEFAULT_THEME', 'twentyfifteen' );
 
 }
 

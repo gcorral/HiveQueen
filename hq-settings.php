@@ -71,8 +71,8 @@ hq_set_lang_dir();
 // Load early HiveQueen files.
 // TODO: by the way
 //require( ABSPATH . HQINC . '/compat.php' );
-//require( ABSPATH . HQINC . '/functions.php' );
-//equire( ABSPATH . HQINC . '/class-hq.php' );
+require( ABSPATH . HQINC . '/functions.php' );
+require( ABSPATH . HQINC . '/class-hq.php' );
 require( ABSPATH . HQINC . '/class-hq-error.php' );
 //require( ABSPATH . HQINC . '/plugin.php' );
 //require( ABSPATH . HQINC . '/pomo/mo.php' );
@@ -117,52 +117,51 @@ if ( SHORTINIT )
 hq_not_installed();
 
 // Load most of HiveQueen.
-/* TODO: disable all
-require( ABSPATH . HQINC . '/class-hq-walker.php' );
-require( ABSPATH . HQINC . '/class-hq-ajax-response.php' );
-require( ABSPATH . HQINC . '/formatting.php' );
+// TODO: disable all
+//require( ABSPATH . HQINC . '/class-hq-walker.php' );
+//require( ABSPATH . HQINC . '/class-hq-ajax-response.php' );
+//require( ABSPATH . HQINC . '/formatting.php' );
 require( ABSPATH . HQINC . '/capabilities.php' );
 require( ABSPATH . HQINC . '/query.php' );
-require( ABSPATH . HQINC . '/date.php' );
-require( ABSPATH . HQINC . '/theme.php' );
-require( ABSPATH . HQINC . '/class-hq-theme.php' );
-require( ABSPATH . HQINC . '/template.php' );
-require( ABSPATH . HQINC . '/user.php' );
-require( ABSPATH . HQINC . '/session.php' );
-require( ABSPATH . HQINC . '/meta.php' );
-require( ABSPATH . HQINC . '/general-template.php' );
-require( ABSPATH . HQINC . '/link-template.php' );
-require( ABSPATH . HQINC . '/author-template.php' );
-require( ABSPATH . HQINC . '/post.php' );
-require( ABSPATH . HQINC . '/post-template.php' );
-require( ABSPATH . HQINC . '/revision.php' );
-require( ABSPATH . HQINC . '/post-formats.php' );
-require( ABSPATH . HQINC . '/post-thumbnail-template.php' );
-require( ABSPATH . HQINC . '/category.php' );
-require( ABSPATH . HQINC . '/category-template.php' );
-require( ABSPATH . HQINC . '/comment.php' );
-require( ABSPATH . HQINC . '/comment-template.php' );
-require( ABSPATH . HQINC . '/rewrite.php' );
-require( ABSPATH . HQINC . '/feed.php' );
-require( ABSPATH . HQINC . '/bookmark.php' );
-require( ABSPATH . HQINC . '/bookmark-template.php' );
-require( ABSPATH . HQINC . '/kses.php' );
-require( ABSPATH . HQINC . '/cron.php' );
-require( ABSPATH . HQINC . '/deprecated.php' );
-require( ABSPATH . HQINC . '/script-loader.php' );
-require( ABSPATH . HQINC . '/taxonomy.php' );
-require( ABSPATH . HQINC . '/update.php' );
-require( ABSPATH . HQINC . '/canonical.php' );
-require( ABSPATH . HQINC . '/shortcodes.php' );
-require( ABSPATH . HQINC . '/class-wp-embed.php' );
-require( ABSPATH . HQINC . '/media.php' );
-require( ABSPATH . HQINC . '/http.php' );
-require( ABSPATH . HQINC . '/class-http.php' );
-require( ABSPATH . HQINC . '/widgets.php' );
-require( ABSPATH . HQINC . '/nav-menu.php' );
-require( ABSPATH . HQINC . '/nav-menu-template.php' );
-require( ABSPATH . HQINC . '/admin-bar.php' );
-*/
+//require( ABSPATH . HQINC . '/date.php' );
+//require( ABSPATH . HQINC . '/theme.php' );
+//require( ABSPATH . HQINC . '/class-hq-theme.php' );
+//require( ABSPATH . HQINC . '/template.php' );
+//require( ABSPATH . HQINC . '/user.php' );
+//require( ABSPATH . HQINC . '/session.php' );
+//require( ABSPATH . HQINC . '/meta.php' );
+//require( ABSPATH . HQINC . '/general-template.php' );
+//require( ABSPATH . HQINC . '/link-template.php' );
+//require( ABSPATH . HQINC . '/author-template.php' );
+//require( ABSPATH . HQINC . '/post.php' );
+//require( ABSPATH . HQINC . '/post-template.php' );
+//require( ABSPATH . HQINC . '/revision.php' );
+//require( ABSPATH . HQINC . '/post-formats.php' );
+//require( ABSPATH . HQINC . '/post-thumbnail-template.php' );
+//require( ABSPATH . HQINC . '/category.php' );
+//require( ABSPATH . HQINC . '/category-template.php' );
+//require( ABSPATH . HQINC . '/comment.php' );
+//require( ABSPATH . HQINC . '/comment-template.php' );
+//require( ABSPATH . HQINC . '/rewrite.php' );
+//require( ABSPATH . HQINC . '/feed.php' );
+//require( ABSPATH . HQINC . '/bookmark.php' );
+//require( ABSPATH . HQINC . '/bookmark-template.php' );
+//require( ABSPATH . HQINC . '/kses.php' );
+//require( ABSPATH . HQINC . '/cron.php' );
+//require( ABSPATH . HQINC . '/deprecated.php' );
+//require( ABSPATH . HQINC . '/script-loader.php' );
+//require( ABSPATH . HQINC . '/taxonomy.php' );
+//require( ABSPATH . HQINC . '/update.php' );
+//require( ABSPATH . HQINC . '/canonical.php' );
+//require( ABSPATH . HQINC . '/shortcodes.php' );
+//require( ABSPATH . HQINC . '/class-wp-embed.php' );
+//require( ABSPATH . HQINC . '/media.php' );
+//require( ABSPATH . HQINC . '/http.php' );
+//require( ABSPATH . HQINC . '/class-http.php' );
+//require( ABSPATH . HQINC . '/widgets.php' );
+//require( ABSPATH . HQINC . '/nav-menu.php' );
+//require( ABSPATH . HQINC . '/nav-menu-template.php' );
+//require( ABSPATH . HQINC . '/admin-bar.php' );
 
 
 // Load multisite-specific files.
@@ -218,7 +217,8 @@ hq_cookie_constants();
 */
 
 // Define and enforce our SSL constants
-hq_ssl_constants();
+// TODO: no ssl
+//hq_ssl_constants();
 
 // Create common globals.
 require( ABSPATH . HQINC . '/vars.php' );
@@ -232,7 +232,7 @@ create_initial_post_types();
 
 // Register the default theme directory root
 // TODO: redefine theme 
-register_theme_directory( get_theme_root() );
+//register_theme_directory( get_theme_root() );
 
 // Load active plugins.
 /* TODO: not pluings 
@@ -309,7 +309,7 @@ $GLOBALS['hq_query'] = $GLOBALS['hq_the_query'];
  * @since 1.5.0
  */
 // TODO: ???
-$GLOBALS['hq_rewrite'] = new HQ_Rewrite();
+//$GLOBALS['hq_rewrite'] = new HQ_Rewrite();
 
 /**
  * HiveQueen Object
@@ -340,14 +340,17 @@ $GLOBALS['hq_roles'] = new HQ_Roles();
  *
  * @since 0.0.1
  */
-do_action( 'setup_theme' );
+//TODO: ???
+//do_action( 'setup_theme' );
 
 // Define the template related constants.
 hq_templating_constants(  );
 
 // Load the default text localization domain.
-load_default_textdomain();
+// TODO: ???
+//load_default_textdomain();
 
+//TODO: Continuar
 $locale = get_locale();
 $locale_file = HQ_LANG_DIR . "/$locale.php";
 if ( ( 0 === validate_file( $locale ) ) && is_readable( $locale_file ) )
