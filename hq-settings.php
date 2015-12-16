@@ -74,8 +74,8 @@ hq_set_lang_dir();
 require( ABSPATH . HQINC . '/functions.php' );
 require( ABSPATH . HQINC . '/class-hq.php' );
 require( ABSPATH . HQINC . '/class-hq-error.php' );
-//require( ABSPATH . HQINC . '/plugin.php' );
-//require( ABSPATH . HQINC . '/pomo/mo.php' );
+require( ABSPATH . HQINC . '/plugin.php' );
+require( ABSPATH . HQINC . '/pomo/mo.php' );
 
 // Include the hqdb class and, if present, a db.php database drop-in.
 require_hq_db();
@@ -110,8 +110,7 @@ if ( SHORTINIT )
         return false;
 
 // Load the L10n library.
-// TODO: ??? disbled by the way
-//require_once( ABSPATH . HQINC . '/l10n.php' );
+require_once( ABSPATH . HQINC . '/l10n.php' );
 
 // Run the installer if WordPress is not installed.
 hq_not_installed();
@@ -344,18 +343,18 @@ $GLOBALS['hq_roles'] = new HQ_Roles();
 //do_action( 'setup_theme' );
 
 // Define the template related constants.
-hq_templating_constants(  );
+//hq_templating_constants(  );
 
 // Load the default text localization domain.
 // TODO: ???
 //load_default_textdomain();
 
-//TODO: Continuar
 $locale = get_locale();
 $locale_file = HQ_LANG_DIR . "/$locale.php";
-if ( ( 0 === validate_file( $locale ) ) && is_readable( $locale_file ) )
-        require( $locale_file );
-unset( $locale_file );
+//TODO: Fix 
+//if ( ( 0 === validate_file( $locale ) ) && is_readable( $locale_file ) )
+//        require( $locale_file );
+//unset( $locale_file );
 
 // Pull in locale data after loading text domain.
 require_once( ABSPATH . HQINC . '/locale.php' );
