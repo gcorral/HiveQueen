@@ -48,7 +48,7 @@ function hq_signon( $credentials = array(), $secure_cookie = '' ) {
          *
          * @since 0.0.1
          *
-         * @todo Decide whether to deprecate the wp_authenticate action.
+         * @todo Decide whether to deprecate the hq_authenticate action.
          *
          * @param string $user_login    Username, passed by reference.
          * @param string $user_password User password, passed by reference.
@@ -75,7 +75,7 @@ function hq_signon( $credentials = array(), $secure_cookie = '' ) {
          */
         $secure_cookie = apply_filters( 'secure_signon_cookie', $secure_cookie, $credentials );
 
-        global $auth_secure_cookie; // XXX ugly hack to pass this to wp_authenticate_cookie
+        global $auth_secure_cookie; // XXX ugly hack to pass this to hq_authenticate_cookie
         $auth_secure_cookie = $secure_cookie;
 
         add_filter('authenticate', 'hq_authenticate_cookie', 30, 3);
@@ -264,7 +264,7 @@ function hq_validate_logged_in_cookie( $user_id ) {
  * @return int Number of posts the user has written in this post type.
  */
 function count_user_posts( $userid, $post_type = 'post', $public_only = false ) {
-        global $wpdb;
+        global $hqdb;
 
         $where = get_posts_by_author_sql( $post_type, true, $userid, $public_only );
 
@@ -646,7 +646,7 @@ class HQ_User_Query {
                 }
 
                 if ( isset( $qv['who'] ) && 'authors' == $qv['who'] && $blog_id ) {
-                        $qv['meta_key'] = $wpdb->get_blog_prefix( $blog_id ) . 'user_level';
+                        $qv['meta_key'] = $hqdb->get_blog_prefix( $blog_id ) . 'user_level';
                         $qv['meta_value'] = 0;
                         $qv['meta_compare'] = '!=';
                         $qv['blog_id'] = $blog_id = 0; // Prevent extra meta query
@@ -757,9 +757,9 @@ class HQ_User_Query {
                 // limit
                 if ( isset( $qv['number'] ) && $qv['number'] ) {
                         if ( $qv['offset'] )
-                                $this->query_limit = $wpdb->prepare("LIMIT %d, %d", $qv['offset'], $qv['number']);
+                                $this->query_limit = $hqdb->prepare("LIMIT %d, %d", $qv['offset'], $qv['number']);
                         else
-                                $this->query_limit = $wpdb->prepare("LIMIT %d", $qv['number']);
+                                $this->query_limit = $hqdb->prepare("LIMIT %d", $qv['number']);
                 }
 
                 $search = '';
@@ -940,7 +940,7 @@ class HQ_User_Query {
                 $searches = array();
                 $leading_wild = ( 'leading' == $wild || 'both' == $wild ) ? '%' : '';
                 $trailing_wild = ( 'trailing' == $wild || 'both' == $wild ) ? '%' : '';
-                $like = $leading_wild . $wpdb->esc_like( $string ) . $trailing_wild;
+                $like = $leading_wild . $hqdb->esc_like( $string ) . $trailing_wild;
 
                 foreach ( $cols as $col ) {
                         if ( 'ID' == $col ) {

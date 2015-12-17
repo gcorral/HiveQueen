@@ -143,7 +143,7 @@ class HQ_Roles {
          * @global hqdb $hqdb
          */
         public function reinit() {
-                // There is no need to reinit if using the wp_user_roles global.
+                // There is no need to reinit if using the hq_user_roles global.
                 if ( ! $this->use_db )
                         return;
 

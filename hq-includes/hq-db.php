@@ -51,7 +51,7 @@ class hqdb {
         /**
          * Whether to show SQL/DB errors.
          *
-         * Default behavior is to show errors if both WP_DEBUG and WP_DEBUG_DISPLAY
+         * Default behavior is to show errors if both HQ_DEBUG and HQ_DEBUG_DISPLAY
          * evaluated to true.
          *
          * @since 0.1
@@ -723,8 +723,8 @@ class hqdb {
          * @since 0.0.1
          *
          * @param string $prefix          Alphanumeric name for the new prefix.
-         * @param bool   $set_table_names Optional. Whether the table names, e.g. wpdb::$posts, should be updated or not.
-         * @return string|HQ_Error Old prefix or WP_Error on error
+         * @param bool   $set_table_names Optional. Whether the table names, e.g. hqdb::$posts, should be updated or not.
+         * @return string|HQ_Error Old prefix or HQ_Error on error
          */
         public function set_prefix( $prefix, $set_table_names = true ) {
 
@@ -818,7 +818,7 @@ class hqdb {
          * @param string $scope   Optional. Can be all, global, ms_global, blog, or old tables. Defaults to all.
          * @param bool   $prefix  Optional. Whether to include table prefixes. Default true. If blog
          *                        prefix is requested, then the custom users and usermeta tables will be mapped.
-         * @param int    $blog_id Optional. The blog_id to prefix. Defaults to wpdb::$blogid. Used only when prefix is requested.
+         * @param int    $blog_id Optional. The blog_id to prefix. Defaults to hqdb::$blogid. Used only when prefix is requested.
          * @return array Table names. When a prefix is requested, the key is the unprefixed table name.
          */
         public function tables( $scope = 'all', $prefix = true, $blog_id = 0 ) {
@@ -1090,7 +1090,7 @@ class hqdb {
          *
          * @param string $text The raw text to be escaped. The input typed by the user should have no
          *                     extra or deleted slashes.
-         * @return string Text in the form of a LIKE phrase. The output is not SQL safe. Call $wpdb::prepare()
+         * @return string Text in the form of a LIKE phrase. The output is not SQL safe. Call $hqdb::prepare()
          *                or real_escape next.
          */
         public function esc_like( $text ) {
@@ -1121,7 +1121,7 @@ class hqdb {
                 if ( $this->suppress_errors )
                         return false;
 
-                wp_load_translations_early();
+                hq_load_translations_early();
 
                 if ( $caller = $this->get_caller() )
                         $error_str = sprintf( __( 'HiveQueen database error %1$s for query %2$s made by %3$s' ), $str, $this->last_query, $caller );
@@ -1328,7 +1328,7 @@ class hqdb {
                 }
 
                 if ( ! $this->dbh && $allow_bail ) {
-                        wp_load_translations_early();
+                        hq_load_translations_early();
 
                         // Load custom DB error template, if present.
                         if ( file_exists( HQ_CONTENT_DIR . '/db-error.php' ) ) {
@@ -1606,7 +1606,7 @@ class hqdb {
          * @since 2.5.0
          * @see hqdb::prepare()
          * @see hqdb::$field_types
-         * @see hq_set_wpdb_vars()
+         * @see hq_set_hqdb_vars()
          *
          * @param string       $table  Table name
          * @param array        $data   Data to insert (in column => value pairs).
@@ -1614,7 +1614,7 @@ class hqdb {
          * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
          *                             If string, that format will be used for all of the values in $data.
          *                             A format is one of '%d', '%f', '%s' (integer, float, string).
-         *                             If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+         *                             If omitted, all values in $data will be treated as strings unless otherwise specified in hqdb::$field_types.
          * @return int|false The number of rows inserted, or false on error.
          */
         public function insert( $table, $data, $format = null ) {
@@ -1630,7 +1630,7 @@ class hqdb {
          * @since 3.0.0
          * @see hqdb::prepare()
          * @see hqdb::$field_types
-         * @see hq_set_wpdb_vars()
+         * @see hq_set_hqdb_vars()
          *
          * @param string       $table  Table name
          * @param array        $data   Data to insert (in column => value pairs).
@@ -1638,7 +1638,7 @@ class hqdb {
          * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
          *                             If string, that format will be used for all of the values in $data.
          *                             A format is one of '%d', '%f', '%s' (integer, float, string).
-         *                             If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+         *                             If omitted, all values in $data will be treated as strings unless otherwise specified in hqdb::$field_types.
          * @return int|false The number of rows affected, or false on error.
          */
         public function replace( $table, $data, $format = null ) {
@@ -1654,7 +1654,7 @@ class hqdb {
          * @since 3.0.0
          * @see hqdb::prepare()
          * @see hqdb::$field_types
-         * @see hq_set_wpdb_vars()
+         * @see hq_set_hqdb_vars()
          *
          * @param string       $table  Table name
          * @param array        $data   Data to insert (in column => value pairs).
@@ -1662,7 +1662,7 @@ class hqdb {
          * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data.
          *                             If string, that format will be used for all of the values in $data.
          *                             A format is one of '%d', '%f', '%s' (integer, float, string).
-         *                             If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+         *                             If omitted, all values in $data will be treated as strings unless otherwise specified in hqdb::$field_types.
          * @param string $type         Optional. What type of operation is this? INSERT or REPLACE. Defaults to INSERT.
          * @return int|false The number of rows affected, or false on error.
          */
@@ -1701,7 +1701,7 @@ class hqdb {
          * @since 0.0.1
          * @see hqdb::prepare()
          * @see hqdb::$field_types
-         * @see hq_set_wpdb_vars()
+         * @see hq_set_hqdb_vars()
          *
          * @param string       $table        Table name
          * @param array        $data         Data to update (in column => value pairs).
@@ -1712,7 +1712,7 @@ class hqdb {
          * @param array|string $format       Optional. An array of formats to be mapped to each of the values in $data.
          *                                   If string, that format will be used for all of the values in $data.
          *                                   A format is one of '%d', '%f', '%s' (integer, float, string).
-         *                                   If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
+         *                                   If omitted, all values in $data will be treated as strings unless otherwise specified in hqdb::$field_types.
          * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where.
          *                                   If string, that format will be used for all of the items in $where.
          *                                   A format is one of '%d', '%f', '%s' (integer, float, string).
@@ -1760,7 +1760,7 @@ class hqdb {
          * @since 0.0.1
          * @see hqdb::prepare()
          * @see hqdb::$field_types
-         * @see hq_set_wpdb_vars()
+         * @see hq_set_hqdb_vars()
          *
          * @param string       $table        Table name
          * @param array        $where        A named array of WHERE clauses (in column => value pairs).
@@ -1769,7 +1769,7 @@ class hqdb {
          * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where.
          *                                   If string, that format will be used for all of the items in $where.
          *                                   A format is one of '%d', '%f', '%s' (integer, float, string).
-         *                                   If omitted, all values in $where will be treated as strings unless otherwise specified in wpdb::$field_types.
+         *                                   If omitted, all values in $where will be treated as strings unless otherwise specified in hqdb::$field_types.
          * @return int|false The number of rows updated, or false on error.
          */
         public function delete( $table, $where, $where_format = null ) {
@@ -1799,7 +1799,7 @@ class hqdb {
         /**
          * Processes arrays of field/value pairs and field formats.
          *
-         * This is a helper method for wpdb's CRUD methods, which take field/value
+         * This is a helper method for hqdb's CRUD methods, which take field/value
          * pairs for inserts, updates, and where clauses. This method first pairs
          * each value with a format. Then it determines the charset of that field,
          * using that to determine if any invalid text would be stripped. If text is
@@ -1840,7 +1840,7 @@ class hqdb {
         }
 
         /**
-         * Prepares arrays of value/format pairs as passed to wpdb CRUD methods.
+         * Prepares arrays of value/format pairs as passed to hqdb CRUD methods.
          *
          * @since 0.0.1
          * @access protected
@@ -1881,7 +1881,7 @@ class hqdb {
          * @since 0.0.1
          * @access protected
          *
-         * @param array  $data  As it comes from the wpdb::process_field_formats() method.
+         * @param array  $data  As it comes from the hqdb::process_field_formats() method.
          * @param string $table Table name.
          * @return array|false The same array as $data with additional 'charset' keys.
          */
@@ -2827,7 +2827,7 @@ class hqdb {
          */
         public function bail( $message, $error_code = '500' ) {
                 if ( !$this->show_errors ) {
-                        if ( class_exists( 'WP_Error' ) )
+                        if ( class_exists( 'HQ_Error' ) )
                                 $this->error = new HQ_Error($error_code, $message);
                         else
                                 $this->error = $message;

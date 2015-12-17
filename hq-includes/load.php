@@ -390,7 +390,7 @@ function hq_set_hqdb_vars() {
 
         if ( is_hq_error( $prefix ) ) {
                 hq_load_translations_early();
-                hq_die( __( '<strong>ERROR</strong>: <code>$table_prefix</code> in <code>wp-config.php</code> can only contain numbers, letters, and underscores.' ) );
+                hq_die( __( '<strong>ERROR</strong>: <code>$table_prefix</code> in <code>hq-config.php</code> can only contain numbers, letters, and underscores.' ) );
         }
 }
 

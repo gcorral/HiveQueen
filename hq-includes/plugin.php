@@ -81,7 +81,7 @@ function add_filter( $tag, $function_to_add, $priority = 10, $accepted_args = 1 
         global $hq_filter, $merged_filters;
 
         $idx = _hq_filter_build_unique_id($tag, $function_to_add, $priority);
-        $wp_filter[$tag][$priority][$idx] = array('function' => $function_to_add, 'accepted_args' => $accepted_args);
+        $hq_filter[$tag][$priority][$idx] = array('function' => $function_to_add, 'accepted_args' => $accepted_args);
         unset( $merged_filters[ $tag ] );
         return true;
 }
@@ -466,7 +466,7 @@ function do_action($tag, $arg = '') {
 
         // Do 'all' actions first
         if ( isset($hq_filter['all']) ) {
-                $wp_current_filter[] = $tag;
+                $hq_current_filter[] = $tag;
                 $all_args = func_get_args();
                 _hq_call_all_hook($all_args);
         }
@@ -570,7 +570,7 @@ function do_action_ref_array($tag, $args) {
                 $merged_filters[ $tag ] = true;
         }
 
-        reset( $wp_filter[ $tag ] );
+        reset( $hq_filter[ $tag ] );
 
         do {
                 foreach( (array) current($hq_filter[$tag]) as $the_ )

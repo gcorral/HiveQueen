@@ -170,7 +170,7 @@ function date_i18n( $dateformatstring, $unixtimestamp = false, $gmt = false ) {
  */
 function number_format_i18n( $number, $decimals = 0 ) {
         global $hq_locale;
-        $formatted = number_format( $number, absint( $decimals ), $wp_locale->number_format['decimal_point'], $hq_locale->number_format['thousands_sep'] );
+        $formatted = number_format( $number, absint( $decimals ), $hq_locale->number_format['decimal_point'], $hq_locale->number_format['thousands_sep'] );
 
         /**
          * Filter the number formatted based on the locale.
@@ -898,12 +898,12 @@ function hq( $query_vars = '' ) {
  * @return string Empty string if not found, or description if found.
  */
 function get_status_header_desc( $code ) {
-        global $wp_header_to_desc;
+        global $hq_header_to_desc;
 
         $code = absint( $code );
 
-        if ( !isset( $wp_header_to_desc ) ) {
-                $wp_header_to_desc = array(
+        if ( !isset( $hq_header_to_desc ) ) {
+                $hq_header_to_desc = array(
                         100 => 'Continue',
                         101 => 'Switching Protocols',
                         102 => 'Processing',
@@ -1068,7 +1068,6 @@ function nocache_headers() {
                 @header_remove( 'Last-Modified' );
         } else {
                 // In PHP 5.2, send an empty Last-Modified header, but only as a
-                // last resort to override a header already sent. #WP23021
                 foreach ( headers_list() as $header ) {
                         if ( 0 === stripos( $header, 'Last-Modified' ) ) {
                                 $headers['Last-Modified'] = '';
@@ -1344,10 +1343,10 @@ function is_hq_installed() {
  *
  * @param string     $actionurl URL to add nonce action.
  * @param int|string $action    Optional. Nonce action name. Default -1.
- * @param string     $name      Optional. Nonce name. Default '_wpnonce'.
+ * @param string     $name      Optional. Nonce name. Default '_hqnonce'.
  * @return string Escaped URL with nonce action added.
  */
-function hq_nonce_url( $actionurl, $action = -1, $name = '_wpnonce' ) {
+function hq_nonce_url( $actionurl, $action = -1, $name = '_hqnonce' ) {
         $actionurl = str_replace( '&amp;', '&', $actionurl );
         return esc_html( add_query_arg( $name, hq_create_nonce( $action ), $actionurl ) );
 }
@@ -1905,8 +1904,8 @@ function hq_upload_bits( $name, $deprecated, $bits, $time = null ) {
         if ( empty( $name ) )
                 return array( 'error' => __( 'Empty filename' ) );
 
-        $wp_filetype = hq_check_filetype( $name );
-        if ( ! $wp_filetype['ext'] && ! current_user_can( 'unfiltered_upload' ) )
+        $hq_filetype = hq_check_filetype( $name );
+        if ( ! $hq_filetype['ext'] && ! current_user_can( 'unfiltered_upload' ) )
                 return array( 'error' => __( 'Invalid file type' ) );
 
         $upload = hq_upload_dir( $time );
@@ -1924,7 +1923,7 @@ function hq_upload_bits( $name, $deprecated, $bits, $time = null ) {
          *
          * @param mixed $upload_bits_error An array of upload bits data, or a non-array error to return.
          */
-        $upload_bits_error = apply_filters( 'wp_upload_bits', array( 'name' => $name, 'bits' => $bits, 'time' => $time ) );
+        $upload_bits_error = apply_filters( 'hq_upload_bits', array( 'name' => $name, 'bits' => $bits, 'time' => $time ) );
         if ( !is_array( $upload_bits_error ) ) {
                 $upload[ 'error' ] = $upload_bits_error;
                 return $upload;
@@ -2378,7 +2377,7 @@ function hq_die( $message = '', $title = '', $args = array() ) {
  * Kill HiveQueen execution and display HTML message with error message.
  *
  * This is the default handler for hq_die if you want a custom one for your
- * site then you can overload using the wp_die_handler filter in wp_die
+ * site then you can overload using the hq_die_handler filter in hq_die
  *
  * @since 0.0.1
  * @access private

@@ -12,7 +12,7 @@
  * If the locale is set, then it will filter the locale in the 'locale' filter
  * hook and return the value.
  *
- * If the locale is not set already, then the WPLANG constant is used if it is
+ * If the locale is not set already, then the HQLANG constant is used if it is
  * defined. Then it is filtered through the 'locale' filter hook and the value
  * for the locale global set and the locale is returned.
  *
@@ -44,7 +44,7 @@ function get_locale() {
                 $locale = $hq_local_package;
         }
 
-        // HQLANG was defined in wp-config.
+        // HQLANG was defined in hq-config.
         if ( defined( 'HQLANG' ) ) {
                 $locale = HQLANG;
         }
@@ -879,7 +879,7 @@ function hq_get_pomo_file_data( $po_file ) {
  *     @type array    $languages                    List of installed languages, contain only the locales.
  *                                                  Default empty array.
  *     @type array    $translations                 List of available translations. Default result of
- *                                                  wp_get_available_translations().
+ *                                                  hq_get_available_translations().
  *     @type string   $selected                     Language which should be selected. Default empty.
  *     @type bool|int $echo                         Whether to echo or return the generated markup. Accepts 0, 1, or their
  *                                                  bool equivalents. Default 1.

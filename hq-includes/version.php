@@ -4,7 +4,7 @@
  *
  * @global string $hq_version
  */
-$wp_version = '0.0.1';
+$hq_version = '0.0.1';
 
 /**
  * Holds the HiveQueen DB revision, increments when changes are made to the HiveQueen DB schema.

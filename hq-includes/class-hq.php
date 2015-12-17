@@ -265,7 +265,7 @@ class HQ {
                         if ( $t->query_var )
                                 $post_type_query_vars[$t->query_var] = $post_type;
 
-                foreach ( $this->public_query_vars as $wpvar ) {
+                foreach ( $this->public_query_vars as $hqvar ) {
                         if ( isset( $this->extra_query_vars[$hqvar] ) )
                                 $this->query_vars[$hqvar] = $this->extra_query_vars[$hqvar];
                         elseif ( isset( $_POST[$hqvar] ) )
@@ -334,7 +334,7 @@ class HQ {
                  *
                  * @since 0.0.1
                  *
-                 * @param WP &$this Current WordPress environment instance (passed by reference).
+                 * @param HQ &$this Current WordPress environment instance (passed by reference).
                  */
                 do_action_ref_array( 'parse_request', array( &$this ) );
         }
@@ -428,7 +428,6 @@ class HQ {
                                 @header_remove( 'Last-Modified' );
                         } else {
                                 // In PHP 5.2, send an empty Last-Modified header, but only as a
-                                // last resort to override a header already sent. #WP23021
                                 foreach ( headers_list() as $header ) {
                                         if ( 0 === stripos( $header, 'Last-Modified' ) ) {
                                                 $headers['Last-Modified'] = '';
@@ -501,7 +500,7 @@ class HQ {
          * @global string       $request The SQL statement for the request.
          * @global int          $more Only set, if single page or post.
          * @global int          $single If single page or post. Only set, if single page or post.
-         * @global WP_User      $authordata Only set, if author archive.
+         * @global HQ_User      $authordata Only set, if author archive.
          *
          * @since 0.0.1
          */
@@ -607,7 +606,7 @@ class HQ {
         /**
          * Sets up all of the variables required by the HiveQueen environment.
          *
-         * The action 'hq' has one parameter that references the WP object. It
+         * The action 'hq' has one parameter that references the HQ object. It
          * allows for accessing the properties and methods to further manipulate the
          * object.
          *

@@ -81,14 +81,14 @@ function get_currentuserinfo() {
         global $current_user;
 
         if ( ! empty( $current_user ) ) {
-                if ( $current_user instanceof WP_User )
+                if ( $current_user instanceof HQ_User )
                         return;
 
                 // Upgrade stdClass to HQ_User
                 if ( is_object( $current_user ) && isset( $current_user->ID ) ) {
                         $cur_id = $current_user->ID;
                         $current_user = null;
-                        wp_set_current_user( $cur_id );
+                        hq_set_current_user( $cur_id );
                         return;
                 }
 
@@ -471,7 +471,7 @@ function hq_mail( $to, $subject, $message, $headers = '', $attachments = array()
          *
          * @since 0.0.1
          *
-         * @param string $content_type Default wp_mail() content type.
+         * @param string $content_type Default hq_mail() content type.
          */
         $content_type = apply_filters( 'hq_mail_content_type', $content_type );
 
@@ -1113,7 +1113,7 @@ if ( !function_exists('check_ajax_referer') ) :
  *
  * @param int|string   $action    Action nonce.
  * @param false|string $query_arg Optional. Key to check for the nonce in `$_REQUEST` (since 2.5). If false,
- *                                `$_REQUEST` values will be evaluated for '_ajax_nonce', and '_wpnonce'
+ *                                `$_REQUEST` values will be evaluated for '_ajax_nonce', and '_hqpnonce'
  *                                (in that order). Default false.
  * @param bool         $die       Optional. Whether to die early when the nonce cannot be verified.
  *                                Default true.
@@ -1255,7 +1255,7 @@ if ( !function_exists('hq_safe_redirect') ) :
  * path. A plugin can therefore set or remove allowed host(s) to or from the
  * list.
  *
- * If the host is not allowed, then the redirect defaults to wp-admin on the siteurl
+ * If the host is not allowed, then the redirect defaults to hq-admin on the siteurl
  * instead. This prevents malicious redirects which redirect to another host,
  * but only used in a few places.
  *
@@ -1473,7 +1473,7 @@ function hq_notify_postauthor( $comment_id, $deprecated = null ) {
                 $notify_message .= sprintf( __('Spam it: %s'), admin_url("comment.php?action=spam&c=$comment_id") ) . "\r\n";
         }
 
-        $wp_email = 'hivequeen@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+        $hq_email = 'hivequeen@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 
         if ( '' == $comment->comment_author ) {
                 $from = "From: \"$blogname\" <$hq_email>";

@@ -42,7 +42,7 @@ function hq_initial_constants() {
                         $current_limit_int *= 1024;
                 $hq_limit_int = intval( HQ_MEMORY_LIMIT );
                 if ( false !== strpos( HQ_MEMORY_LIMIT, 'G' ) )
-                        $wp_limit_int *= 1024;
+                        $hq_limit_int *= 1024;
 
                 if ( -1 != $current_limit && ( -1 == HQ_MEMORY_LIMIT || $current_limit_int < $hq_limit_int ) )
                         @ini_set( 'memory_limit', HQ_MEMORY_LIMIT );
@@ -50,27 +50,27 @@ function hq_initial_constants() {
         if ( !defined('HQ_CONTENT_DIR') )
                 define( 'HQ_CONTENT_DIR', ABSPATH . 'hq-content' ); // no trailing slash, full paths only - HQ_CONTENT_URL is defined further down
 
-        // Add define('HQ_DEBUG', true); to wp-config.php to enable display of notices during development.
+        // Add define('HQ_DEBUG', true); to hq-config.php to enable display of notices during development.
         if ( !defined('HQ_DEBUG') )
                 define( 'HQ_DEBUG', false );
 
-        // Add define('HQ_DEBUG_DISPLAY', null); to wp-config.php use the globally configured setting for
+        // Add define('HQ_DEBUG_DISPLAY', null); to hq-config.php use the globally configured setting for
         // display_errors and not force errors to be displayed. Use false to force display_errors off.
         if ( !defined('HQ_DEBUG_DISPLAY') )
                 define( 'HQ_DEBUG_DISPLAY', true );
 
-        // Add define('HQ_DEBUG_LOG', true); to enable error logging to wp-content/debug.log.
+        // Add define('HQ_DEBUG_LOG', true); to enable error logging to hq-content/debug.log.
         if ( !defined('HQ_DEBUG_LOG') )
                 define('HQ_DEBUG_LOG', false);
 
         if ( !defined('HQ_CACHE') )
                 define('HQ_CACHE', false);
 
-        // Add define('SCRIPT_DEBUG', true); to wp-config.php to enable loading of non-minified,
+        // Add define('SCRIPT_DEBUG', true); to hq-config.php to enable loading of non-minified,
         // non-concatenated scripts and stylesheets.
         if ( ! defined( 'SCRIPT_DEBUG' ) ) {
                 if ( ! empty( $GLOBALS['hq_version'] ) ) {
-                        $develop_src = false !== strpos( $GLOBALS['wp_version'], '-src' );
+                        $develop_src = false !== strpos( $GLOBALS['hq_version'], '-src' );
                 } else {
                         $develop_src = false;
                 }

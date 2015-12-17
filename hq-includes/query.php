@@ -423,7 +423,7 @@ function is_front_page() {
 // TODO: ****************************************** functions *************************************************************
 
 /*
- * WP_Query
+ * HQ_Query
  */
 
 /**
@@ -1070,8 +1070,8 @@ class HQ_Query {
          *     @type int          $comments_per_page       The number of comments to return per page.
          *                                                 Default 'comments_per_page' option.
          *     @type int|string   $comments_popup          Whether the query is within the comments popup. Default empty.
-         *     @type array        $date_query              An associative array of WP_Date_Query arguments.
-         *                                                 {@see WP_Date_Query::__construct()}
+         *     @type array        $date_query              An associative array of HQ_Date_Query arguments.
+         *                                                 {@see HQ_Date_Query::__construct()}
          *     @type int          $day                     Day of the month. Default empty. Accepts numbers 1-31.
          *     @type bool         $exact                   Whether to search by exact keyword. Default false.
          *     @type string|array $fields                  Which fields to return. Single field or all fields (string),
@@ -1085,8 +1085,8 @@ class HQ_Query {
          *                                                 numbers 1-12. Default empty.
          *     @type string       $meta_compare            Comparison operator to test the 'meta_value'.
          *     @type string       $meta_key                Custom field key.
-         *     @type array        $meta_query              An associative array of WP_Meta_Query arguments.
-         *                                                 {@see WP_Meta_Query->queries}
+         *     @type array        $meta_query              An associative array of HQ_Meta_Query arguments.
+         *                                                 {@see HQ_Meta_Query->queries}
          *     @type string       $meta_value              Custom field value.
          *     @type int          $meta_value_num          Custom field value number.
          *     @type int          $menu_order              The menu order of the posts.
@@ -1140,8 +1140,8 @@ class HQ_Query {
          *     @type array        $tag_slug__and           An array of tag slugs (AND in).
          *     @type array        $tag_slug__in            An array of tag slugs (OR in). unless 'ignore_sticky_posts' is
          *                                                 true. Note: a string of comma-separated IDs will NOT work.
-         *     @type array        $tax_query               An associative array of WP_Tax_Query arguments.
-         *                                                 {@see WP_Tax_Query->queries}
+         *     @type array        $tax_query               An associative array of HQ_Tax_Query arguments.
+         *                                                 {@see HQ_Tax_Query->queries}
          *     @type bool         $update_post_meta_cache  Whether to update the post meta cache. Default true.
          *     @type bool         $update_post_term_cache  Whether to update the post term cache. Default true.
          *     @type int          $w                       The week number of the year. Default empty. Accepts numbers 0-53.
@@ -1462,7 +1462,7 @@ class HQ_Query {
                                 );
 
                                 if ( isset( $t->rewrite['hierarchical'] ) && $t->rewrite['hierarchical'] ) {
-                                        $q[$t->query_var] = wp_basename( $q[$t->query_var] );
+                                        $q[$t->query_var] = hq_basename( $q[$t->query_var] );
                                 }
 
                                 $term = $q[$t->query_var];
@@ -1991,7 +1991,7 @@ class HQ_Query {
                  *
                  * Note: If using conditional tags, use the method versions within the passed instance
                  * (e.g. $this->is_main_query() instead of is_main_query()). This is because the functions
-                 * like is_main_query() test against the global $wp_query instance, not the passed one.
+                 * like is_main_query() test against the global $hq_query instance, not the passed one.
                  *
                  * @since 0.0.1
                  *
@@ -2134,11 +2134,11 @@ class HQ_Query {
                         if ( strlen($q['m']) > 7 )
                                 $where .= " AND DAYOFMONTH($hqdb->posts.post_date)=" . substr($q['m'], 6, 2);
                         if ( strlen($q['m']) > 9 )
-                                $where .= " AND HOUR($wpdb->posts.post_date)=" . substr($q['m'], 8, 2);
+                                $where .= " AND HOUR($hqdb->posts.post_date)=" . substr($q['m'], 8, 2);
                         if ( strlen($q['m']) > 11 )
-                                $where .= " AND MINUTE($wpdb->posts.post_date)=" . substr($q['m'], 10, 2);
+                                $where .= " AND MINUTE($hqdb->posts.post_date)=" . substr($q['m'], 10, 2);
                         if ( strlen($q['m']) > 13 )
-                                $where .= " AND SECOND($wpdb->posts.post_date)=" . substr($q['m'], 12, 2);
+                                $where .= " AND SECOND($hqdb->posts.post_date)=" . substr($q['m'], 12, 2);
                 }
 
                 // Handle the other individual date parameters
@@ -2229,7 +2229,7 @@ class HQ_Query {
 
                         $page_for_posts = get_option('page_for_posts');
                         if  ( ('page' != get_option('show_on_front') ) || empty($page_for_posts) || ( $reqpage != $page_for_posts ) ) {
-                                $q['pagename'] = sanitize_title_for_query( wp_basename( $q['pagename'] ) );
+                                $q['pagename'] = sanitize_title_for_query( hq_basename( $q['pagename'] ) );
                                 $q['name'] = $q['pagename'];
                                 $where .= " AND ($hqdb->posts.ID = '$reqpage')";
                                 $reqpage_obj = get_post( $reqpage );
@@ -2266,7 +2266,7 @@ class HQ_Query {
                 }
 
                 if ( is_numeric( $q['post_parent'] ) ) {
-                        $where .= $wpdb->prepare( " AND $hqdb->posts.post_parent = %d ", $q['post_parent'] );
+                        $where .= $hqdb->prepare( " AND $hqdb->posts.post_parent = %d ", $q['post_parent'] );
                 } elseif ( $q['post_parent__in'] ) {
                         $post_parent__in = implode( ',', array_map( 'absint', $q['post_parent__in'] ) );
                         $where .= " AND {$hqdb->posts}.post_parent IN ($post_parent__in)";
@@ -2288,7 +2288,7 @@ class HQ_Query {
                 }
 
                /**
-                 * Filter the search SQL that is used in the WHERE clause of WP_Query.
+                 * Filter the search SQL that is used in the WHERE clause of HQ_Query.
                  *
                  * @since 0.0.1
                  *
@@ -2432,7 +2432,7 @@ class HQ_Query {
                 $where .= $search . $whichauthor . $whichmimetype;
 
                 if ( ! empty( $this->meta_query->queries ) ) {
-                        $clauses = $this->meta_query->get_sql( 'post', $wpdb->posts, 'ID', $this );
+                        $clauses = $this->meta_query->get_sql( 'post', $hqdb->posts, 'ID', $this );
                         $join   .= $clauses['join'];
                         $where  .= $clauses['where'];
                 }
@@ -2542,7 +2542,7 @@ class HQ_Query {
                         if ( empty( $in_search_post_types ) )
                                 $where .= ' AND 1=0 ';
                         else
-                                $where .= " AND $wpdb->posts.post_type IN ('" . join("', '", $in_search_post_types ) . "')";
+                                $where .= " AND $hqdb->posts.post_type IN ('" . join("', '", $in_search_post_types ) . "')";
                 } elseif ( !empty( $post_type ) && is_array( $post_type ) ) {
                         $where .= " AND $hqdb->posts.post_type IN ('" . join("', '", $post_type) . "')";
                 } elseif ( ! empty( $post_type ) ) {
