@@ -126,7 +126,7 @@ require( ABSPATH . HQINC . '/query.php' );
 //require( ABSPATH . HQINC . '/theme.php' );
 //require( ABSPATH . HQINC . '/class-hq-theme.php' );
 //require( ABSPATH . HQINC . '/template.php' );
-//require( ABSPATH . HQINC . '/user.php' );
+require( ABSPATH . HQINC . '/user.php' );
 //require( ABSPATH . HQINC . '/session.php' );
 //require( ABSPATH . HQINC . '/meta.php' );
 //require( ABSPATH . HQINC . '/general-template.php' );
@@ -243,10 +243,9 @@ unset( $plugin );
 */
 
 // Load pluggable functions.
-/* TODO: not pluings
-require( ABSPATH . WPINC . '/pluggable.php' );
-require( ABSPATH . WPINC . '/pluggable-deprecated.php' );
-*/
+require( ABSPATH . HQINC . '/pluggable.php' );
+// TODO: ?????
+//require( ABSPATH . HQINC . '/pluggable-deprecated.php' );
 
 // Set internal encoding.
 // TODO: ???

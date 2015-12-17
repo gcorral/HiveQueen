@@ -23,7 +23,7 @@ if ( !function_exists('hq_set_current_user') ) :
  * @param string $name User's username
  * @return HQ_User Current user User object
  */
-function wp_set_current_user($id, $name = '') {
+function hq_set_current_user($id, $name = '') {
         global $current_user;
 
         if ( isset( $current_user ) && ( $current_user instanceof HQ_User ) && ( $id == $current_user->ID ) )
@@ -765,20 +765,17 @@ function hq_generate_auth_cookie( $user_id, $expiration, $scheme = 'auth', $toke
 }
 endif;
 
-
-//TODO: Continuar por aqui **************************
-
-if ( !function_exists('wp_parse_auth_cookie') ) :
+if ( !function_exists('hq_parse_auth_cookie') ) :
 /**
  * Parse a cookie into its components
  *
- * @since 2.7.0
+ * @since 0.0.1
  *
  * @param string $cookie
  * @param string $scheme Optional. The cookie scheme to use: auth, secure_auth, or logged_in
  * @return array|false Authentication cookie components
  */
-function wp_parse_auth_cookie($cookie = '', $scheme = '') {
+function hq_parse_auth_cookie($cookie = '', $scheme = '') {
         if ( empty($cookie) ) {
                 switch ($scheme){
                         case 'auth':
@@ -816,7 +813,7 @@ function wp_parse_auth_cookie($cookie = '', $scheme = '') {
 }
 endif;
 
-if ( !function_exists('wp_set_auth_cookie') ) :
+if ( !function_exists('hq_set_auth_cookie') ) :
 /**
  * Sets the authentication cookies based on user ID.
  *
@@ -824,8 +821,7 @@ if ( !function_exists('wp_set_auth_cookie') ) :
  * default the cookie is kept without remembering is two days. When $remember is
  * set, the cookies will be kept for 14 days or two weeks.
  *
- * @since 2.5.0
- * @since 4.3.0 Added the `$token` parameter.
+ * @since 0.0.1
  *
  * @param int    $user_id  User ID
  * @param bool   $remember Whether to remember the user
@@ -833,12 +829,12 @@ if ( !function_exists('wp_set_auth_cookie') ) :
  *                         Default is_ssl().
  * @param string $token    Optional. User's session token to use for this cookie.
  */
-function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token = '' ) {
+function hq_set_auth_cookie( $user_id, $remember = false, $secure = '', $token = '' ) {
         if ( $remember ) {
                 /**
                  * Filter the duration of the authentication cookie expiration period.
                  *
-                 * @since 2.8.0
+                 * @since 0.0.1
                  *
                  * @param int  $length   Duration of the expiration period in seconds.
                  * @param int  $user_id  User ID.
@@ -848,11 +844,11 @@ function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token =
 
                 /*
                  * Ensure the browser will continue to send the cookie after the expiration time is reached.
-                 * Needed for the login grace period in wp_validate_auth_cookie().
+                 * Needed for the login grace period in hq_validate_auth_cookie().
                  */
                 $expire = $expiration + ( 12 * HOUR_IN_SECONDS );
         } else {
-                /** This filter is documented in wp-includes/pluggable.php */
+                /** This filter is documented in hq-includes/pluggable.php */
                 $expiration = time() + apply_filters( 'auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user_id, $remember );
                 $expire = 0;
         }
@@ -867,7 +863,7 @@ function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token =
         /**
          * Filter whether the connection is secure.
          *
-         * @since 3.1.0
+         * @since 0.0.1
          *
          * @param bool $secure  Whether the connection is secure.
          * @param int  $user_id User ID.
@@ -877,7 +873,7 @@ function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token =
         /**
          * Filter whether to use a secure cookie when logged-in.
          *
-         * @since 3.1.0
+         * @since 0.0.1
          *
          * @param bool $secure_logged_in_cookie Whether to use a secure cookie when logged-in.
          * @param int  $user_id                 User ID.
@@ -894,17 +890,17 @@ function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token =
         }
 
         if ( '' === $token ) {
-                $manager = WP_Session_Tokens::get_instance( $user_id );
+                $manager = HQ_Session_Tokens::get_instance( $user_id );
                 $token   = $manager->create( $expiration );
         }
 
-        $auth_cookie = wp_generate_auth_cookie( $user_id, $expiration, $scheme, $token );
-        $logged_in_cookie = wp_generate_auth_cookie( $user_id, $expiration, 'logged_in', $token );
+        $auth_cookie = hq_generate_auth_cookie( $user_id, $expiration, $scheme, $token );
+        $logged_in_cookie = hq_generate_auth_cookie( $user_id, $expiration, 'logged_in', $token );
 
         /**
          * Fires immediately before the authentication cookie is set.
          *
-         * @since 2.5.0
+         * @since 0.0.1
          *
          * @param string $auth_cookie Authentication cookie.
          * @param int    $expire      Login grace period in seconds. Default 43,200 seconds, or 12 hours.
@@ -918,7 +914,7 @@ function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token =
         /**
          * Fires immediately before the secure authentication cookie is set.
          *
-         * @since 2.6.0
+         * @since 0.0.1
          *
          * @param string $logged_in_cookie The logged-in cookie.
          * @param int    $expire           Login grace period in seconds. Default 43,200 seconds, or 12 hours.
@@ -937,17 +933,17 @@ function wp_set_auth_cookie( $user_id, $remember = false, $secure = '', $token =
 }
 endif;
 
-if ( !function_exists('wp_clear_auth_cookie') ) :
+if ( !function_exists('hq_clear_auth_cookie') ) :
 /**
  * Removes all of the cookies associated with authentication.
  *
- * @since 2.5.0
+ * @since 0.0.1
  */
-function wp_clear_auth_cookie() {
+function hq_clear_auth_cookie() {
         /**
          * Fires just before the authentication cookies are cleared.
          *
-         * @since 2.7.0
+         * @since 0.0.1
          */
         do_action( 'clear_auth_cookie' );
 
@@ -976,12 +972,12 @@ if ( !function_exists('is_user_logged_in') ) :
 /**
  * Checks if the current visitor is a logged in user.
  *
- * @since 2.0.0
+ * @since 0.0.1
  *
  * @return bool True if user is logged in, false if not logged in.
  */
 function is_user_logged_in() {
-        $user = wp_get_current_user();
+        $user = hq_get_current_user();
 
         return $user->exists();
 }
@@ -991,7 +987,7 @@ if ( !function_exists('auth_redirect') ) :
 /**
  * Checks if a user is logged in, if not it redirects them to the login page.
  *
- * @since 1.5.0
+ * @since 0.0.1
  */
 function auth_redirect() {
         // Checks if a user is logged in, if not redirects them to the login page
@@ -1001,19 +997,19 @@ function auth_redirect() {
         /**
          * Filter whether to use a secure authentication redirect.
          *
-         * @since 3.1.0
+         * @since 0.0.1
          *
          * @param bool $secure Whether to use a secure authentication redirect. Default false.
          */
         $secure = apply_filters( 'secure_auth_redirect', $secure );
 
         // If https is required and request is http, redirect
-        if ( $secure && !is_ssl() && false !== strpos($_SERVER['REQUEST_URI'], 'wp-admin') ) {
+        if ( $secure && !is_ssl() && false !== strpos($_SERVER['REQUEST_URI'], 'hq-admin') ) {
                 if ( 0 === strpos( $_SERVER['REQUEST_URI'], 'http' ) ) {
-                        wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
+                        hq_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
                         exit();
                 } else {
-                        wp_redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+                        hq_redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
                         exit();
                 }
         }
@@ -1024,30 +1020,30 @@ function auth_redirect() {
                 /**
                  * Filter the authentication redirect scheme.
                  *
-                 * @since 2.9.0
+                 * @since 0.0.1
                  *
                  * @param string $scheme Authentication redirect scheme. Default empty.
                  */
                 $scheme = apply_filters( 'auth_redirect_scheme', '' );
         }
 
-        if ( $user_id = wp_validate_auth_cookie( '',  $scheme) ) {
+        if ( $user_id = hq_validate_auth_cookie( '',  $scheme) ) {
                 /**
                  * Fires before the authentication redirect.
                  *
-                 * @since 2.8.0
+                 * @since 0.0.1
                  *
                  * @param int $user_id User ID.
                  */
                 do_action( 'auth_redirect', $user_id );
 
                 // If the user wants ssl but the session is not ssl, redirect.
-                if ( !$secure && get_user_option('use_ssl', $user_id) && false !== strpos($_SERVER['REQUEST_URI'], 'wp-admin') ) {
+                if ( !$secure && get_user_option('use_ssl', $user_id) && false !== strpos($_SERVER['REQUEST_URI'], 'hq-admin') ) {
                         if ( 0 === strpos( $_SERVER['REQUEST_URI'], 'http' ) ) {
-                                wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
+                                hq_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
                                 exit();
                         } else {
-                                wp_redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+                                hq_redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
                                 exit();
                         }
                 }
@@ -1058,11 +1054,11 @@ function auth_redirect() {
         // The cookie is no good so force login
         nocache_headers();
 
-        $redirect = ( strpos( $_SERVER['REQUEST_URI'], '/options.php' ) && wp_get_referer() ) ? wp_get_referer() : set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+        $redirect = ( strpos( $_SERVER['REQUEST_URI'], '/options.php' ) && hq_get_referer() ) ? hq_get_referer() : set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
-        $login_url = wp_login_url($redirect, true);
+        $login_url = hq_login_url($redirect, true);
 
-        wp_redirect($login_url);
+        hq_redirect($login_url);
         exit();
 }
 endif;
@@ -1073,26 +1069,26 @@ if ( !function_exists('check_admin_referer') ) :
  *
  * To avoid security exploits.
  *
- * @since 1.2.0
+ * @since 0.0.1
  *
  * @param int|string $action    Action nonce.
  * @param string     $query_arg Optional. Key to check for nonce in `$_REQUEST` (since 2.5).
- *                              Default '_wpnonce'.
+ *                              Default '_hqnonce'.
  * @return false|int False if the nonce is invalid, 1 if the nonce is valid and generated between
  *                   0-12 hours ago, 2 if the nonce is valid and generated between 12-24 hours ago.
  */
-function check_admin_referer( $action = -1, $query_arg = '_wpnonce' ) {
+function check_admin_referer( $action = -1, $query_arg = '_hqnonce' ) {
         if ( -1 == $action )
                 _doing_it_wrong( __FUNCTION__, __( 'You should specify a nonce action to be verified by using the first parameter.' ), '3.2' );
 
         $adminurl = strtolower(admin_url());
-        $referer = strtolower(wp_get_referer());
-        $result = isset($_REQUEST[$query_arg]) ? wp_verify_nonce($_REQUEST[$query_arg], $action) : false;
+        $referer = strtolower(hq_get_referer());
+        $result = isset($_REQUEST[$query_arg]) ? hq_verify_nonce($_REQUEST[$query_arg], $action) : false;
 
         /**
          * Fires once the admin request has been validated or not.
          *
-         * @since 1.5.1
+         * @since 0.0.1
          *
          * @param string    $action The nonce action.
          * @param false|int $result False if the nonce is invalid, 1 if the nonce is valid and generated between
@@ -1101,7 +1097,7 @@ function check_admin_referer( $action = -1, $query_arg = '_wpnonce' ) {
         do_action( 'check_admin_referer', $action, $result );
 
         if ( ! $result && ! ( -1 == $action && strpos( $referer, $adminurl ) === 0 ) ) {
-                wp_nonce_ays( $action );
+                hq_nonce_ays( $action );
                 die();
         }
 
@@ -1113,7 +1109,7 @@ if ( !function_exists('check_ajax_referer') ) :
 /**
  * Verifies the AJAX request to prevent processing requests external of the blog.
  *
- * @since 2.0.3
+ * @since 0.0.1
  *
  * @param int|string   $action    Action nonce.
  * @param false|string $query_arg Optional. Key to check for the nonce in `$_REQUEST` (since 2.5). If false,
@@ -1131,14 +1127,14 @@ function check_ajax_referer( $action = -1, $query_arg = false, $die = true ) {
                 $nonce = $_REQUEST[ $query_arg ];
         elseif ( isset( $_REQUEST['_ajax_nonce'] ) )
                 $nonce = $_REQUEST['_ajax_nonce'];
-        elseif ( isset( $_REQUEST['_wpnonce'] ) )
-                $nonce = $_REQUEST['_wpnonce'];
+        elseif ( isset( $_REQUEST['_hqnonce'] ) )
+                $nonce = $_REQUEST['_hqnonce'];
 
-        $result = wp_verify_nonce( $nonce, $action );
+        $result = hq_verify_nonce( $nonce, $action );
 
         if ( $die && false === $result ) {
                 if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
-                        wp_die( -1 );
+                        hq_die( -1 );
                 else
                         die( '-1' );
         }
@@ -1146,7 +1142,7 @@ function check_ajax_referer( $action = -1, $query_arg = false, $die = true ) {
         /**
          * Fires once the AJAX request has been validated or not.
          *
-         * @since 2.1.0
+         * @since 0.0.1
          *
          * @param string    $action The AJAX nonce action.
          * @param false|int $result False if the nonce is invalid, 1 if the nonce is valid and generated between
@@ -1158,11 +1154,11 @@ function check_ajax_referer( $action = -1, $query_arg = false, $die = true ) {
 }
 endif;
 
-if ( !function_exists('wp_redirect') ) :
+if ( !function_exists('hq_redirect') ) :
 /**
  * Redirects to another page.
  *
- * @since 1.5.1
+ * @since 0.0.1
  *
  * @global bool $is_IIS
  *
@@ -1170,33 +1166,33 @@ if ( !function_exists('wp_redirect') ) :
  * @param int    $status   Status code to use.
  * @return bool False if $location is not provided, true otherwise.
  */
-function wp_redirect($location, $status = 302) {
+function hq_redirect($location, $status = 302) {
         global $is_IIS;
 
         /**
          * Filter the redirect location.
          *
-         * @since 2.1.0
+         * @since 0.0.1
          *
          * @param string $location The path to redirect to.
          * @param int    $status   Status code to use.
          */
-        $location = apply_filters( 'wp_redirect', $location, $status );
+        $location = apply_filters( 'hq_redirect', $location, $status );
 
         /**
          * Filter the redirect status code.
          *
-         * @since 2.3.0
+         * @since 0.0.1
          *
          * @param int    $status   Status code to use.
          * @param string $location The path to redirect to.
          */
-        $status = apply_filters( 'wp_redirect_status', $status, $location );
+        $status = apply_filters( 'hq_redirect_status', $status, $location );
 
         if ( ! $location )
                 return false;
 
-        $location = wp_sanitize_redirect($location);
+        $location = hq_sanitize_redirect($location);
 
         if ( !$is_IIS && PHP_SAPI != 'cgi-fcgi' )
                 status_header($status); // This causes problems on IIS and some FastCGI setups
@@ -1207,15 +1203,15 @@ function wp_redirect($location, $status = 302) {
 }
 endif;
 
-if ( !function_exists('wp_sanitize_redirect') ) :
+if ( !function_exists('hq_sanitize_redirect') ) :
 /**
  * Sanitizes a URL for use in a redirect.
  *
- * @since 2.3.0
+ * @since 0.0.1
  *
  * @return string redirect-sanitized URL
  **/
-function wp_sanitize_redirect($location) {
+function hq_sanitize_redirect($location) {
         $regex = '/
                 (
                         (?: [\xC2-\xDF][\x80-\xBF]        # double-byte sequences   110xxxxx 10xxxxxx
@@ -1228,9 +1224,9 @@ function wp_sanitize_redirect($location) {
                         |   \xF4[\x80-\x8F][\x80-\xBF]{2}
                 ){1,40}                              # ...one or more times
                 )/x';
-        $location = preg_replace_callback( $regex, '_wp_sanitize_utf8_in_redirect', $location );
+        $location = preg_replace_callback( $regex, '_hq_sanitize_utf8_in_redirect', $location );
         $location = preg_replace('|[^a-z0-9-~+_.?#=&;,/:%!*\[\]()]|i', '', $location);
-        $location = wp_kses_no_null($location);
+        $location = hq_kses_no_null($location);
 
         // remove %0d and %0a from location
         $strip = array('%0d', '%0a', '%0D', '%0A');
@@ -1241,19 +1237,19 @@ function wp_sanitize_redirect($location) {
  * URL encode UTF-8 characters in a URL.
  *
  * @ignore
- * @since 4.2.0
+ * @since 0.0.1
  * @access private
  *
- * @see wp_sanitize_redirect()
+ * @see hq_sanitize_redirect()
  */
-function _wp_sanitize_utf8_in_redirect( $matches ) {
+function _hq_sanitize_utf8_in_redirect( $matches ) {
         return urlencode( $matches[0] );
 }
 endif;
 
-if ( !function_exists('wp_safe_redirect') ) :
+if ( !function_exists('hq_safe_redirect') ) :
 /**
- * Performs a safe (local) redirect, using wp_redirect().
+ * Performs a safe (local) redirect, using hq_redirect().
  *
  * Checks whether the $location is using an allowed host, if it has an absolute
  * path. A plugin can therefore set or remove allowed host(s) to or from the
@@ -1263,28 +1259,28 @@ if ( !function_exists('wp_safe_redirect') ) :
  * instead. This prevents malicious redirects which redirect to another host,
  * but only used in a few places.
  *
- * @since 2.3.0
+ * @since 0.0.1
  */
-function wp_safe_redirect($location, $status = 302) {
+function hq_safe_redirect($location, $status = 302) {
 
-        // Need to look at the URL the way it will end up in wp_redirect()
-        $location = wp_sanitize_redirect($location);
+        // Need to look at the URL the way it will end up in hq_redirect()
+        $location = hq_sanitize_redirect($location);
 
         /**
          * Filter the redirect fallback URL for when the provided redirect is not safe (local).
          *
-         * @since 4.3.0
+         * @since 0.0.1
          *
          * @param string $fallback_url The fallback URL to use by default.
          * @param int    $status       The redirect status.
          */
-        $location = wp_validate_redirect( $location, apply_filters( 'wp_safe_redirect_fallback', admin_url(), $status ) );
+        $location = hq_validate_redirect( $location, apply_filters( 'hq_safe_redirect_fallback', admin_url(), $status ) );
 
-        wp_redirect($location, $status);
+        hq_redirect($location, $status);
 }
 endif;
 
-if ( !function_exists('wp_validate_redirect') ) :
+if ( !function_exists('hq_validate_redirect') ) :
 /**
  * Validates a URL for use in a redirect.
  *
@@ -1294,13 +1290,13 @@ if ( !function_exists('wp_validate_redirect') ) :
  *
  * If the host is not allowed, then the redirect is to $default supplied
  *
- * @since 2.8.1
+ * @since 0.0.1
  *
  * @param string $location The redirect to validate
  * @param string $default  The value to return if $location is not allowed
  * @return string redirect-sanitized URL
  **/
-function wp_validate_redirect($location, $default = '') {
+function hq_validate_redirect($location, $default = '') {
         $location = trim( $location );
         // browsers will assume 'http' is your protocol, and will obey a redirect to a URL starting with '//'
         if ( substr($location, 0, 2) == '//' )
@@ -1322,36 +1318,36 @@ function wp_validate_redirect($location, $default = '') {
         if ( isset($lp['scheme'])  && !isset($lp['host']) )
                 return $default;
 
-        $wpp = parse_url(home_url());
+        $hqp = parse_url(home_url());
 
         /**
          * Filter the whitelist of hosts to redirect to.
          *
-         * @since 2.3.0
+         * @since 0.0.1
          *
          * @param array       $hosts An array of allowed hosts.
          * @param bool|string $host  The parsed host; empty if not isset.
          */
-        $allowed_hosts = (array) apply_filters( 'allowed_redirect_hosts', array($wpp['host']), isset($lp['host']) ? $lp['host'] : '' );
+        $allowed_hosts = (array) apply_filters( 'allowed_redirect_hosts', array($hqp['host']), isset($lp['host']) ? $lp['host'] : '' );
 
-        if ( isset($lp['host']) && ( !in_array($lp['host'], $allowed_hosts) && $lp['host'] != strtolower($wpp['host'])) )
+        if ( isset($lp['host']) && ( !in_array($lp['host'], $allowed_hosts) && $lp['host'] != strtolower($hqp['host'])) )
                 $location = $default;
 
         return $location;
 }
 endif;
 
-if ( ! function_exists('wp_notify_postauthor') ) :
+if ( ! function_exists('hq_notify_postauthor') ) :
 /**
  * Notify an author (and/or others) of a comment/trackback/pingback on a post.
  *
- * @since 1.0.0
+ * @since 0.0.1
  *
  * @param int    $comment_id Comment ID
  * @param string $deprecated Not used
  * @return bool True on completion. False if no email addresses were specified.
  */
-function wp_notify_postauthor( $comment_id, $deprecated = null ) {
+function hq_notify_postauthor( $comment_id, $deprecated = null ) {
         if ( null !== $deprecated ) {
                 _deprecated_argument( __FUNCTION__, '3.8' );
         }
@@ -1375,7 +1371,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
          * By default, only post authors are notified of comments. This filter allows
          * others to be added.
          *
-         * @since 3.7.0
+         * @since 0.0.1
          *
          * @param array $emails     An array of email addresses to receive a comment notification.
          * @param int   $comment_id The comment ID.
@@ -1397,7 +1393,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
          * By default, comment authors aren't notified of their comments on their own
          * posts. This filter allows you to override that.
          *
-         * @since 3.8.0
+         * @since 0.0.1
          *
          * @param bool $notify     Whether to notify the post author of their own comment.
          *                         Default false.
@@ -1431,7 +1427,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
 
         // The blogname option is escaped with esc_html on the way into the database in sanitize_option
         // we want to reverse this for the plain text arena of emails.
-        $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+        $blogname = hq_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 
         switch ( $comment->comment_type ) {
                 case 'trackback':
@@ -1477,14 +1473,14 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
                 $notify_message .= sprintf( __('Spam it: %s'), admin_url("comment.php?action=spam&c=$comment_id") ) . "\r\n";
         }
 
-        $wp_email = 'wordpress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+        $wp_email = 'hivequeen@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 
         if ( '' == $comment->comment_author ) {
-                $from = "From: \"$blogname\" <$wp_email>";
+                $from = "From: \"$blogname\" <$hq_email>";
                 if ( '' != $comment->comment_author_email )
                         $reply_to = "Reply-To: $comment->comment_author_email";
         } else {
-                $from = "From: \"$comment->comment_author\" <$wp_email>";
+                $from = "From: \"$comment->comment_author\" <$hq_email>";
                 if ( '' != $comment->comment_author_email )
                         $reply_to = "Reply-To: \"$comment->comment_author_email\" <$comment->comment_author_email>";
         }
@@ -1498,7 +1494,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
         /**
          * Filter the comment notification email text.
          *
-         * @since 1.5.2
+         * @since 0.0.1
          *
          * @param string $notify_message The comment notification email text.
          * @param int    $comment_id     Comment ID.
@@ -1508,7 +1504,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
         /**
          * Filter the comment notification email subject.
          *
-         * @since 1.5.2
+         * @since 0.0.1
          *
          * @param string $subject    The comment notification email subject.
          * @param int    $comment_id Comment ID.
@@ -1518,7 +1514,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
         /**
          * Filter the comment notification email headers.
          *
-         * @since 1.5.2
+         * @since 0.0.
          *
          * @param string $message_headers Headers for the comment notification email.
          * @param int    $comment_id      Comment ID.
@@ -1526,7 +1522,7 @@ function wp_notify_postauthor( $comment_id, $deprecated = null ) {
         $message_headers = apply_filters( 'comment_notification_headers', $message_headers, $comment_id );
 
         foreach ( $emails as $email ) {
-                @wp_mail( $email, wp_specialchars_decode( $subject ), $notify_message, $message_headers );
+                @hq_mail( $email, hq_specialchars_decode( $subject ), $notify_message, $message_headers );
         }
 
         return true;
