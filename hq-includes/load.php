@@ -616,8 +616,9 @@ function shutdown_action_hook() {
          * @since 1.2.0
          */
         do_action( 'shutdown' );
-
-        hq_cache_close();
+      
+        //TODO: disable cache
+        //hq_cache_close();
 }
 
 /**
