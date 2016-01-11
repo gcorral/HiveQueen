@@ -36,7 +36,8 @@ require( ABSPATH . 'hq-settings.php' );
 require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
 
 /** Load HiveQueen Translation Install API */
-require_once( ABSPATH . 'hq-admin/includes/translation-install.php' );
+// TODO: disabled
+//require_once( ABSPATH . 'hq-admin/includes/translation-install.php' );
 
 nocache_headers();
 
