@@ -103,19 +103,21 @@ if ( ! empty( $_REQUEST['language'] ) ) {
 
 switch($step) {
         case -1:
-                if ( hq_can_install_language_pack() && empty( $language ) && ( $languages = hq_get_available_translations() ) ) {
-                        setup_config_display_header( 'language-chooser' );
-                        echo '<form id="setup" method="post" action="?step=0">';
-                        hq_install_language_form( $languages );
-                        echo '</form>';
-                        break;
-                }
+                // goyo disable: TODO
+                //if ( hq_can_install_language_pack() && empty( $language ) && ( $languages = hq_get_available_translations() ) ) {
+                //        setup_config_display_header( 'language-chooser' );
+                //        echo '<form id="setup" method="post" action="?step=0">';
+                //        hq_install_language_form( $languages );
+                //        echo '</form>';
+                //        break;
+                //}
 
                 // Deliberately fall through if we can't reach the translations API.
 
         case 0:
                 if ( ! empty( $language ) ) {
-                        $loaded_language = hq_download_language_pack( $language );
+                        // goyo disable: TODO
+                        //$loaded_language = hq_download_language_pack( $language );
                         if ( $loaded_language ) {
                                 load_default_textdomain( $loaded_language );
                                 $GLOBALS['hq_locale'] = new HQ_Locale();

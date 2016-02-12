@@ -125,7 +125,7 @@ require( ABSPATH . HQINC . '/query.php' );
 //require( ABSPATH . HQINC . '/date.php' );
 //require( ABSPATH . HQINC . '/theme.php' );
 //require( ABSPATH . HQINC . '/class-hq-theme.php' );
-//require( ABSPATH . HQINC . '/template.php' );
+require( ABSPATH . HQINC . '/template.php' );
 require( ABSPATH . HQINC . '/user.php' );
 //require( ABSPATH . HQINC . '/session.php' );
 //require( ABSPATH . HQINC . '/meta.php' );

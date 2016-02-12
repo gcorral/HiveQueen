@@ -2612,6 +2612,45 @@ function _scalar_hq_die_handler( $message = '' ) {
         die();
 }
 
+/**
+ * Merge user defined arguments into defaults array.
+ *
+ * This function is used throughout HiveQueen to allow for both string or array
+ * to be merged into another array.
+ *
+ * @since 0.0.1
+ *
+ * @param string|array $args     Value to merge with $defaults
+ * @param array        $defaults Optional. Array that serves as the defaults. Default empty.
+ * @return array Merged user defined values with defaults.
+ */
+function hq_parse_args( $args, $defaults = '' ) {
+        if ( is_object( $args ) )
+                $r = get_object_vars( $args );
+        elseif ( is_array( $args ) )
+                $r =& $args;
+        else
+                hq_parse_str( $args, $r );
+
+        if ( is_array( $defaults ) )
+                return array_merge( $defaults, $r );
+        return $r;
+}
+
+/**
+ * Convert a value to non-negative integer.
+ *
+ * @since 0.0.1
+ *
+ * @param mixed $maybeint Data you wish to have converted to a non-negative integer.
+ * @return int A non-negative integer.
+ */
+function absint( $maybeint ) {
+        return abs( intval( $maybeint ) );
+}
+
+
+
 //TODO: ****************************************** Functions ********************************************************
 
 
