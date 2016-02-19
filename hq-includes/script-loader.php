@@ -22,8 +22,7 @@
  */
 
 /** BackPress: HiveQueen Dependencies Class */
-# TODO:
-#require( ABSPATH . HQINC . '/class.hq-dependencies.php' );
+require( ABSPATH . HQINC . '/class.hq-dependencies.php' );
 
 /** BackPress: HiveQueen Scripts Class */
 # TODO:
@@ -34,12 +33,10 @@
 #require( ABSPATH . HQINC . '/functions.hq-scripts.php' );
 
 /** BackPress: HiveQueen Styles Class */
-# TODO:
-#require( ABSPATH . HQINC . '/class.hq-styles.php' );
+require( ABSPATH . HQINC . '/class.hq-styles.php' );
 
 /** BackPress: HiveQueen Styles Functions */
-# TODO:
-#require( ABSPATH . HQINC . '/functions.hq-styles.php' );
+require( ABSPATH . HQINC . '/functions.hq-styles.php' );
 
 /**
  * Register all HiveQueen scripts.
