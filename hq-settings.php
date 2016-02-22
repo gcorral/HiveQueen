@@ -145,7 +145,7 @@ require( ABSPATH . HQINC . '/general-template.php' );
 //require( ABSPATH . HQINC . '/feed.php' );
 //require( ABSPATH . HQINC . '/bookmark.php' );
 //require( ABSPATH . HQINC . '/bookmark-template.php' );
-//require( ABSPATH . HQINC . '/kses.php' );
+require( ABSPATH . HQINC . '/kses.php' );
 //require( ABSPATH . HQINC . '/cron.php' );
 //require( ABSPATH . HQINC . '/deprecated.php' );
 require( ABSPATH . HQINC . '/script-loader.php' );
