@@ -119,7 +119,7 @@ hq_not_installed();
 // TODO: disable all
 //require( ABSPATH . HQINC . '/class-hq-walker.php' );
 //require( ABSPATH . HQINC . '/class-hq-ajax-response.php' );
-//require( ABSPATH . HQINC . '/formatting.php' );
+require( ABSPATH . HQINC . '/formatting.php' );
 require( ABSPATH . HQINC . '/capabilities.php' );
 require( ABSPATH . HQINC . '/query.php' );
 //require( ABSPATH . HQINC . '/date.php' );
