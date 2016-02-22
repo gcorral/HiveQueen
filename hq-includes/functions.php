@@ -2650,6 +2650,39 @@ function absint( $maybeint ) {
 }
 
 
+/**
+ * Retrieve a list of protocols to allow in HTML attributes.
+ *
+ * @since 0.0.1
+ *
+ * @see hq_kses()
+ * @see esc_url()
+ *
+ * @staticvar array $protocols
+ *
+ * @return array Array of allowed protocols. Defaults to an array containing 'http', 'https'.
+ */
+
+function hq_allowed_protocols() {
+        static $protocols = array();
+
+        if ( empty( $protocols ) ) {
+                $protocols = array( 'http', 'https' );
+
+                /**
+                 * Filter the list of protocols allowed in HTML attributes.
+                 *
+                 * @since 0.0.1
+                 *
+                 * @param array $protocols Array of allowed protocols e.g. 'http', 'ftp', 'tel', and more.
+                 */
+                $protocols = apply_filters( 'kses_allowed_protocols', $protocols );
+        }
+
+        return $protocols;
+}
+
+
 
 //TODO: ****************************************** Functions ********************************************************
 
