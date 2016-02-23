@@ -182,13 +182,14 @@ switch($step) {
                         <td><input name="dbhost" id="dbhost" type="text" size="25" value="localhost" /></td>
                         <td><?php _e( 'You should be able to get this info from your web host, if <code>localhost</code> does not work.' ); ?></td>
                 </tr>
-                <tr>
-                        <th scope="row"><label for="prefix"><?php _e( 'Table Prefix' ); ?></label></th>
+                <!-- <tr> -->
+                        <!-- <th scope="row"><label for="prefix"><?php _e( 'Table Prefix' ); ?></label></th> -->
                         <!-- <td><input name="prefix" id="prefix" type="text" value="hq_" size="25" /></td>
                         <td><?php _e( 'If you want to run multiple HiveQueen installations in a single database, change this.' ); ?></td> -->
-                </tr>
+                <!-- </tr> -->
         </table>
         <?php if ( isset( $_GET['noapi'] ) ) { ?><input name="noapi" type="hidden" value="1" /><?php } ?>
+        <input type="hidden" name="prefix" value="hq_" />
         <input type="hidden" name="language" value="<?php echo esc_attr( $language ); ?>" />
         <p class="step"><input name="submit" type="submit" value="<?php echo htmlspecialchars( __( 'Submit' ), ENT_QUOTES ); ?>" class="button button-large" /></p>
 </form>

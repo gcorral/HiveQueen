@@ -25,8 +25,7 @@
 require( ABSPATH . HQINC . '/class.hq-dependencies.php' );
 
 /** BackPress: HiveQueen Scripts Class */
-// TODO:
-// require( ABSPATH . HQINC . '/class.hq-scripts.php' );
+require( ABSPATH . HQINC . '/class.hq-scripts.php' );
 
 /** BackPress: HiveQueen Scripts Functions */
 require( ABSPATH . HQINC . '/functions.hq-scripts.php' );
