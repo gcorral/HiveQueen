@@ -558,7 +558,9 @@ function load_default_textdomain( $locale = null ) {
 
         $return = load_textdomain( 'default', HQ_LANG_DIR . "/$locale.mo" );
 
-        if ( ( is_multisite() || ( defined( 'HQ_INSTALLING_NETWORK' ) && HQ_INSTALLING_NETWORK ) ) && ! file_exists(  HQ_LANG_DIR . "/admin-$locale.mo" ) ) {
+        //goyo 22/02/2016
+        //if ( ( is_multisite() || ( defined( 'HQ_INSTALLING_NETWORK' ) && HQ_INSTALLING_NETWORK ) ) && ! file_exists(  HQ_LANG_DIR . "/admin-$locale.mo" ) ) {
+        if ( ( ( defined( 'HQ_INSTALLING_NETWORK' ) && HQ_INSTALLING_NETWORK ) ) && ! file_exists(  HQ_LANG_DIR . "/admin-$locale.mo" ) ) {
                 load_textdomain( 'default', HQ_LANG_DIR . "/ms-$locale.mo" );
                 return $return;
         }
