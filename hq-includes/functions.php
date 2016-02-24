@@ -2683,6 +2683,98 @@ function hq_allowed_protocols() {
 }
 
 
+/**
+ * Test whether HiveQueen is already installed.
+ *
+ * The cache will be checked first. If you have a cache plugin, which saves
+ * the cache values, then this will work. If you use the default HiveQueen
+ * cache, and the database goes away, then you might have problems.
+ *
+ * Checks for the 'siteurl' option for whether HiveQueen is installed.
+ *
+ * @since 0.0.1
+ *
+ * @global hqdb $hqdb HiveQueen database abstraction object.
+ *
+ * @return bool Whether the blog is already installed.
+ */
+function is_hq_installed() {
+
+        global $hqdb;
+
+        /*
+         * Check cache first. If options table goes away and we have true
+         * cached, oh well.
+         */
+        /* TODO: Goyo no cache:
+        /*
+        if ( hq_cache_get( 'is_hq_installed' ) )
+                return true;
+        */
+
+        $suppress = $hqdb->suppress_errors();
+
+        if ( ! defined( 'HQ_INSTALLING' ) ) {
+                $alloptions = hq_load_alloptions();
+        }
+        // If siteurl is not set to autoload, check it specifically
+        if ( !isset( $alloptions['siteurl'] ) )
+                $installed = $hqdb->get_var( "SELECT option_value FROM $hqdb->options WHERE option_name = 'siteurl'" );
+        else
+                $installed = $alloptions['siteurl'];
+        $hqdb->suppress_errors( $suppress );
+
+        $installed = !empty( $installed );
+ 
+        /* TODO: Goyo no cache 
+        hq_cache_set( 'is_hq_installed', $installed );
+        */
+
+        if ( $installed )
+                return true;
+
+        // If visiting repair.php, return true and let it take over.
+        if ( defined( 'HQ_REPAIRING' ) )
+                return true;
+
+        $suppress = $hqdb->suppress_errors();
+
+        /*
+         * Loop over the HQ tables. If none exist, then scratch install is allowed.
+         * If one or more exist, suggest table repair since we got here because the
+         * options table could not be accessed.
+         */
+        $hq_tables = $hqdb->tables();
+        foreach ( $hq_tables as $table ) {
+                // The existence of custom user tables shouldn't suggest an insane state or prevent a clean install.
+                if ( defined( 'CUSTOM_USER_TABLE' ) && CUSTOM_USER_TABLE == $table )
+                        continue;
+                if ( defined( 'CUSTOM_USER_META_TABLE' ) && CUSTOM_USER_META_TABLE == $table )
+                        continue;
+
+                if ( ! $hqdb->get_results( "DESCRIBE $table;" ) )
+                        continue;
+
+                // One or more tables exist. We are insane.
+
+                hq_load_translations_early();
+
+                // Die with a DB error.
+                $hqdb->error = sprintf( __( 'One or more database tables are unavailable. The database may need to be <a href="%s">repaired</a>.' ), 'maint/repair.php?referrer=is_hq_installed' );
+                dead_db();
+        }
+
+        $hqdb->suppress_errors( $suppress );
+
+        /* TODO: Goyo no chache
+        hq_cache_set( 'is_hq_installed', false );
+        */
+
+        return false;
+
+}
+
+
 
 //TODO: ****************************************** Functions ********************************************************
 
