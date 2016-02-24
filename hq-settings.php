@@ -117,7 +117,7 @@ hq_not_installed();
 
 // Load most of HiveQueen.
 // TODO: disable all
-//require( ABSPATH . HQINC . '/class-hq-walker.php' );
+require( ABSPATH . HQINC . '/class-hq-walker.php' );
 //require( ABSPATH . HQINC . '/class-hq-ajax-response.php' );
 require( ABSPATH . HQINC . '/formatting.php' );
 require( ABSPATH . HQINC . '/capabilities.php' );

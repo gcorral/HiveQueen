@@ -63,8 +63,7 @@ require_once(ABSPATH . 'hq-admin/includes/admin-filters.php');
 //require_once(ABSPATH . 'hq-admin/includes/taxonomy.php');
 
 /** HiveQueen Template Administration API */
-//TODO: disable
-//require_once(ABSPATH . 'hq-admin/includes/template.php');
+require_once(ABSPATH . 'hq-admin/includes/template.php');
 
 /** HiveQueen List Table Administration API and base class */
 //TODO: disable 

@@ -39,7 +39,8 @@ require_once( dirname( dirname( __FILE__ ) ) . '/hq-load.php' );
 require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
 
 /** Load HiveQueen Translation Install API */
-require_once( ABSPATH . 'hq-admin/includes/translation-install.php' );
+// TODO: No translation 
+// require_once( ABSPATH . 'hq-admin/includes/translation-install.php' );
 
 /** Load hqdb */
 require_once( ABSPATH . HQINC . '/hq-db.php' );
@@ -243,7 +244,10 @@ if ( ! empty( $_REQUEST['language'] ) ) {
 switch($step) {
         case 0: // Step 0
 
-                if ( hq_can_install_language_pack() && empty( $language ) && ( $languages = hq_get_available_translations() ) ) {
+                // TODO: no translation
+
+                //if ( hq_can_install_language_pack() && empty( $language ) && ( $languages = hq_get_available_translations() ) ) {
+                if ( false && empty( $language ) && ( $languages = hq_get_available_translations() ) ) {
                         display_header( 'language-chooser' );
                         echo '<form id="setup" method="post" action="?step=1">';
                         hq_install_language_form( $languages );
@@ -255,8 +259,10 @@ switch($step) {
 
         case 1: // Step 1, direct link or from language chooser.
                 if ( ! empty( $language ) ) {
-                        $loaded_language = hq_download_language_pack( $language );
-                        if ( $loaded_language ) {
+                        //TODO: Goyo not download languaje
+                        // $loaded_language = hq_download_language_pack( $language );
+                        //if ( $loaded_language ) {
+                        if ( true ) {
                                 load_default_textdomain( $loaded_language );
                                 $GLOBALS['hq_locale'] = new HQ_Locale();
                         }
