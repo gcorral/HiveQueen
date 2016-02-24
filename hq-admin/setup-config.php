@@ -145,7 +145,7 @@ switch($step) {
 <p>
         <?php _e( 'We&#8217;re going to use this information to create a <code>hq-config.php</code> file.' ); ?>
         <strong><?php _e( "If for any reason this automatic file creation doesn&#8217;t work, don&#8217;t worry. All this does is fill in the database information to a configuration file. You may also simply open <code>hq-config-sample.php</code> in a text editor, fill in your information, and save it as <code>hq-config.php</code>." ); ?></strong>
-        <!-- <?php _e( "Need more help? <a href='https://codex.wordpress.org/Editing_wp-config.php'>We got it</a>." ); ?> -->
+        <!-- <?php _e( "Need more help? <a href='https://codex.wordpress.org/Editing_hq-config.php'>We got it</a>." ); ?> -->
 </p>
 <p><?php _e( "In all likelihood, these items were supplied to you by your Web Host. If you do not have this information, then you will need to contact them before you can continue. If you&#8217;re all ready&hellip;" ); ?></p>
 
@@ -257,13 +257,13 @@ switch($step) {
                 $secret_keys = hq_remote_get( 'https://api.wordpress.org/secret-key/1.1/salt/' );
         }
 
-        if ( $no_api || is_wp_error( $secret_keys ) ) {
+        if ( $no_api || is_hq_error( $secret_keys ) ) {
                 $secret_keys = array();
                 for ( $i = 0; $i < 8; $i++ ) {
-                        $secret_keys[] = wp_generate_password( 64, true, true );
+                        $secret_keys[] = hq_generate_password( 64, true, true );
                 }
         } else {
-                $secret_keys = explode( "\n", wp_remote_retrieve_body( $secret_keys ) );
+                $secret_keys = explode( "\n", hq_remote_retrieve_body( $secret_keys ) );
                 foreach ( $secret_keys as $k => $v ) {
                         $secret_keys[$k] = substr( $v, 28, 64 );
                 }
@@ -292,7 +292,7 @@ switch($step) {
                                 $config_file[ $line_num ] = "define('" . $constant . "'," . $padding . "'" . addcslashes( constant( $constant ), "\\'" ) . "');\r\n";
                                 break;
                         case 'DB_CHARSET'  :
-                                if ( 'utf8mb4' === $wpdb->charset || ( ! $wpdb->charset && $wpdb->has_cap( 'utf8mb4' ) ) ) {
+                                if ( 'utf8mb4' === $hqdb->charset || ( ! $hqdb->charset && $hqdb->has_cap( 'utf8mb4' ) ) ) {
                                         $config_file[ $line_num ] = "define('" . $constant . "'," . $padding . "'utf8mb4');\r\n";
                                 }
                                 break;

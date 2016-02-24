@@ -112,7 +112,7 @@ if ( SHORTINIT )
 // Load the L10n library.
 require_once( ABSPATH . HQINC . '/l10n.php' );
 
-// Run the installer if WordPress is not installed.
+// Run the installer if HiveQueen is not installed.
 hq_not_installed();
 
 // Load most of HiveQueen.

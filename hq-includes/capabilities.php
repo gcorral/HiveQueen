@@ -24,7 +24,7 @@
  * @package HiveQueen
  * @subpackage User
  */
-class WP_Roles {
+class HQ_Roles {
 	/**
 	 * List of roles and capabilities.
 	 *
@@ -125,7 +125,7 @@ class WP_Roles {
 		$this->role_objects = array();
 		$this->role_names =  array();
 		foreach ( array_keys( $this->roles ) as $role ) {
-			$this->role_objects[$role] = new WP_Role( $role, $this->roles[$role]['capabilities'] );
+			$this->role_objects[$role] = new HQ_Role( $role, $this->roles[$role]['capabilities'] );
 			$this->role_names[$role] = $this->roles[$role]['name'];
 		}
 	}
@@ -157,7 +157,7 @@ class WP_Roles {
 		$this->role_objects = array();
 		$this->role_names =  array();
 		foreach ( array_keys( $this->roles ) as $role ) {
-			$this->role_objects[$role] = new WP_Role( $role, $this->roles[$role]['capabilities'] );
+			$this->role_objects[$role] = new HQ_Role( $role, $this->roles[$role]['capabilities'] );
 			$this->role_names[$role] = $this->roles[$role]['name'];
 		}
 	}
@@ -176,7 +176,7 @@ class WP_Roles {
 	 * @param string $role Role name.
 	 * @param string $display_name Role display name.
 	 * @param array $capabilities List of role capabilities in the above format.
-	 * @return WP_Role|void WP_Role object, if role is added.
+	 * @return HQ_Role|void HQ_Role object, if role is added.
 	 */
 	public function add_role( $role, $display_name, $capabilities = array() ) {
 		if ( isset( $this->roles[$role] ) )
@@ -188,7 +188,7 @@ class WP_Roles {
 			);
 		if ( $this->use_db )
 			update_option( $this->role_key, $this->roles );
-		$this->role_objects[$role] = new WP_Role( $role, $capabilities );
+		$this->role_objects[$role] = new HQ_Role( $role, $capabilities );
 		$this->role_names[$role] = $display_name;
 		return $this->role_objects[$role];
 	}
@@ -260,7 +260,7 @@ class WP_Roles {
 	 * @access public
 	 *
 	 * @param string $role Role name.
-	 * @return WP_Role|null WP_Role object if found, null if the role does not exist.
+	 * @return HQ_Role|null HQ_Role object if found, null if the role does not exist.
 	 */
 	public function get_role( $role ) {
 		if ( isset( $this->role_objects[$role] ) )
@@ -302,7 +302,7 @@ class WP_Roles {
  * @package HiveQueen
  * @subpackage User
  */
-class WP_Role {
+class HQ_Role {
 	/**
 	 * Role name.
 	 *
@@ -355,9 +355,9 @@ class WP_Role {
 	/**
 	 * Remove capability from role.
 	 *
-	 * This is a container for {@link WP_Roles::remove_cap()} to remove the
+	 * This is a container for {@link HQ_Roles::remove_cap()} to remove the
 	 * capability from the role. That is to say, that {@link
-	 * WP_Roles::remove_cap()} implements the functionality, but it also makes
+	 * HQ_Roles::remove_cap()} implements the functionality, but it also makes
 	 * sense to use this class, because you don't need to enter the role name.
 	 *
 	 * @since 0.0.1
@@ -426,7 +426,7 @@ class WP_Role {
  * @property string $spam
  * @property string $deleted
  */
-class WP_User {
+class HQ_User {
 	/**
 	 * User data container.
 	 *
@@ -499,14 +499,14 @@ class WP_User {
 	/**
 	 * Constructor
 	 *
-	 * Retrieves the userdata and passes it to {@link WP_User::init()}.
+	 * Retrieves the userdata and passes it to {@link HQ_User::init()}.
 	 *
 	 * @since 0.0.1
 	 * @access public
 	 *
 	 * @global hqdb $hqdb
 	 *
-	 * @param int|string|stdClass|WP_User $id User's ID, a WP_User object, or a user object from the DB.
+	 * @param int|string|stdClass|HQ_User $id User's ID, a HQ_User object, or a user object from the DB.
 	 * @param string $name Optional. User's username
 	 * @param int $blog_id Optional Blog ID, defaults to current blog.
 	 */
@@ -523,7 +523,7 @@ class WP_User {
 			);
 		}
 
-		if ( $id instanceof WP_User ) {
+		if ( $id instanceof HQ_User ) {
 			$this->init( $id->data, $blog_id );
 			return;
 		} elseif ( is_object( $id ) ) {
@@ -656,7 +656,7 @@ class WP_User {
 	 */
 	public function __isset( $key ) {
 		if ( 'id' == $key ) {
-			_deprecated_argument( 'WP_User->id', '2.1', __( 'Use <code>WP_User->ID</code> instead.' ) );
+			_deprecated_argument( 'HQ_User->id', '2.1', __( 'Use <code>HQ_User->ID</code> instead.' ) );
 			$key = 'ID';
 		}
 
@@ -678,7 +678,7 @@ class WP_User {
 	 */
 	public function __get( $key ) {
 		if ( 'id' == $key ) {
-			_deprecated_argument( 'WP_User->id', '2.1', __( 'Use <code>WP_User->ID</code> instead.' ) );
+			_deprecated_argument( 'HQ_User->id', '2.1', __( 'Use <code>HQ_User->ID</code> instead.' ) );
 			return $this->ID;
 		}
 
@@ -704,7 +704,7 @@ class WP_User {
 	 */
 	public function __set( $key, $value ) {
 		if ( 'id' == $key ) {
-			_deprecated_argument( 'WP_User->id', '2.1', __( 'Use <code>WP_User->ID</code> instead.' ) );
+			_deprecated_argument( 'HQ_User->id', '2.1', __( 'Use <code>HQ_User->ID</code> instead.' ) );
 			$this->ID = $value;
 			return;
 		}
@@ -1057,7 +1057,7 @@ class WP_User {
 		 * @param array   $allcaps An array of all the user's capabilities.
 		 * @param array   $caps    Actual capabilities for meta capability.
 		 * @param array   $args    Optional parameters passed to has_cap(), typically object ID.
-		 * @param WP_User $user    The user object.
+		 * @param HQ_User $user    The user object.
 		 */
 		// Must have ALL requested caps
 		$capabilities = apply_filters( 'user_has_cap', $this->allcaps, $caps, $args, $this );
@@ -1529,19 +1529,19 @@ function user_can( $user, $capability ) {
 }
 
 /**
- * Retrieves the global WP_Roles instance and instantiates it if necessary.
+ * Retrieves the global HQ_Roles instance and instantiates it if necessary.
  *
  * @since 0.0.1
  *
- * @global WP_Roles $hq_roles WP_Roles global instance.
+ * @global HQ_Roles $hq_roles HQ_Roles global instance.
  *
- * @return WP_Roles WP_Roles global instance if not already instantiated.
+ * @return HQ_Roles HQ_Roles global instance if not already instantiated.
  */
 function hq_roles() {
 	global $hq_roles;
 
 	if ( ! isset( $hq_roles ) ) {
-		$hq_roles = new WP_Roles();
+		$hq_roles = new HQ_Roles();
 	}
 	return $hq_roles;
 }
@@ -1552,7 +1552,7 @@ function hq_roles() {
  * @since 0.0.1
  *
  * @param string $role Role name.
- * @return WP_Role|null WP_Role object if found, null if the role does not exist.
+ * @return HQ_Role|null HQ_Role object if found, null if the role does not exist.
  */
 function get_role( $role ) {
 	return hq_roles()->get_role( $role );
@@ -1566,7 +1566,7 @@ function get_role( $role ) {
  * @param string $role Role name.
  * @param string $display_name Display name for role.
  * @param array $capabilities List of capabilities, e.g. array( 'edit_posts' => true, 'delete_posts' => false );
- * @return WP_Role|null WP_Role object if role is added, null if already exists.
+ * @return HQ_Role|null HQ_Role object if role is added, null if already exists.
  */
 function add_role( $role, $display_name, $capabilities = array() ) {
 	return hq_roles()->add_role( $role, $display_name, $capabilities );
