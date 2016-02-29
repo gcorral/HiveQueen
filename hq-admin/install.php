@@ -191,7 +191,7 @@ function display_setup_form( $error = null ) {
 // Let's check to make sure HQ isn't already installed.
 if ( is_hq_installed() ) {
         display_header();
-        die( '<h1>' . __( 'Already Installed' ) . '</h1><p>' . __( 'You appear to have already installed WordPress. To reinstall please clear your old database tables first.' ) . '</p><p class="step"><a href="../wp-login.php" class="button button-large">' . __( 'Log In' ) . '</a></p></body></html>' );
+        die( '<h1>' . __( 'Already Installed' ) . '</h1><p>' . __( 'You appear to have already installed WordPress. To reinstall please clear your old database tables first.' ) . '</p><p class="step"><a href="../hq-login.php" class="button button-large">' . __( 'Log In' ) . '</a></p></body></html>' );
 }
 
 /**
@@ -208,11 +208,11 @@ $php_compat     = version_compare( $php_version, $required_php_version, '>=' );
 $mysql_compat   = version_compare( $mysql_version, $required_mysql_version, '>=' ) || file_exists( HQ_CONTENT_DIR . '/db.php' );
 
 if ( !$mysql_compat && !$php_compat )
-        $compat = sprintf( __( 'You cannot install because <a href="https://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.' ), $wp_version, $required_php_version, $required_mysql_version, $php_version, $mysql_version );
+        $compat = sprintf( __( 'You cannot install because <a href="https://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.' ), $hq_version, $required_php_version, $required_mysql_version, $php_version, $mysql_version );
 elseif ( !$php_compat )
-        $compat = sprintf( __( 'You cannot install because <a href="https://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires PHP version %2$s or higher. You are running version %3$s.' ), $wp_version, $required_php_version, $php_version );
+        $compat = sprintf( __( 'You cannot install because <a href="https://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires PHP version %2$s or higher. You are running version %3$s.' ), $hq_version, $required_php_version, $php_version );
 elseif ( !$mysql_compat )
-        $compat = sprintf( __( 'You cannot install because <a href="https://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires MySQL version %2$s or higher. You are running version %3$s.' ), $wp_version, $required_mysql_version, $mysql_version );
+        $compat = sprintf( __( 'You cannot install because <a href="https://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires MySQL version %2$s or higher. You are running version %3$s.' ), $hq_version, $required_mysql_version, $mysql_version );
 
 if ( !$mysql_compat || !$php_compat ) {
         display_header();
@@ -282,7 +282,7 @@ switch($step) {
         case 2:
                 if ( ! empty( $language ) && load_default_textdomain( $language ) ) {
                         $loaded_language = $language;
-                        $GLOBALS['wp_locale'] = new HQ_Locale();
+                        $GLOBALS['hq_locale'] = new HQ_Locale();
                 } else {
                         $loaded_language = 'en_US';
                 }
@@ -293,10 +293,10 @@ switch($step) {
 
                 display_header();
                 // Fill in the data we gathered
-                $weblog_title = isset( $_POST['weblog_title'] ) ? trim( wq_unslash( $_POST['weblog_title'] ) ) : '';
+                $weblog_title = isset( $_POST['weblog_title'] ) ? trim( hq_unslash( $_POST['weblog_title'] ) ) : '';
                 $user_name = isset($_POST['user_name']) ? trim( hq_unslash( $_POST['user_name'] ) ) : '';
-                $admin_password = isset($_POST['admin_password']) ? wq_unslash( $_POST['admin_password'] ) : '';
-                $admin_password_check = isset($_POST['admin_password2']) ? wq_unslash( $_POST['admin_password2'] ) : '';
+                $admin_password = isset($_POST['admin_password']) ? hq_unslash( $_POST['admin_password'] ) : '';
+                $admin_password_check = isset($_POST['admin_password2']) ? hq_unslash( $_POST['admin_password2'] ) : '';
                 $admin_email  = isset( $_POST['admin_email'] ) ?trim( hq_unslash( $_POST['admin_email'] ) ) : '';
                 $public       = isset( $_POST['blog_public'] ) ? (int) $_POST['blog_public'] : 0;
 
