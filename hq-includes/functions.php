@@ -2682,6 +2682,106 @@ function hq_allowed_protocols() {
         return $protocols;
 }
 
+/**
+ * Return a comma-separated string of functions that have been called to get
+ * to the current point in code.
+ *
+ * @since 0.0.1
+ *
+ * @param string $ignore_class Optional. A class to ignore all function calls within - useful
+ *                             when you want to just give info about the callee. Default null.
+ * @param int    $skip_frames  Optional. A number of stack frames to skip - useful for unwinding
+ *                             back to the source of the issue. Default 0.
+ * @param bool   $pretty       Optional. Whether or not you want a comma separated string or raw
+ *                             array returned. Default true.
+ * @return string|array Either a string containing a reversed comma separated trace or an array
+ *                      of individual calls.
+ */
+function hq_debug_backtrace_summary( $ignore_class = null, $skip_frames = 0, $pretty = true ) {
+        if ( version_compare( PHP_VERSION, '5.2.5', '>=' ) )
+                $trace = debug_backtrace( false );
+        else
+                $trace = debug_backtrace();
+
+        $caller = array();
+        $check_class = ! is_null( $ignore_class );
+        $skip_frames++; // skip this function
+
+        foreach ( $trace as $call ) {
+                if ( $skip_frames > 0 ) {
+                        $skip_frames--;
+                } elseif ( isset( $call['class'] ) ) {
+                        if ( $check_class && $ignore_class == $call['class'] )
+                                continue; // Filter out calls
+
+                        $caller[] = "{$call['class']}{$call['type']}{$call['function']}";
+                } else {
+                        if ( in_array( $call['function'], array( 'do_action', 'apply_filters' ) ) ) {
+                                $caller[] = "{$call['function']}('{$call['args'][0]}')";
+                        } elseif ( in_array( $call['function'], array( 'include', 'include_once', 'require', 'require_once' ) ) ) {
+                                $caller[] = $call['function'] . "('" . str_replace( array( HQ_CONTENT_DIR, ABSPATH ) , '', $call['args'][0] ) . "')";
+                        } else {
+                                $caller[] = $call['function'];
+                        }
+                }
+        }
+        if ( $pretty )
+                return join( ', ', array_reverse( $caller ) );
+        else
+                return $caller;
+}
+
+
+/**
+ * Load custom DB error or display HiveQueen DB error.
+ *
+ * If a file exists in the hq-content directory named db-error.php, then it will
+ * be loaded instead of displaying the WordPress DB error. If it is not found,
+ * then the WordPress DB error will be displayed instead.
+ *
+ * The HiveQueen DB error sets the HTTP status header to 500 to try to prevent
+ * search engines from caching the message. Custom DB messages should do the
+ * same.
+ *
+ * @since 0.0.1
+ *
+ * @global hqdb $hqdb HiveQueen database abstraction object.
+ */
+function dead_db() {
+        global $hqdb;
+
+        hq_load_translations_early();
+
+        // Load custom DB error template, if present.
+        if ( file_exists( HQ_CONTENT_DIR . '/db-error.php' ) ) {
+                require_once( HQ_CONTENT_DIR . '/db-error.php' );
+                die();
+        }
+
+        // If installing or in the admin, provide the verbose message.
+        if ( defined('HQ_INSTALLING') || defined('HQ_ADMIN') )
+                hq_die($hqdb->error);
+
+        // Otherwise, be terse.
+        status_header( 500 );
+        nocache_headers();
+        header( 'Content-Type: text/html; charset=utf-8' );
+?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"<?php if ( is_rtl() ) echo ' dir="rtl"'; ?>>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><?php _e( 'Database Error' ); ?></title>
+
+</head>
+<body>
+        <h1><?php _e( 'Error establishing a database connection' ); ?></h1>
+</body>
+</html>
+<?php
+        die();
+}
+
 
 
 

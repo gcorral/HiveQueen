@@ -41,7 +41,8 @@ function hq_install( $blog_title, $user_name, $user_email, $public, $deprecated 
 		_deprecated_argument( __FUNCTION__, '2.6' );
 
 	hq_check_mysql_version();
-	hq_cache_flush();
+        //TODO: no cache
+	//hq_cache_flush();
 	make_db_current_silent();
 	populate_options();
 	populate_roles();
@@ -2667,12 +2668,16 @@ function hq_should_upgrade_global_tables() {
 	$should_upgrade = true;
 
 	// Set to false if not on main network (does not matter if not multi-network)
-	if ( ! is_main_network() ) {
+        //TODO: Not multisite so is_main_network = true
+	//if ( ! is_main_network() ) {
+        if ( false ) {
 		$should_upgrade = false;
 	}
 
 	// Set to false if not on main site of current network (does not matter if not multi-site)
-	if ( ! is_main_site() ) {
+        //TODO: Not multisite so is_main:site = true 
+	//if ( ! is_main_site() ) {
+        if ( false ) {
 		$should_upgrade = false;
 	}
 
