@@ -53,7 +53,8 @@ function get_option( $option, $default = false ) {
 
 	if ( ! defined( 'HQ_INSTALLING' ) ) {
 		// prevent non-existent options from triggering multiple queries
-		$notoptions = hq_cache_get( 'notoptions', 'options' );
+                //TODO: Goyo no cache
+		//$notoptions = hq_cache_get( 'notoptions', 'options' );
 		if ( isset( $notoptions[ $option ] ) ) {
 			/**
 			 * Filter the default value for an option.
@@ -73,7 +74,8 @@ function get_option( $option, $default = false ) {
 		if ( isset( $alloptions[$option] ) ) {
 			$value = $alloptions[$option];
 		} else {
-			$value = hq_cache_get( $option, 'options' );
+                        //TODO: Goyo no cache
+			//$value = hq_cache_get( $option, 'options' );
 
 			if ( false === $value ) {
 				$row = $hqdb->get_row( $hqdb->prepare( "SELECT option_value FROM $hqdb->options WHERE option_name = %s LIMIT 1", $option ) );
@@ -81,13 +83,15 @@ function get_option( $option, $default = false ) {
 				// Has to be get_row instead of get_var because of funkiness with 0, false, null values
 				if ( is_object( $row ) ) {
 					$value = $row->option_value;
-					hq_cache_add( $option, $value, 'options' );
+                                        //TODO: Goyo no cache
+					//hq_cache_add( $option, $value, 'options' );
 				} else { // option does not exist, so we must cache its non-existence
 					if ( ! is_array( $notoptions ) ) {
 						 $notoptions = array();
 					}
 					$notoptions[$option] = true;
-					hq_cache_set( 'notoptions', $notoptions, 'options' );
+                                        //TODO: Goyo no cache
+					//hq_cache_set( 'notoptions', $notoptions, 'options' );
 
 					/** This filter is documented in hq-includes/option.php */
 					return apply_filters( 'default_option_' . $option, $default );
@@ -167,7 +171,9 @@ function hq_load_alloptions() {
         //TODO: Goyo no multisite
 	//if ( !defined( 'HQ_INSTALLING' ) || !is_multisite() )
 	if ( !defined( 'HQ_INSTALLING' ) )
-		$alloptions = hq_cache_get( 'alloptions', 'options' );
+                //TODO: Goyo no cache
+		//$alloptions = hq_cache_get( 'alloptions', 'options' );
+                $alloptions = false;
 	else
 		$alloptions = false;
 
@@ -183,8 +189,9 @@ function hq_load_alloptions() {
     
                 //TODO: Goyo no multisite
 		//if ( !defined( 'HQ_INSTALLING' ) || !is_multisite() )
-		if ( !defined( 'HQ_INSTALLING' ) )
-			hq_cache_add( 'alloptions', $alloptions, 'options' );
+                //TODO: Goyo no cache
+		//if ( !defined( 'HQ_INSTALLING' ) )
+	        //	hq_cache_add( 'alloptions', $alloptions, 'options' );
 	}
 
 	return $alloptions;
