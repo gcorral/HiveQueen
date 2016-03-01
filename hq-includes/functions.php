@@ -2803,6 +2803,43 @@ function is_ssl() {
 }
 
 
+/**
+ * Whether SSL login should be forced.
+ *
+ * @since 0.0.1
+ *
+ * @see force_ssl_admin()
+ *
+ * @param string|bool $force Optional Whether to force SSL login. Default null.
+ * @return bool True if forced, false if not forced.
+ */
+function force_ssl_login( $force = null ) {
+        return force_ssl_admin( $force );
+}
+
+/**
+ * Whether to force SSL used for the Administration Screens.
+ *
+ * @since 0.0.1
+ *
+ * @staticvar bool $forced
+ *
+ * @param string|bool $force Optional. Whether to force SSL in admin screens. Default null.
+ * @return bool True if forced, false if not forced.
+ */
+function force_ssl_admin( $force = null ) {
+        static $forced = false;
+
+        if ( !is_null( $force ) ) {
+                $old_forced = $forced;
+                $forced = $force;
+                return $old_forced;
+        }
+
+        return $forced;
+}
+
+
 
 //TODO: ****************************************** Functions ********************************************************
 
