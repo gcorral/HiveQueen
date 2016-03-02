@@ -1280,14 +1280,17 @@ function is_hq_installed() {
         //        return true;
 
         $suppress = $hqdb->suppress_errors();
+
         if ( ! defined( 'HQ_INSTALLING' ) ) {
                 $alloptions = hq_load_alloptions();
         }
+
         // If siteurl is not set to autoload, check it specifically
         if ( !isset( $alloptions['siteurl'] ) )
                 $installed = $hqdb->get_var( "SELECT option_value FROM $hqdb->options WHERE option_name = 'siteurl'" );
         else
                 $installed = $alloptions['siteurl'];
+
         $hqdb->suppress_errors( $suppress );
 
         $installed = !empty( $installed );
@@ -2409,8 +2412,8 @@ function _default_hq_die_handler( $message, $title = '', $args = array() ) {
                 default :
                         $message = "<ul>\n\t\t<li>" . join( "</li>\n\t\t<li>", $errors ) . "</li>\n\t</ul>";
                         break;
-                }
-        } elseif ( is_string( $message ) ) {
+			}
+		} elseif ( is_string( $message ) ) {
                 $message = "<p>$message</p>";
         }
 
@@ -2837,6 +2840,56 @@ function force_ssl_admin( $force = null ) {
         }
 
         return $forced;
+}
+
+/**
+ * Guess the URL for the site.
+ *
+ * Will remove hq-admin links to retrieve only return URLs not in the hq-admin
+ * directory.
+ *
+ * @since 0.0.1
+ *
+ * @return string The guessed URL.
+ */
+function hq_guess_url() {
+
+        if ( defined('HQ_SITEURL') && '' != HQ_SITEURL ) {
+                $url = HQ_SITEURL;
+        } else {
+                $abspath_fix = str_replace( '\\', '/', ABSPATH );
+                $script_filename_dir = dirname( $_SERVER['SCRIPT_FILENAME'] );
+
+                // The request is for the admin
+                if ( strpos( $_SERVER['REQUEST_URI'], 'hq-admin' ) !== false || strpos( $_SERVER['REQUEST_URI'], 'hq-login.php' ) !== false ) {
+                        $path = preg_replace( '#/(hq-admin/.*|hq-login.php)#i', '', $_SERVER['REQUEST_URI'] );
+
+                // The request is for a file in ABSPATH
+                } elseif ( $script_filename_dir . '/' == $abspath_fix ) {
+                        // Strip off any file/query params in the path
+                        $path = preg_replace( '#/[^/]*$#i', '', $_SERVER['PHP_SELF'] );
+
+                } else {
+                        if ( false !== strpos( $_SERVER['SCRIPT_FILENAME'], $abspath_fix ) ) {
+                                // Request is hitting a file inside ABSPATH
+                                $directory = str_replace( ABSPATH, '', $script_filename_dir );
+                                // Strip off the sub directory, and any file/query params
+                                $path = preg_replace( '#/' . preg_quote( $directory, '#' ) . '/[^/]*$#i', '' , $_SERVER['REQUEST_URI'] );
+                        } elseif ( false !== strpos( $abspath_fix, $script_filename_dir ) ) {
+                                // Request is hitting a file above ABSPATH
+                                $subdirectory = substr( $abspath_fix, strpos( $abspath_fix, $script_filename_dir ) + strlen( $script_filename_dir ) );
+                                // Strip off any file/query params from the path, appending the sub directory to the install
+                                $path = preg_replace( '#/[^/]*$#i', '' , $_SERVER['REQUEST_URI'] ) . $subdirectory;
+                        } else {
+                                $path = $_SERVER['REQUEST_URI'];
+                        }
+                }
+
+                $schema = is_ssl() ? 'https://' : 'http://'; // set_url_scheme() is not defined yet
+                $url = $schema . $_SERVER['HTTP_HOST'] . $path;
+        }
+
+        return rtrim($url, '/');
 }
 
 

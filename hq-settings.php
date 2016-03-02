@@ -17,6 +17,10 @@
  */
 define( 'HQINC', 'hq-includes' );
 
+
+define( 'HQ_SITEURL', 'http://baqueta.lab.it.uc3m.es/hivequeen'  );
+
+
 // Include files required for initialization.
 require( ABSPATH . HQINC . '/load.php' );
 require( ABSPATH . HQINC . '/default-constants.php' );
@@ -29,6 +33,8 @@ require( ABSPATH . HQINC . '/default-constants.php' );
 global $hq_version, $hq_db_version, $tinymce_version, $required_php_version, $required_mysql_version;
 require( ABSPATH . HQINC . '/version.php' );
 
+
+
 // Set initial default constants including HQ_MEMORY_LIMIT, HQ_MAX_MEMORY_LIMIT, HQ_DEBUG, SCRIPT_DEBUG, HQ_CONTENT_DIR and HQ_CACHE.
 hq_initial_constants();
 
@@ -40,6 +46,7 @@ hq_check_php_mysql_versions();
 @ini_set( 'magic_quotes_sybase',  0 );
 // HiveQueen calculates offsets from UTC.
 date_default_timezone_set( 'UTC' );
+
 
 // Turn register_globals off.
 hq_unregister_GLOBALS();
@@ -80,9 +87,11 @@ require( ABSPATH . HQINC . '/pomo/mo.php' );
 // Include the hqdb class and, if present, a db.php database drop-in.
 require_hq_db();
 
+
 // Set the database table prefix and the format specifiers for database table columns.
 $GLOBALS['table_prefix'] = $table_prefix;
 hq_set_hqdb_vars();
+
 
 // Start the HiveQueen object cache, or an external object cache if the drop-in is present.
 // TODO: disable ????
@@ -109,10 +118,15 @@ register_shutdown_function( 'shutdown_action_hook' );
 if ( SHORTINIT )
         return false;
 
+
 // Load the L10n library.
 require_once( ABSPATH . HQINC . '/l10n.php' );
 
+
 // Run the installer if HiveQueen is not installed.
+
+
+//TODO: Falla !!!!!
 hq_not_installed();
 
 // Load most of HiveQueen.
@@ -171,6 +185,7 @@ if ( is_multisite() ) {
         require( ABSPATH . HQINC . '/ms-deprecated.php' );
 }
 */
+
 
 // Define constants that rely on the API to obtain the default value.
 // Define must-use plugin directory constants, which may be overridden in the sunrise.php drop-in.

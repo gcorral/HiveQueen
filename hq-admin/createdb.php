@@ -1,6 +1,6 @@
 <?php
 /**
- * Upgrade HiveQueen Page.
+ * Create HiveQueen DB.
  *
  * @package HiveQueen
  * @subpackage Administration
@@ -12,17 +12,22 @@
  * @since 0.0.1
  * @var bool
  */
-define( 'HQ_INSTALLING', true );
+//define( 'HQ_INSTALLING', true );
+
+define('SHORTINIT', true);
 
 /** Load HiveQueen Bootstrap */
 require( dirname( dirname( __FILE__ ) ) . '/hq-load.php' );
 
-nocache_headers();
+print("Hola!!!");
 
-timer_start();
-require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
+//nocache_headers();
 
-delete_site_transient('update_core');
+//timer_start();
+//require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
+
+//delete_site_transient('update_core');
+
 
 if ( isset( $_GET['step'] ) )
         $step = $_GET['step'];
@@ -30,10 +35,10 @@ else
         $step = 0;
 
 // Do it. No output.
-if ( 'upgrade_db' === $step ) {
-        hq_upgrade();
-        die( '0' );
-}
+//if ( 'upgrade_db' === $step ) {
+//        hq_upgrade();
+//        die( '0' );
+//}
 
 /**
  * @global string $hq_version
@@ -41,17 +46,22 @@ if ( 'upgrade_db' === $step ) {
  * @global string $required_mysql_version
  * @global hqdb   $hqdb
  */
-global $hq_version, $required_php_version, $required_mysql_version;
+global $hq_version, $required_php_version, $required_mysql_version, $hqdb;
 
 $step = (int) $step;
 
 $php_version    = phpversion();
+
 $mysql_version  = $hqdb->db_version();
+
 $php_compat     = version_compare( $php_version, $required_php_version, '>=' );
+
+
 if ( file_exists( HQ_CONTENT_DIR . '/db.php' ) && empty( $hqdb->is_mysql ) )
         $mysql_compat = true;
 else
         $mysql_compat = version_compare( $mysql_version, $required_mysql_version, '>=' );
+
 
 @header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option( 'blog_charset' ) );
 ?>
@@ -60,7 +70,7 @@ else
 <head>
         <meta name="viewport" content="width=device-width" />
         <meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
-        <title><?php _e( 'HiveQueen &rsaquo; Update' ); ?></title>
+        <title><?php _e( 'HiveQueen &rsaquo; Create DB' ); ?></title>
         <?php
         hq_admin_css( 'install', true );
         hq_admin_css( 'ie', true );
@@ -69,13 +79,7 @@ else
 <body class="hq-core-ui">
 <h1 id="logo"><a href="<?php echo esc_url( __( 'https://github.com/gcorral/hivequeen' ) ); ?>" tabindex="-1"><?php _e( 'HiveQueen' ); ?></a></h1>
 
-<?php if ( get_option( 'db_version' ) == $hq_db_version || !is_blog_installed() ) : ?>
-
-<h2><?php _e( 'No Update Required' ); ?></h2>
-<p><?php _e( 'Your HiveQueen database is already up-to-date!' ); ?></p>
-<p class="step"><a class="button button-large" href="<?php echo get_option( 'home' ); ?>/"><?php _e( 'Continue' ); ?></a></p>
-
-<?php elseif ( !$php_compat || !$mysql_compat ) :
+<?php if ( !$php_compat || !$mysql_compat ) :
         if ( !$mysql_compat && !$php_compat )
                 printf( __('You cannot update because <a href="://github.com/gcorral/hivequeen">HiveQueen %1$s</a> requires PHP version %2$s or higher and MySQL version %3$s or higher. You are running PHP version %4$s and MySQL version %5$s.'), $hq_version, $required_php_version, $required_mysql_version, $php_version, $mysql_version );
         elseif ( !$php_compat )
@@ -86,6 +90,7 @@ else
 <?php else :
 switch ( $step ) :
         case 0:
+                printf( "Aqui 1 !!! ===>"  );
                 $goback = hq_get_referer();
                 if ( $goback ) {
                         $goback = esc_url_raw( $goback );
@@ -100,6 +105,7 @@ switch ( $step ) :
 <?php
                 break;
         case 1:
+                printf( "Aqui 2 !!! ===>"  );
                 hq_upgrade();
 
                         $backto = !empty($_GET['backto']) ? hq_unslash( urldecode( $_GET['backto'] ) ) : __get_option( 'home' ) . '/';

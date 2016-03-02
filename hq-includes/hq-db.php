@@ -535,7 +535,7 @@ class hqdb {
         public function __get( $name ) {
                 if ( 'col_info' === $name )
                         $this->load_col_info();
-
+           
                 return $this->$name;
         }
 

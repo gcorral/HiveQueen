@@ -475,17 +475,24 @@ function hq_start_object_cache() {
  * @access private
  */
 function hq_not_installed() {
+
+        print("Aqui 1-1 ====>");
+
         //if ( ! is_blog_installed() && ! defined( 'HQ_INSTALLING' ) ) {
-        if ( ! is_hq_installed() && ! defined( 'HQ_INSTALLING' ) ) {
+        //TODO: Debug
+        //if ( ! is_hq_installed() && ! defined( 'HQ_INSTALLING' ) ) {
+        if(true){
+
                 nocache_headers();
 
                 require( ABSPATH . HQINC . '/kses.php' );
                 require( ABSPATH . HQINC . '/pluggable.php' );
                 require( ABSPATH . HQINC . '/formatting.php' );
 
-                $link = hq_guess_url() . '/hq-admin/install.php';
-
-                hq_redirect( $link );
+                //TODO: hq_guess_url loop Error 
+                //$link = hq_guess_url() . '/hq-admin/install.php';
+                //
+                //hq_redirect( $link );
                 die();
         }
 }

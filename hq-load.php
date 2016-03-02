@@ -21,6 +21,7 @@
 /** Define ABSPATH as this file's directory */
 define( 'ABSPATH', dirname(__FILE__) . '/' );
 
+
 error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
 
 /*
@@ -35,6 +36,7 @@ if ( file_exists( ABSPATH . 'hq-config.php') ) {
 
 	/** The config file resides in ABSPATH */
 	require_once( ABSPATH . 'hq-config.php' );
+
 
 } elseif ( file_exists( dirname(ABSPATH) . '/hq-config.php' ) && ! file_exists( dirname(ABSPATH) . '/hq-settings.php' ) ) {
 
@@ -79,3 +81,5 @@ if ( file_exists( ABSPATH . 'hq-config.php') ) {
 
 	hq_die( $die, __( 'HiveQueen &rsaquo; Error' ) );
 }
+
+

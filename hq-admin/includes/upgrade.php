@@ -43,7 +43,9 @@ function hq_install( $blog_title, $user_name, $user_email, $public, $deprecated 
 	hq_check_mysql_version();
         //TODO: no cache
 	//hq_cache_flush();
-	make_db_current_silent();
+        //TODO: Debug
+	//make_db_current_silent();
+	make_db_current();
 	populate_options();
 	populate_roles();
 
@@ -410,7 +412,9 @@ function hq_upgrade() {
 	hq_check_mysql_version();
 	hq_cache_flush();
 	pre_schema_upgrade();
-	make_db_current_silent();
+        // TODO: DEbug
+	//make_db_current_silent();
+	make_db_current();
 	upgrade_all();
 	if ( is_multisite() && is_main_site() )
 		upgrade_network();

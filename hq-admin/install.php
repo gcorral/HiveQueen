@@ -11,6 +11,7 @@
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
+//print("Aqui!!! =====>");
 
 // Sanity check.
 if ( false ) {
@@ -30,6 +31,7 @@ if ( false ) {
 <?php
 }
 
+
 /**
  * We are installing HiveQueen.
  *
@@ -38,8 +40,12 @@ if ( false ) {
  */
 define( 'HQ_INSTALLING', true );
 
+print("Aqui 1!!! =====>");
+
 /** Load HiveQueen Bootstrap */
 require_once( dirname( dirname( __FILE__ ) ) . '/hq-load.php' );
+
+print("Aqui 2!!! =====>");
 
 /** Load HiveQueen Administration Upgrade API */
 require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
@@ -54,6 +60,7 @@ require_once( ABSPATH . HQINC . '/hq-db.php' );
 nocache_headers();
 
 $step = isset( $_GET['step'] ) ? (int) $_GET['step'] : 0;
+
 
 /**
  * Display install header.
