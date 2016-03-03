@@ -19,12 +19,18 @@ define('SHORTINIT', true);
 /** Load HiveQueen Bootstrap */
 require( dirname( dirname( __FILE__ ) ) . '/hq-load.php' );
 
-print("Hola!!!");
-
 //nocache_headers();
 
-//timer_start();
-//require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
+
+timer_start();
+
+require( ABSPATH . HQINC . '/class-hq-walker.php' );
+
+
+require_once(ABSPATH . 'hq-admin/includes/schema.php');
+require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
+
+
 
 //delete_site_transient('update_core');
 
@@ -33,6 +39,7 @@ if ( isset( $_GET['step'] ) )
         $step = $_GET['step'];
 else
         $step = 0;
+
 
 // Do it. No output.
 //if ( 'upgrade_db' === $step ) {
@@ -66,18 +73,14 @@ else
 @header( 'Content-Type: ' . get_option( 'html_type' ) . '; charset=' . get_option( 'blog_charset' ) );
 ?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
+<html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
         <meta name="viewport" content="width=device-width" />
-        <meta http-equiv="Content-Type" content="<?php bloginfo( 'html_type' ); ?>; charset=<?php echo get_option( 'blog_charset' ); ?>" />
-        <title><?php _e( 'HiveQueen &rsaquo; Create DB' ); ?></title>
-        <?php
-        hq_admin_css( 'install', true );
-        hq_admin_css( 'ie', true );
-        ?>
+        <meta http-equiv="Content-Type" "" />
+        <title>HiveQueen Create DB></title>
 </head>
 <body class="hq-core-ui">
-<h1 id="logo"><a href="<?php echo esc_url( __( 'https://github.com/gcorral/hivequeen' ) ); ?>" tabindex="-1"><?php _e( 'HiveQueen' ); ?></a></h1>
+<h1 id="logo"><a href="https://github.com/gcorral/hivequeen" tabindex="-1">HiveQueen</a></h1>
 
 <?php if ( !$php_compat || !$mysql_compat ) :
         if ( !$mysql_compat && !$php_compat )
@@ -90,7 +93,6 @@ else
 <?php else :
 switch ( $step ) :
         case 0:
-                printf( "Aqui 1 !!! ===>"  );
                 $goback = hq_get_referer();
                 if ( $goback ) {
                         $goback = esc_url_raw( $goback );
@@ -98,23 +100,33 @@ switch ( $step ) :
                 }
 
 ?>
-<h2><?php _e( 'Database Update Required' ); ?></h2>
-<p><?php _e( 'HiveQueen has been updated! Before we send you on your way, we have to update your database to the newest version.' ); ?></p>
-<p><?php _e( 'The update process may take a little while, so please be patient.' ); ?></p>
-<p class="step"><a class="button button-large" href="upgrade.php?step=1&amp;backto=<?php echo $goback; ?>"><?php _e( 'Update HiveQueen Database' ); ?></a></p>
+<h2>Database Update Required</h2>
+<p>HiveQueen has been updated! Before we send you on your way, we have to update your database to the newest version.</p>
+<p>The update process may take a little while, so please be patient.</p>
+<p class="step"><a class="button button-large" href="upgrade.php?step=1&amp;backto=<?php echo $goback; ?>">Update HiveQueen Database</a></p>
 <?php
                 break;
         case 1:
-                printf( "Aqui 2 !!! ===>"  );
-                hq_upgrade();
+                //hq_upgrade();
 
-                        $backto = !empty($_GET['backto']) ? hq_unslash( urldecode( $_GET['backto'] ) ) : __get_option( 'home' ) . '/';
-                        $backto = esc_url( $backto );
-                        $backto = hq_validate_redirect($backto, __get_option( 'home' ) . '/');
+                //make_db_current();
+
+                //$alterations = dbDelta( $tables );
+                //echo "<ol>\n";
+                //foreach($alterations as $alteration) echo "<li>$alteration</li>\n";
+                //echo "</ol>\n";
+
+               //$hqdb->set_prefix( "hq_" );
+
+               dbDelta( hq_get_db_schema( 'all' ) );
+
+                //        $backto = !empty($_GET['backto']) ? hq_unslash( urldecode( $_GET['backto'] ) ) : __get_option( 'home' ) . '/';
+                //        $backto = esc_url( $backto );
+                //        $backto = hq_validate_redirect($backto, __get_option( 'home' ) . '/');
 ?>
-<h2><?php _e( 'Update Complete' ); ?></h2>
-        <p><?php _e( 'Your HiveQueen database has been successfully updated!' ); ?></p>
-        <p class="step"><a class="button button-large" href="<?php echo $backto; ?>"><?php _e( 'Continue' ); ?></a></p>
+<h2>Update Complete</h2>
+        <p>Your HiveQueen database has been successfully updated!</p>
+        <p class="step"><a class="button button-large" href="<?php echo $backto; ?>">Continue</a></p>
 
 <!--
 <pre>

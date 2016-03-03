@@ -982,3 +982,4 @@ function hq_dropdown_languages( $args = array() ) {
 
         return $output;
 }
+

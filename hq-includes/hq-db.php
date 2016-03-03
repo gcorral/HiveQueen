@@ -258,8 +258,8 @@ class hqdb {
          * @see hqdb::tables()
          * @var array
          */
-        // TODO: redefine tables por HiveQueen
-        var $tables = array( 'hosts', 'playbooks', 'tasks', 'alerts' );
+        // TODO: redefined tables por HiveQueen
+        var $tables = array( );
 
        /**
          * List of deprecated HiveQueen tables
@@ -280,7 +280,7 @@ class hqdb {
          * @see hqdb::tables()
          * @var array
          */
-        var $global_tables = array( 'users' );
+        var $global_tables = array( 'users', 'site', 'hosts', 'playbooks', 'tasks', 'alerts'  );
 
         /**
          * HiveQueen Hosts table
@@ -1135,7 +1135,9 @@ class hqdb {
                         return false;
 
                 // If there is an error then take note of it
-                if ( is_multisite() ) {
+                //TODO: Goyo no multisite
+                //if ( is_multisite() ) {
+                if( false ) {
                         $msg = sprintf(
                                 "%s [%s]\n%s\n",
                                 __( 'HiveQueen database error:' ),

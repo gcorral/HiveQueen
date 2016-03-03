@@ -20,7 +20,10 @@ global $hqdb, $hq_queries, $charset_collate;
 /**
  * The database character collate.
  */
+
+
 $charset_collate = $hqdb->get_charset_collate();
+
 
 /**
  * Retrieve the SQL for creating database tables.
@@ -34,6 +37,8 @@ $charset_collate = $hqdb->get_charset_collate();
  * @return string The SQL needed to create the requested tables.
  */
 function hq_get_db_schema( $scope = 'all', $blog_id = null ) {
+
+
 	global $hqdb;
 
 	$charset_collate = '';
@@ -42,6 +47,7 @@ function hq_get_db_schema( $scope = 'all', $blog_id = null ) {
 		$charset_collate = "DEFAULT CHARACTER SET $hqdb->charset";
 	if ( ! empty($hqdb->collate) )
 		$charset_collate .= " COLLATE $hqdb->collate";
+
 
 	if ( $blog_id && $blog_id != $hqdb->blogid )
 		$old_blog_id = $hqdb->set_blog_id( $blog_id );
@@ -57,7 +63,35 @@ function hq_get_db_schema( $scope = 'all', $blog_id = null ) {
 	 */
 	$max_index_length = 191;
 
-	// Blog specific tables.
+        $hq_global_tables = "CREATE TABLE $hqdb->hosts (
+ host_id bigint(20) unsigned NOT NULL auto_increment,
+ name varchar(200) NOT NULL default '',
+ ipv4 varchar(15) NOT NULL default '',
+ host_group bigint(10) NOT NULL default 0,
+ PRIMARY KEY  (host_id),
+ KEY name (name($max_index_length))
+) $charset_collate;
+CREATE TABLE $hqdb->playbooks (
+ playbook_id bigint(20) unsigned NOT NULL auto_increment,
+ name varchar(200) NOT NULL default '',
+ description text NOT NULL,
+ file varchar(100) NOT NULL default '',
+ PRIMARY KEY  (playbook_id),
+ KEY name (name($max_index_length))
+) $charset_collate;
+CREATE TABLE $hqdb->tasks (
+ task_id bigint(20) unsigned NOT NULL auto_increment,
+ description text NOT NULL,
+ user_id bigint(20) unsigned NOT NULL default '0',
+ file varchar(100) NOT NULL default '',
+ begin_date datetime NOT NULL default '0000-00-00 00:00:00',
+ end_date datetime NOT NULL default '0000-00-00 00:00:00',
+ PRIMARY KEY  (task_id)
+) $charset_collate;";
+ 
+
+
+        /*
 	$blog_tables = "CREATE TABLE $hqdb->terms (
  term_id bigint(20) unsigned NOT NULL auto_increment,
  name varchar(200) NOT NULL default '',
@@ -181,6 +215,7 @@ CREATE TABLE $hqdb->posts (
   KEY post_parent (post_parent),
   KEY post_author (post_author)
 ) $charset_collate;\n";
+*/
 
 	// Single site users table. The multisite flavor of the users table is handled below.
 	$users_single_table = "CREATE TABLE $hqdb->users (
@@ -200,6 +235,7 @@ CREATE TABLE $hqdb->posts (
 ) $charset_collate;\n";
 
 	// Multisite users table
+/*
 	$users_multi_table = "CREATE TABLE $hqdb->users (
   ID bigint(20) unsigned NOT NULL auto_increment,
   user_login varchar(60) NOT NULL default '',
@@ -217,8 +253,10 @@ CREATE TABLE $hqdb->posts (
   KEY user_login_key (user_login),
   KEY user_nicename (user_nicename)
 ) $charset_collate;\n";
+*/
 
 	// Usermeta.
+/*
 	$usermeta_table = "CREATE TABLE $hqdb->usermeta (
   umeta_id bigint(20) unsigned NOT NULL auto_increment,
   user_id bigint(20) unsigned NOT NULL default '0',
@@ -228,15 +266,20 @@ CREATE TABLE $hqdb->posts (
   KEY user_id (user_id),
   KEY meta_key (meta_key($max_index_length))
 ) $charset_collate;\n";
+*/
 
 	// Global tables
         //TODO: no multisite
 	//if ( $is_multisite )
         //		$global_tables = $users_multi_table . $usermeta_table;
 	//else
-		$global_tables = $users_single_table . $usermeta_table;
+
+	//$global_tables = $users_single_table . $usermeta_table;
+
+	$global_tables = $users_single_table . $hq_global_tables;
 
 	// Multisite global tables.
+/*
 	$ms_global_tables = "CREATE TABLE $hqdb->blogs (
   blog_id bigint(20) NOT NULL auto_increment,
   site_id bigint(20) NOT NULL default '0',
@@ -254,6 +297,9 @@ CREATE TABLE $hqdb->posts (
   KEY domain (domain(50),path(5)),
   KEY lang_id (lang_id)
 ) $charset_collate;
+*/
+
+/*
 CREATE TABLE $hqdb->blog_versions (
   blog_id bigint(20) NOT NULL default '0',
   db_version varchar(20) NOT NULL default '',
@@ -261,6 +307,9 @@ CREATE TABLE $hqdb->blog_versions (
   PRIMARY KEY  (blog_id),
   KEY db_version (db_version)
 ) $charset_collate;
+*/
+
+/*
 CREATE TABLE $hqdb->registration_log (
   ID bigint(20) NOT NULL auto_increment,
   email varchar(255) NOT NULL default '',
@@ -270,13 +319,17 @@ CREATE TABLE $hqdb->registration_log (
   PRIMARY KEY  (ID),
   KEY IP (IP)
 ) $charset_collate;
-CREATE TABLE $hqdb->site (
+*/
+
+$ms_global_tables = "CREATE TABLE $hqdb->site (
   id bigint(20) NOT NULL auto_increment,
   domain varchar(200) NOT NULL default '',
   path varchar(100) NOT NULL default '',
   PRIMARY KEY  (id),
   KEY domain (domain(140),path(51))
-) $charset_collate;
+) $charset_collate;";
+
+/*
 CREATE TABLE $hqdb->sitemeta (
   meta_id bigint(20) NOT NULL auto_increment,
   site_id bigint(20) NOT NULL default '0',
@@ -286,6 +339,9 @@ CREATE TABLE $hqdb->sitemeta (
   KEY meta_key (meta_key($max_index_length)),
   KEY site_id (site_id)
 ) $charset_collate;
+*/
+
+/*
 CREATE TABLE $hqdb->signups (
   signup_id bigint(20) NOT NULL auto_increment,
   domain varchar(200) NOT NULL default '',
@@ -304,10 +360,11 @@ CREATE TABLE $hqdb->signups (
   KEY user_login_email (user_login,user_email),
   KEY domain_path (domain(140),path(51))
 ) $charset_collate;";
-
+*/
 	switch ( $scope ) {
 		case 'blog' :
-			$queries = $blog_tables;
+			//$queries = $blog_tables;
+			$queries = $hq_global_tables;
 			break;
 		case 'global' :
 			$queries = $global_tables;
@@ -320,7 +377,8 @@ CREATE TABLE $hqdb->signups (
 			break;
 		case 'all' :
 		default:
-			$queries = $global_tables . $blog_tables;
+			//$queries = $global_tables . $blog_tables;
+			$queries = $global_tables . $hq_global_tables ;
                         //TODO: no multisite
 			//if ( $is_multisite )
 			//	$queries .= $ms_global_tables;
@@ -331,9 +389,11 @@ CREATE TABLE $hqdb->signups (
 		$hqdb->set_blog_id( $old_blog_id );
 
 	return $queries;
+
 }
 
 // Populate for back compat.
+
 $hq_queries = hq_get_db_schema( 'all' );
 
 /**
@@ -862,6 +922,8 @@ function populate_roles_300() {
  * @since 0.0.1
  *
  */
+
+
 if ( !function_exists( 'install_network' ) ) :
 function install_network() {
 	if ( ! defined( 'HQ_INSTALLING_NETWORK' ) )
@@ -870,6 +932,7 @@ function install_network() {
 	dbDelta( hq_get_db_schema( 'global' ) );
 }
 endif;
+
 
 /**
  * Populate network settings.

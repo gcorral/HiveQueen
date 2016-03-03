@@ -12,7 +12,8 @@ if ( ! defined('HQ_ADMIN') ) {
 	 * some setup was skipped. Make sure the admin message catalog is loaded since
 	 * load_default_textdomain() will not have done so in this context.
 	 */
-	load_textdomain( 'default', HQ_LANG_DIR . '/admin-' . get_locale() . '.mo' );
+        //TODO: Goyo
+	//load_textdomain( 'default', HQ_LANG_DIR . '/admin-' . get_locale() . '.mo' );
 }
 
 /** HiveQueen Administration Hooks */
