@@ -69,7 +69,7 @@ else
 <body class="hq-core-ui">
 <h1 id="logo"><a href="<?php echo esc_url( __( 'https://github.com/gcorral/hivequeen' ) ); ?>" tabindex="-1"><?php _e( 'HiveQueen' ); ?></a></h1>
 
-<?php if ( get_option( 'db_version' ) == $hq_db_version || !is_blog_installed() ) : ?>
+<?php if ( get_option( 'db_version' ) == $hq_db_version || !is_hq_installed() ) : ?>
 
 <h2><?php _e( 'No Update Required' ); ?></h2>
 <p><?php _e( 'Your HiveQueen database is already up-to-date!' ); ?></p>

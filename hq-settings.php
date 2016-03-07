@@ -34,7 +34,6 @@ global $hq_version, $hq_db_version, $tinymce_version, $required_php_version, $re
 require( ABSPATH . HQINC . '/version.php' );
 
 
-
 // Set initial default constants including HQ_MEMORY_LIMIT, HQ_MAX_MEMORY_LIMIT, HQ_DEBUG, SCRIPT_DEBUG, HQ_CONTENT_DIR and HQ_CACHE.
 hq_initial_constants();
 
@@ -47,9 +46,10 @@ hq_check_php_mysql_versions();
 // HiveQueen calculates offsets from UTC.
 date_default_timezone_set( 'UTC' );
 
-
 // Turn register_globals off.
 hq_unregister_GLOBALS();
+
+
 
 // Standardize $_SERVER variables across setups.
 hq_fix_server_vars();
@@ -87,7 +87,6 @@ require( ABSPATH . HQINC . '/pomo/mo.php' );
 // Include the hqdb class and, if present, a db.php database drop-in.
 require_hq_db();
 
-
 // Set the database table prefix and the format specifiers for database table columns.
 $GLOBALS['table_prefix'] = $table_prefix;
 hq_set_hqdb_vars();
@@ -114,6 +113,7 @@ if ( is_multisite() ) {
 
 register_shutdown_function( 'shutdown_action_hook' );
 
+
 // Stop most of HiveQueen from being loaded if we just want the basics.
 if ( SHORTINIT )
         return false;
@@ -126,7 +126,7 @@ require_once( ABSPATH . HQINC . '/l10n.php' );
 // Run the installer if HiveQueen is not installed.
 
 
-//TODO: Falla !!!!!
+//TODO: Falla ****************** !!!!!
 hq_not_installed();
 
 // Load most of HiveQueen.

@@ -87,8 +87,15 @@ CREATE TABLE $hqdb->tasks (
  begin_date datetime NOT NULL default '0000-00-00 00:00:00',
  end_date datetime NOT NULL default '0000-00-00 00:00:00',
  PRIMARY KEY  (task_id)
+) $charset_collate;
+CREATE TABLE $hqdb->options (
+  option_id bigint(20) unsigned NOT NULL auto_increment,
+  option_name varchar(64) NOT NULL default '',
+  option_value longtext NOT NULL,
+  autoload varchar(20) NOT NULL default 'yes',
+  PRIMARY KEY  (option_id),
+  UNIQUE KEY option_name (option_name)
 ) $charset_collate;";
- 
 
 
         /*

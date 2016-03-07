@@ -476,12 +476,11 @@ function hq_start_object_cache() {
  */
 function hq_not_installed() {
 
-        print("Aqui 1-1 ====>");
 
         //if ( ! is_blog_installed() && ! defined( 'HQ_INSTALLING' ) ) {
         //TODO: Debug
-        //if ( ! is_hq_installed() && ! defined( 'HQ_INSTALLING' ) ) {
-        if(true){
+        if ( ! is_hq_installed() && ! defined( 'HQ_INSTALLING' ) ) {
+        //if(true){
 
                 nocache_headers();
 

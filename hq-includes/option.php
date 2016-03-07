@@ -55,7 +55,7 @@ function get_option( $option, $default = false ) {
 		// prevent non-existent options from triggering multiple queries
                 //TODO: Goyo no cache
 		//$notoptions = hq_cache_get( 'notoptions', 'options' );
-		if ( isset( $notoptions[ $option ] ) ) {
+		//if ( isset( $notoptions[ $option ] ) ) {
 			/**
 			 * Filter the default value for an option.
 			 *
@@ -66,8 +66,8 @@ function get_option( $option, $default = false ) {
 			 * @param mixed $default The default value to return if the option does not exist
 			 *                       in the database.
 			 */
-			return apply_filters( 'default_option_' . $option, $default );
-		}
+		//	return apply_filters( 'default_option_' . $option, $default );
+		//}
 
 		$alloptions = hq_load_alloptions();
 
@@ -76,6 +76,7 @@ function get_option( $option, $default = false ) {
 		} else {
                         //TODO: Goyo no cache
 			//$value = hq_cache_get( $option, 'options' );
+                        $value=false;
 
 			if ( false === $value ) {
 				$row = $hqdb->get_row( $hqdb->prepare( "SELECT option_value FROM $hqdb->options WHERE option_name = %s LIMIT 1", $option ) );
@@ -86,15 +87,18 @@ function get_option( $option, $default = false ) {
                                         //TODO: Goyo no cache
 					//hq_cache_add( $option, $value, 'options' );
 				} else { // option does not exist, so we must cache its non-existence
+                                        //TODO: Goyo no cache 
+                                        /*
 					if ( ! is_array( $notoptions ) ) {
 						 $notoptions = array();
 					}
 					$notoptions[$option] = true;
+                                        */
                                         //TODO: Goyo no cache
 					//hq_cache_set( 'notoptions', $notoptions, 'options' );
 
 					/** This filter is documented in hq-includes/option.php */
-					return apply_filters( 'default_option_' . $option, $default );
+					//return apply_filters( 'default_option_' . $option, $default );
 				}
 			}
 		}
@@ -1182,7 +1186,9 @@ function delete_site_option( $option ) {
 	 */
 	do_action( 'pre_delete_site_option_' . $option );
 
-	if ( !is_multisite() ) {
+        //TODO: Goyo
+	//if ( !is_multisite() ) {
+	if ( true ) {
 		$result = delete_option( $option );
 	} else {
 		$row = $hqdb->get_row( $hqdb->prepare( "SELECT meta_id FROM {$hqdb->sitemeta} WHERE meta_key = %s AND site_id = %d", $option, $hqdb->siteid ) );

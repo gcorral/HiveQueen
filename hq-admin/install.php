@@ -11,7 +11,6 @@
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
-//print("Aqui!!! =====>");
 
 // Sanity check.
 if ( false ) {
@@ -40,12 +39,10 @@ if ( false ) {
  */
 define( 'HQ_INSTALLING', true );
 
-print("Aqui 1!!! =====>");
 
 /** Load HiveQueen Bootstrap */
 require_once( dirname( dirname( __FILE__ ) ) . '/hq-load.php' );
 
-print("Aqui 2!!! =====>");
 
 /** Load HiveQueen Administration Upgrade API */
 require_once( ABSPATH . 'hq-admin/includes/upgrade.php' );
