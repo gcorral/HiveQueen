@@ -102,6 +102,7 @@ if ( ! empty( $_REQUEST['language'] ) ) {
         $language = $GLOBALS['hq_local_package'];
 }
 
+
 switch($step) {
         case -1:
                 // goyo disable: TODO

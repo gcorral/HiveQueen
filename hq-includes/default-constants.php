@@ -138,15 +138,13 @@ function hq_templating_constants() {
          * Filesystem path to the current active template directory
          * @since 0.0.1
          */
-        //TODO: ???
-        //define('TEMPLATEPATH', get_template_directory());
+        define('TEMPLATEPATH', get_template_directory());
 
         /**
          * Filesystem path to the current active template stylesheet directory
          * @since 0.0.1
          */
-        //TODO: ???
-        //define('STYLESHEETPATH', get_stylesheet_directory());
+        define('STYLESHEETPATH', get_stylesheet_directory());
 
         /**
          * Slug of the default theme for this install.
@@ -154,9 +152,8 @@ function hq_templating_constants() {
          * Will be used as the fallback if the current theme doesn't exist.
          * @since 0.0.1
          */
-        //TODO: ???
-        //if ( !defined('HQ_DEFAULT_THEME') )
-        //        define( 'HQ_DEFAULT_THEME', 'twentyfifteen' );
+        if ( !defined('HQ_DEFAULT_THEME') )
+                define( 'HQ_DEFAULT_THEME', 'hivequeen' );
 
 }
 

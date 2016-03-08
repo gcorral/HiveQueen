@@ -247,6 +247,10 @@ class HQ_Scripts extends HQ_Dependencies {
 	 * @return bool Not already in the group or a lower group
 	 */
 	public function set_group( $handle, $recursion, $group = false ) {
+
+                //DEBUG: Goyo
+                printf("set_group: %s", $handle);
+
 		if ( $this->registered[$handle]->args === 1 )
 			$grp = 1;
 		else
@@ -254,6 +258,9 @@ class HQ_Scripts extends HQ_Dependencies {
 
 		if ( false !== $group && $grp > $group )
 			$grp = $group;
+
+                //DEBUG: Goyo
+                printf("set_group: %s", $grp);
 
 		return parent::set_group( $handle, $recursion, $grp );
 	}

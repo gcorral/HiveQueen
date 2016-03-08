@@ -56,17 +56,17 @@ function translations_api( $type, $args = null ) {
 		$request = hq_remote_post( $url, $options );
 
 		if ( $ssl && is_hq_error( $request ) ) {
-			trigger_error( __( 'An unexpected error occurred. Something may be wrong with HiveQueen.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.' ) . ' ' . __( '(HiveQueen could not establish a secure connection to HiveQueen.org. Please contact your server administrator.)' ), headers_sent() || HQ_DEBUG ? E_USER_WARNING : E_USER_NOTICE );
+			trigger_error( __( 'An unexpected error occurred. Something may be wrong with HiveQueen.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://github.com/gcorral/hivequeen">support</a>.' ) . ' ' . __( '(HiveQueen could not establish a secure connection to HiveQueen.org. Please contact your server administrator.)' ), headers_sent() || HQ_DEBUG ? E_USER_WARNING : E_USER_NOTICE );
 
 			$request = hq_remote_post( $http_url, $options );
 		}
 
 		if ( is_hq_error( $request ) ) {
-			$res = new HQ_Error( 'translations_api_failed', __( 'An unexpected error occurred. Something may be wrong with HiveQueen.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.' ), $request->get_error_message() );
+			$res = new HQ_Error( 'translations_api_failed', __( 'An unexpected error occurred. Something may be wrong with HiveQueen.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://github.com/gcorral/hivequeen">support</a>.' ), $request->get_error_message() );
 		} else {
 			$res = json_decode( hq_remote_retrieve_body( $request ), true );
 			if ( ! is_object( $res ) && ! is_array( $res ) ) {
-				$res = new HQ_Error( 'translations_api_failed', __( 'An unexpected error occurred. Something may be wrong with HiveQueen.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://wordpress.org/support/">support forums</a>.' ), hq_remote_retrieve_body( $request ) );
+				$res = new HQ_Error( 'translations_api_failed', __( 'An unexpected error occurred. Something may be wrong with HiveQueen.org or this server&#8217;s configuration. If you continue to have problems, please try the <a href="https://github.com/gcorral/hivequeen">support</a>.' ), hq_remote_retrieve_body( $request ) );
 			}
 		}
 	}

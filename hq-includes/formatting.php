@@ -3634,7 +3634,9 @@ function sanitize_option( $option, $value ) {
 
 		case 'HQLANG':
 			$allowed = get_available_languages();
-			if ( ! is_multisite() && defined( 'HQLANG' ) && '' !== HQLANG && 'en_US' !== HQLANG ) {
+                        //TODO: Goyo no multisite 
+			//if ( ! is_multisite() && defined( 'HQLANG' ) && '' !== HQLANG && 'en_US' !== HQLANG ) {
+			if ( defined( 'HQLANG' ) && '' !== HQLANG && 'en_US' !== HQLANG ) {
 				$allowed[] = HQLANG;
 			}
 			if ( ! in_array( $value, $allowed ) && ! empty( $value ) ) {

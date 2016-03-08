@@ -198,11 +198,13 @@ function display_setup_form( $error = null ) {
 <?php
 } // end display_setup_form()
 
+
 // Let's check to make sure HQ isn't already installed.
 if ( is_hq_installed() ) {
         display_header();
         die( '<h1>' . __( 'Already Installed' ) . '</h1><p>' . __( 'You appear to have already installed WordPress. To reinstall please clear your old database tables first.' ) . '</p><p class="step"><a href="../hq-login.php" class="button button-large">' . __( 'Log In' ) . '</a></p></body></html>' );
 }
+
 
 /**
  * @global string $hq_version
@@ -273,7 +275,8 @@ switch($step) {
                         // $loaded_language = hq_download_language_pack( $language );
                         //if ( $loaded_language ) {
                         if ( true ) {
-                                load_default_textdomain( $loaded_language );
+                                //load_default_textdomain( $loaded_language );
+                                load_default_textdomain();
                                 $GLOBALS['hq_locale'] = new HQ_Locale();
                         }
                 }

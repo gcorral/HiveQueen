@@ -2072,6 +2072,10 @@ class hqdb {
          * @return array|object|null Database query results
          */
         public function get_results( $query = null, $output = OBJECT ) {
+
+                //DEBUG: Goyo
+                //printf("hqdb->get_results Begin: %s, %s", $query, $output);
+
                 $this->func_call = "\$db->get_results(\"$query\", $output)";
 
                 if ( $this->check_current_query && $this->check_safe_collation( $query ) ) {
@@ -2087,7 +2091,13 @@ class hqdb {
                 $new_array = array();
                 if ( $output == OBJECT ) {
                         // Return an integer-keyed array of row objects
+
+                        
+                        //DEBUG: Goyo
+                        //printf("hqdb->get_results return: %s", $this->last_result);
+
                         return $this->last_result;
+
                 } elseif ( $output == OBJECT_K ) {
                         // Return an array of row objects with keys from column 1
                         // (Duplicates are discarded)

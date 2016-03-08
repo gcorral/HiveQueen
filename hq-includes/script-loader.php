@@ -48,6 +48,9 @@ require( ABSPATH . HQINC . '/functions.hq-styles.php' );
  * @param HQ_Scripts $scripts HQ_Scripts object.
  */
 function hq_default_scripts( &$scripts ) {
+
+        //print("hq_default_scripts: Begin");
+
 	include( ABSPATH . HQINC . '/version.php' ); // include an unmodified $hq_version
 
 	$develop_src = false !== strpos( $hq_version, '-src' );

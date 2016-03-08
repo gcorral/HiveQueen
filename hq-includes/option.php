@@ -332,7 +332,9 @@ function update_option( $option, $value, $autoload = null ) {
 	if ( ! $result )
 		return false;
 
-	$notoptions = hq_cache_get( 'notoptions', 'options' );
+        //TODO: Goyo no cache
+	//$notoptions = hq_cache_get( 'notoptions', 'options' );
+	$notoptions = null;
 	if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {
 		unset( $notoptions[$option] );
 		hq_cache_set( 'notoptions', $notoptions, 'options' );
@@ -414,7 +416,9 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 	$value = sanitize_option( $option, $value );
 
 	// Make sure the option doesn't already exist. We can check the 'notoptions' cache before we ask for a db query
-	$notoptions = hq_cache_get( 'notoptions', 'options' );
+        //TODO: Goyo no cache
+	//$notoptions = hq_cache_get( 'notoptions', 'options' );
+        $notoptions = null;
 	if ( !is_array( $notoptions ) || !isset( $notoptions[$option] ) )
 		/** This filter is documented in hq-includes/option.php */
 		if ( apply_filters( 'default_option_' . $option, false ) !== get_option( $option ) )
@@ -448,7 +452,9 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 	}
 
 	// This option exists now
-	$notoptions = hq_cache_get( 'notoptions', 'options' ); // yes, again... we need it to be fresh
+        //TODO: Goyo no cache 
+	//$notoptions = hq_cache_get( 'notoptions', 'options' ); // yes, again... we need it to be fresh
+	$notoptions = null;
 	if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {
 		unset( $notoptions[$option] );
 		hq_cache_set( 'notoptions', $notoptions, 'options' );
@@ -1006,7 +1012,9 @@ function get_site_option( $option, $default = false, $use_cache = true ) {
 
 	// prevent non-existent options from triggering multiple queries
 	$notoptions_key = "{$hqdb->siteid}:notoptions";
-	$notoptions = hq_cache_get( $notoptions_key, 'site-options' );
+        //TODO: Goyo no cache
+	//$notoptions = hq_cache_get( $notoptions_key, 'site-options' );
+        $notoptions = null;
 
 	if ( isset( $notoptions[$option] ) ) {
 
@@ -1046,7 +1054,8 @@ function get_site_option( $option, $default = false, $use_cache = true ) {
 					 $notoptions = array();
 				}
 				$notoptions[$option] = true;
-				hq_cache_set( $notoptions_key, $notoptions, 'site-options' );
+                                //TODO: Goyo no cache 
+				//hq_cache_set( $notoptions_key, $notoptions, 'site-options' );
 
 				/** This filter is documented in hq-includes/option.php */
 				$value = apply_filters( 'default_site_option_' . $option, $default );
@@ -1101,13 +1110,17 @@ function add_site_option( $option, $value ) {
 
 	$notoptions_key = "{$hqdb->siteid}:notoptions";
 
-	if ( !is_multisite() ) {
+        //TODO: Goyo no multisite
+	//if ( !is_multisite() ) {
+	if ( true ) {
 		$result = add_option( $option, $value );
 	} else {
 		$cache_key = "{$hqdb->siteid}:$option";
 
 		// Make sure the option doesn't already exist. We can check the 'notoptions' cache before we ask for a db query
-		$notoptions = hq_cache_get( $notoptions_key, 'site-options' );
+                // TODO: Goyo no cache
+		//$notoptions = hq_cache_get( $notoptions_key, 'site-options' );
+		$notoptions = null;
 		if ( ! is_array( $notoptions ) || ! isset( $notoptions[$option] ) )
 			if ( false !== get_site_option( $option ) )
 				return false;
@@ -1123,10 +1136,13 @@ function add_site_option( $option, $value ) {
 		hq_cache_set( $cache_key, $value, 'site-options' );
 
 		// This option exists now
-		$notoptions = hq_cache_get( $notoptions_key, 'site-options' ); // yes, again... we need it to be fresh
+                //TODO: Goyo no cache
+		//$notoptions = hq_cache_get( $notoptions_key, 'site-options' ); // yes, again... we need it to be fresh
+		$notoptions = null;
 		if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {
 			unset( $notoptions[$option] );
-			hq_cache_set( $notoptions_key, $notoptions, 'site-options' );
+                        //TODO: Goyo no cache
+			//hq_cache_set( $notoptions_key, $notoptions, 'site-options' );
 		}
 	}
 
@@ -1268,10 +1284,13 @@ function update_site_option( $option, $value ) {
 		return add_site_option( $option, $value );
 
 	$notoptions_key = "{$hqdb->siteid}:notoptions";
-	$notoptions = hq_cache_get( $notoptions_key, 'site-options' );
+        //TODO: Goyo no cache 
+	//$notoptions = hq_cache_get( $notoptions_key, 'site-options' );
+	$notoptions = null;
 	if ( is_array( $notoptions ) && isset( $notoptions[$option] ) ) {
 		unset( $notoptions[$option] );
-		hq_cache_set( $notoptions_key, $notoptions, 'site-options' );
+                //TODO: Goyo no cache 
+		//hq_cache_set( $notoptions_key, $notoptions, 'site-options' );
 	}
 
 	if ( !is_multisite() ) {

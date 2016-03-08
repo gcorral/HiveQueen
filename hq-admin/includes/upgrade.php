@@ -135,16 +135,17 @@ function hq_install_defaults( $user_id ) {
 	/* translators: Default category slug */
 	$cat_slug = sanitize_title(_x('Uncategorized', 'Default category slug'));
 
-	if ( global_terms_enabled() ) {
-		$cat_id = $hqdb->get_var( $hwdb->prepare( "SELECT cat_ID FROM {$hqdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
-		if ( $cat_id == null ) {
-			$hqdb->insert( $hqdb->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
-			$cat_id = $hqdb->insert_id;
-		}
-		update_option('default_category', $cat_id);
-	} else {
+        //TODO: Goyo 
+	//if ( global_terms_enabled() ) {
+	//	$cat_id = $hqdb->get_var( $hwdb->prepare( "SELECT cat_ID FROM {$hqdb->sitecategories} WHERE category_nicename = %s", $cat_slug ) );
+	//	if ( $cat_id == null ) {
+	//		$hqdb->insert( $hqdb->sitecategories, array('cat_ID' => 0, 'cat_name' => $cat_name, 'category_nicename' => $cat_slug, 'last_updated' => current_time('mysql', true)) );
+	//		$cat_id = $hqdb->insert_id;
+	//	}
+	//	update_option('default_category', $cat_id);
+	//} else {
 		$cat_id = 1;
-	}
+	//}
 
 	$hqdb->insert( $hqdb->terms, array('term_id' => $cat_id, 'name' => $cat_name, 'slug' => $cat_slug, 'term_group' => 0) );
 	$hqdb->insert( $hqdb->term_taxonomy, array('term_id' => $cat_id, 'taxonomy' => 'category', 'description' => '', 'parent' => 0, 'count' => 1));
@@ -1711,9 +1712,10 @@ function upgrade_network() {
 			$tables = $hqdb->tables( 'global' );
 
 			// sitecategories may not exist.
-			if ( ! $hqdb->get_var( "SHOW TABLES LIKE '{$tables['sitecategories']}'" ) ) {
+                        //TODO: Goyo
+			//if ( ! $hqdb->get_var( "SHOW TABLES LIKE '{$tables['sitecategories']}'" ) ) {
 				unset( $tables['sitecategories'] );
-			}
+			//}
 
 			foreach ( $tables as $table ) {
 				maybe_convert_table_to_utf8mb4( $table );
@@ -1740,9 +1742,10 @@ function upgrade_network() {
 			$tables = $hqdb->tables( 'global' );
 
 			// sitecategories may not exist.
-			if ( ! $hqdb->get_var( "SHOW TABLES LIKE '{$tables['sitecategories']}'" ) ) {
+                        //TODO: Goyo
+			//if ( ! $hqdb->get_var( "SHOW TABLES LIKE '{$tables['sitecategories']}'" ) ) {
 				unset( $tables['sitecategories'] );
-			}
+			//}
 
 			foreach ( $tables as $table ) {
 				maybe_convert_table_to_utf8mb4( $table );
@@ -2624,6 +2627,7 @@ function pre_schema_upgrade() {
  * @global hqdb   $hqdb
  * @global string $charset_collate
  */
+/*TODO: Goyo
 if ( !function_exists( 'install_global_terms' ) ) :
 function install_global_terms() {
 	global $hqdb, $charset_collate;
@@ -2642,6 +2646,7 @@ CREATE TABLE $hqdb->sitecategories (
 	dbDelta( $ms_queries );
 }
 endif;
+*/
 
 /**
  * Determine if global tables should be upgraded.

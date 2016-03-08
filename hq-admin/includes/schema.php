@@ -88,13 +88,29 @@ CREATE TABLE $hqdb->tasks (
  end_date datetime NOT NULL default '0000-00-00 00:00:00',
  PRIMARY KEY  (task_id)
 ) $charset_collate;
+CREATE TABLE $hqdb->alerts (
+ alert_id bigint(20) unsigned NOT NULL auto_increment,
+ description text NOT NULL,
+ user_id bigint(20) unsigned NOT NULL default '0',
+ file varchar(100) NOT NULL default '',
+ begin_date datetime NOT NULL default '0000-00-00 00:00:00',
+ end_date datetime NOT NULL default '0000-00-00 00:00:00',
+ PRIMARY KEY  (alert_id)
+) $charset_collate;
+CREATE TABLE $hqdb->site (
+ id bigint(20) NOT NULL auto_increment,
+ domain varchar(200) NOT NULL default '',
+ path varchar(100) NOT NULL default '',
+ PRIMARY KEY  (id),
+ KEY domain (domain(140),path(51))
+) $charset_collate;
 CREATE TABLE $hqdb->options (
-  option_id bigint(20) unsigned NOT NULL auto_increment,
-  option_name varchar(64) NOT NULL default '',
-  option_value longtext NOT NULL,
-  autoload varchar(20) NOT NULL default 'yes',
-  PRIMARY KEY  (option_id),
-  UNIQUE KEY option_name (option_name)
+ option_id bigint(20) unsigned NOT NULL auto_increment,
+ option_name varchar(64) NOT NULL default '',
+ option_value longtext NOT NULL,
+ autoload varchar(20) NOT NULL default 'yes',
+ PRIMARY KEY  (option_id),
+ UNIQUE KEY option_name (option_name)
 ) $charset_collate;";
 
 
@@ -652,7 +668,9 @@ function populate_options() {
 		AND b.option_value < %d";
 	$hqdb->query( $hqdb->prepare( $sql, $hqdb->esc_like( '_transient_' ) . '%', $hqdb->esc_like( '_transient_timeout_' ) . '%', $time ) );
 
-	if ( is_main_site() && is_main_network() ) {
+        //TODO: Goyo no multisite 
+	//if ( is_main_site() && is_main_network() ) {
+	if ( true ) {
 		$sql = "DELETE a, b FROM $hqdb->options a, $hqdb->options b
 			WHERE a.option_name LIKE %s
 			AND a.option_name NOT LIKE %s

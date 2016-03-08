@@ -126,6 +126,7 @@ require_once( ABSPATH . HQINC . '/l10n.php' );
 // Run the installer if HiveQueen is not installed.
 
 
+
 //TODO: Falla ****************** !!!!!
 hq_not_installed();
 
@@ -137,8 +138,8 @@ require( ABSPATH . HQINC . '/formatting.php' );
 require( ABSPATH . HQINC . '/capabilities.php' );
 require( ABSPATH . HQINC . '/query.php' );
 //require( ABSPATH . HQINC . '/date.php' );
-//require( ABSPATH . HQINC . '/theme.php' );
-//require( ABSPATH . HQINC . '/class-hq-theme.php' );
+require( ABSPATH . HQINC . '/theme.php' );
+require( ABSPATH . HQINC . '/class-hq-theme.php' );
 require( ABSPATH . HQINC . '/template.php' );
 require( ABSPATH . HQINC . '/user.php' );
 //require( ABSPATH . HQINC . '/session.php' );
@@ -357,7 +358,7 @@ $GLOBALS['hq_roles'] = new HQ_Roles();
 //do_action( 'setup_theme' );
 
 // Define the template related constants.
-//hq_templating_constants(  );
+hq_templating_constants();
 
 // Load the default text localization domain.
 // TODO: ???
