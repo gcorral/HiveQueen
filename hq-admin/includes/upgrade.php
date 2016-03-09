@@ -147,8 +147,12 @@ function hq_install_defaults( $user_id ) {
 		$cat_id = 1;
 	//}
 
-	$hqdb->insert( $hqdb->terms, array('term_id' => $cat_id, 'name' => $cat_name, 'slug' => $cat_slug, 'term_group' => 0) );
-	$hqdb->insert( $hqdb->term_taxonomy, array('term_id' => $cat_id, 'taxonomy' => 'category', 'description' => '', 'parent' => 0, 'count' => 1));
+        //TODO: no terms table
+	//$hqdb->insert( $hqdb->terms, array('term_id' => $cat_id, 'name' => $cat_name, 'slug' => $cat_slug, 'term_group' => 0) );
+
+        //TODO: no terms_taxonomy table
+	//$hqdb->insert( $hqdb->term_taxonomy, array('term_id' => $cat_id, 'taxonomy' => 'category', 'description' => '', 'parent' => 0, 'count' => 1));
+
 	$cat_tt_id = $hqdb->insert_id;
 
 	// First post
@@ -156,7 +160,9 @@ function hq_install_defaults( $user_id ) {
 	$now_gmt = current_time( 'mysql', 1 );
 	$first_post_guid = get_option( 'home' ) . '/?p=1';
 
-	if ( is_multisite() ) {
+        //TODO: Goyo no multisite
+	//if ( is_multisite() ) {
+	if ( false ) {
 		$first_post = get_site_option( 'first_post' );
 
 		if ( empty($first_post) )
@@ -168,46 +174,58 @@ function hq_install_defaults( $user_id ) {
 		$first_post = __( 'Welcome to HiveQueen. This is your first post. Edit or delete it, then start writing!' );
 	}
 
-	$hqdb->insert( $hqdb->posts, array(
-		'post_author' => $user_id,
-		'post_date' => $now,
-		'post_date_gmt' => $now_gmt,
-		'post_content' => $first_post,
-		'post_excerpt' => '',
-		'post_title' => __('Hello world!'),
-		/* translators: Default post slug */
-		'post_name' => sanitize_title( _x('hello-world', 'Default post slug') ),
-		'post_modified' => $now,
-		'post_modified_gmt' => $now_gmt,
-		'guid' => $first_post_guid,
-		'comment_count' => 1,
-		'to_ping' => '',
-		'pinged' => '',
-		'post_content_filtered' => ''
-	));
-	$hqdb->insert( $hqdb->term_relationships, array('term_taxonomy_id' => $cat_tt_id, 'object_id' => 1) );
+        //TODO: Goyo no post table
+	//$hqdb->insert( $hqdb->posts, array(
+	//	'post_author' => $user_id,
+	//	'post_date' => $now,
+	//	'post_date_gmt' => $now_gmt,
+	//	'post_content' => $first_post,
+	//	'post_excerpt' => '',
+	//	'post_title' => __('Hello world!'),
+	//	/* translators: Default post slug */
+	//	'post_name' => sanitize_title( _x('hello-world', 'Default post slug') ),
+	//	'post_modified' => $now,
+	//	'post_modified_gmt' => $now_gmt,
+	//	'guid' => $first_post_guid,
+	//	'comment_count' => 1,
+	//	'to_ping' => '',
+	//	'pinged' => '',
+	//	'post_content_filtered' => ''
+	//));
+
+        //TODO: Goyo no term_relationships table
+	//$hqdb->insert( $hqdb->term_relationships, array('term_taxonomy_id' => $cat_tt_id, 'object_id' => 1) );
 
 	// Default comment
 	$first_comment_author = __('Mr HiveQueen');
 	$first_comment_url = 'https://wordpress.org/';
 	$first_comment = __('Hi, this is a comment.
 To delete a comment, just log in and view the post&#039;s comments. There you will have the option to edit or delete them.');
-	if ( is_multisite() ) {
+
+ 
+        //TODO: Goyo no multisite
+	//if ( is_multisite() ) {
+	if ( false ) {
 		$first_comment_author = get_site_option( 'first_comment_author', $first_comment_author );
 		$first_comment_url = get_site_option( 'first_comment_url', network_home_url() );
 		$first_comment = get_site_option( 'first_comment', $first_comment );
 	}
-	$hqdb->insert( $hqdb->comments, array(
-		'comment_post_ID' => 1,
-		'comment_author' => $first_comment_author,
-		'comment_author_email' => '',
-		'comment_author_url' => $first_comment_url,
-		'comment_date' => $now,
-		'comment_date_gmt' => $now_gmt,
-		'comment_content' => $first_comment
-	));
+
+       
+        //TODO: Goyo no commets table 
+	//$hqdb->insert( $hqdb->comments, array(
+	//	'comment_post_ID' => 1,
+	//	'comment_author' => $first_comment_author,
+	//	'comment_author_email' => '',
+	//	'comment_author_url' => $first_comment_url,
+	//	'comment_date' => $now,
+	//	'comment_date_gmt' => $now_gmt,
+	//	'comment_content' => $first_comment
+	//));
 
 	// First Page
+        //TODO: Goyo no post
+        /*
 	$first_page = sprintf( __( "This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:
 
 <blockquote>Hi there! I'm a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin' caught in the rain.)</blockquote>
@@ -217,8 +235,15 @@ To delete a comment, just log in and view the post&#039;s comments. There you wi
 <blockquote>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</blockquote>
 
 As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to delete this page and create new pages for your content. Have fun!" ), admin_url() );
-	if ( is_multisite() )
+       */
+
+       //TODO: Goyo no multisite
+       //if ( is_multisite() )
+       if ( false )
 		$first_page = get_site_option( 'first_page', $first_page );
+
+        //TODO: Goyo no posts table 
+        /*
 	$first_post_guid = get_option('home') . '/?page_id=2';
 	$hqdb->insert( $hqdb->posts, array(
 		'post_author' => $user_id,
@@ -228,7 +253,7 @@ As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to d
 		'post_excerpt' => '',
 		'comment_status' => 'closed',
 		'post_title' => __( 'Sample Page' ),
-		/* translators: Default page slug */
+		// translators: Default page slug 
 		'post_name' => __( 'sample-page' ),
 		'post_modified' => $now,
 		'post_modified_gmt' => $now_gmt,
@@ -238,7 +263,10 @@ As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to d
 		'pinged' => '',
 		'post_content_filtered' => ''
 	));
-	$hqdb->insert( $hqdb->postmeta, array( 'post_id' => 2, 'meta_key' => '_hq_page_template', 'meta_value' => 'default' ) );
+        */
+
+        //TODO: Goyo no postmeta table       
+ 	//$hqdb->insert( $hqdb->postmeta, array( 'post_id' => 2, 'meta_key' => '_hq_page_template', 'meta_value' => 'default' ) );
 
 	// Set up default widgets for default theme.
 	update_option( 'widget_search', array ( 2 => array ( 'title' => '' ), '_multiwidget' => 1 ) );
@@ -249,12 +277,16 @@ As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to d
 	update_option( 'widget_meta', array ( 2 => array ( 'title' => '' ), '_multiwidget' => 1 ) );
 	update_option( 'sidebars_widgets', array ( 'hq_inactive_widgets' => array (), 'sidebar-1' => array ( 0 => 'search-2', 1 => 'recent-posts-2', 2 => 'recent-comments-2', 3 => 'archives-2', 4 => 'categories-2', 5 => 'meta-2', ), 'array_version' => 3 ) );
 
-	if ( ! is_multisite() )
+        //TODO: Goyo no multisite
+	//if ( ! is_multisite() )
+	if ( true )
 		update_user_meta( $user_id, 'show_welcome_panel', 1 );
 	elseif ( ! is_super_admin( $user_id ) && ! metadata_exists( 'user', $user_id, 'show_welcome_panel' ) )
 		update_user_meta( $user_id, 'show_welcome_panel', 2 );
 
-	if ( is_multisite() ) {
+        //TODO: Goyo no multisite
+	//if ( is_multisite() ) {
+	if ( false ) {
 		// Flush rules to pick up the new page.
 		$hq_rewrite->init();
 		$hq_rewrite->flush_rules();
@@ -1878,6 +1910,8 @@ function maybe_add_column($table_name, $column_name, $create_ddl) {
 function maybe_convert_table_to_utf8mb4( $table ) {
 	global $hqdb;
 
+        //DEBUG: Goyo
+        //print("Aqui =====>"); 
 	$results = $hqdb->get_results( "SHOW FULL COLUMNS FROM `$table`" );
 	if ( ! $results ) {
 		return false;
@@ -2171,6 +2205,8 @@ function dbDelta( $queries = '', $execute = true ) {
 		}
 
 		// Index stuff goes here. Fetch the table index structure from the database.
+                //DEBUG: Goyo
+                //print("Aqui ==========");
 		$tableindices = $hqdb->get_results("SHOW INDEX FROM {$table};");
 
 		if ($tableindices) {

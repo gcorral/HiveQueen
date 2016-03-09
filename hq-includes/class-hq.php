@@ -261,9 +261,10 @@ class HQ {
                  */
                 $this->public_query_vars = apply_filters( 'query_vars', $this->public_query_vars );
 
-                foreach ( get_post_types( array(), 'objects' ) as $post_type => $t )
-                        if ( $t->query_var )
-                                $post_type_query_vars[$t->query_var] = $post_type;
+                //TODO: Goyo no posts
+                //foreach ( get_post_types( array(), 'objects' ) as $post_type => $t )
+                //        if ( $t->query_var )
+                //                $post_type_query_vars[$t->query_var] = $post_type;
 
                 foreach ( $this->public_query_vars as $hqvar ) {
                         if ( isset( $this->extra_query_vars[$hqvar] ) )
@@ -294,9 +295,10 @@ class HQ {
                 }
 
                 // Convert urldecoded spaces back into +
-                foreach ( get_taxonomies( array() , 'objects' ) as $taxonomy => $t )
-                        if ( $t->query_var && isset( $this->query_vars[$t->query_var] ) )
-                                $this->query_vars[$t->query_var] = str_replace( ' ', '+', $this->query_vars[$t->query_var] );
+                //TODO: Goyo no taxonomies
+                //foreach ( get_taxonomies( array() , 'objects' ) as $taxonomy => $t )
+                //        if ( $t->query_var && isset( $this->query_vars[$t->query_var] ) )
+                //                $this->query_vars[$t->query_var] = str_replace( ' ', '+', $this->query_vars[$t->query_var] );
 
                 // Limit publicly queried post_types to those that are publicly_queryable
                 if ( isset( $this->query_vars['post_type']) ) {
@@ -542,11 +544,12 @@ class HQ {
          *
          * @global HQ_Query $hq_the_query
          */
-        public function query_posts() {
-                global $hq_the_query;
-                $this->build_query_string();
-                $hq_the_query->query($this->query_vars);
-        }
+        //TODO: Goyo no posts
+        //public function query_posts() {
+        //        global $hq_the_query;
+        //        $this->build_query_string();
+        //        $hq_the_query->query($this->query_vars);
+        //}
 
         /**
          * Set the Headers for 404, if nothing is found for requested URL.
@@ -585,7 +588,9 @@ class HQ {
                         }
 
                         // Don't 404 for these queries if they matched an object.
-                        if ( ( is_tag() || is_category() || is_tax() || is_post_type_archive() ) && get_queried_object() ) {
+                        //TODO: Goyo no posts
+                        //if ( ( is_tag() || is_category() || is_tax() || is_post_type_archive() ) && get_queried_object() ) {
+                        if ( ( is_tag() || is_category() || is_tax() ) && get_queried_object() ) {
                                 status_header( 200 );
                                 return;
                         }
@@ -618,7 +623,8 @@ class HQ {
                 $this->init();
                 $this->parse_request($query_args);
                 $this->send_headers();
-                $this->query_posts();
+                //TODO: Goyo no posts
+                //$this->query_posts();
                 $this->handle_404();
                 $this->register_globals();
 

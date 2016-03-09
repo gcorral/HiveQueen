@@ -89,7 +89,7 @@ function hivequeen_setup() {
 	// Add default posts and comments RSS feed links to <head>.
 	add_theme_support( 'automatic-feed-links' );
 
-	// This theme uses wp_nav_menu() in one location.
+	// This theme uses hq_nav_menu() in one location.
 	register_nav_menu( 'primary', __( 'Primary Menu', 'hivequeen' ) );
 
 	// Add support for a variety of post formats
@@ -119,7 +119,7 @@ function hivequeen_setup() {
 		'default-text-color' => '000',
 		// The height and width of our custom header.
 		/**
-		 * Filter the Twenty Eleven default header image width.
+		 * Filter the HiveQueen Theme default header image width.
 		 *
 		 * @since HiveQueen Theme 0.1
 		 *
@@ -139,7 +139,7 @@ function hivequeen_setup() {
 		// Random image rotation by default.
 		'random-default' => true,
 		// Callback for styling the header.
-		'wp-head-callback' => 'hivequeen_header_style',
+		'hq-head-callback' => 'hivequeen_header_style',
 		// Callback for styling the header preview in the admin.
 		'admin-head-callback' => 'hivequeen_admin_header_style',
 		// Callback used to display the header preview in the admin.
@@ -154,7 +154,7 @@ function hivequeen_setup() {
 		define( 'HEADER_IMAGE', '' );
 		define( 'HEADER_IMAGE_WIDTH', $custom_header_support['width'] );
 		define( 'HEADER_IMAGE_HEIGHT', $custom_header_support['height'] );
-		add_custom_image_header( $custom_header_support['wp-head-callback'], $custom_header_support['admin-head-callback'], $custom_header_support['admin-preview-callback'] );
+		add_custom_image_header( $custom_header_support['hq-head-callback'], $custom_header_support['admin-head-callback'], $custom_header_support['admin-preview-callback'] );
 		add_custom_background();
 	}
 
@@ -415,11 +415,11 @@ function hivequeen_custom_excerpt_more( $output ) {
 add_filter( 'get_the_excerpt', 'hivequeen_custom_excerpt_more' );
 
 /**
- * Show a home link for the wp_nav_menu() fallback, wp_page_menu().
+ * Show a home link for the hq_nav_menu() fallback, hq_page_menu().
  *
  * @since HiveQueen Theme 0.1
  *
- * @param array $args The page menu arguments. @see wp_page_menu()
+ * @param array $args The page menu arguments. @see hq_page_menu()
  * @return array The filtered page menu arguments.
  */
 function hivequeen_page_menu_args( $args ) {
@@ -427,7 +427,7 @@ function hivequeen_page_menu_args( $args ) {
 		$args['show_home'] = true;
 	return $args;
 }
-add_filter( 'wp_page_menu_args', 'hivequeen_page_menu_args' );
+add_filter( 'hq_page_menu_args', 'hivequeen_page_menu_args' );
 
 /**
  * Register sidebars and widgetized areas.
@@ -500,9 +500,9 @@ if ( ! function_exists( 'hivequeen_content_nav' ) ) :
  * @param string $html_id The HTML id attribute.
  */
 function hivequeen_content_nav( $html_id ) {
-	global $wp_query;
+	global $hq_query;
 
-	if ( $wp_query->max_num_pages > 1 ) : ?>
+	if ( $hq_query->max_num_pages > 1 ) : ?>
 		<nav id="<?php echo esc_attr( $html_id ); ?>">
 			<h3 class="assistive-text"><?php _e( 'Post navigation', 'hivequeen' ); ?></h3>
 			<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'hivequeen' ) ); ?></div>
@@ -529,7 +529,7 @@ function hivequeen_get_first_url() {
 	if ( ! $has_url )
 		$has_url = hivequeen_url_grabber();
 
-	/** This filter is documented in wp-includes/link-template.php */
+	/** This filter is documented in hq-includes/link-template.php */
 	return ( $has_url ) ? $has_url : apply_filters( 'the_permalink', get_permalink() );
 }
 
@@ -589,7 +589,7 @@ if ( ! function_exists( 'hivequeen_comment' ) ) :
  * To override this walker in a child theme without modifying the comments template
  * simply create your own hivequeen_comment(), and that function will be used instead.
  *
- * Used as a callback by wp_list_comments() for displaying the comments.
+ * Used as a callback by hq_list_comments() for displaying the comments.
  *
  * @since HiveQueen Theme 0.1
  *

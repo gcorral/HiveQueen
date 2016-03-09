@@ -157,6 +157,8 @@ function is_archive() {
  * @param string|array $post_types Optional. Post type or array of posts types to check against.
  * @return bool
  */
+//TODO: Goyo no posts
+/*
 function is_post_type_archive( $post_types = '' ) {
         global $hq_query;
 
@@ -167,6 +169,7 @@ function is_post_type_archive( $post_types = '' ) {
 
         return $hq_query->is_post_type_archive( $post_types );
 }
+*/
 
 /**
  * Is the query for an existing attachment page?
@@ -419,6 +422,222 @@ function is_front_page() {
 
         return $hq_query->is_front_page();
 }
+
+/**
+ * Is the query a 404 (returns no results)?
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool
+ */
+function is_404() {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_404();
+}
+
+/**
+ * Is the query for the robots file?
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool
+ */
+function is_robots() {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_robots();
+}
+
+
+/**
+ * Is the query for an existing single page?
+ *
+ * If the $page parameter is specified, this function will additionally
+ * check if the query is for one of the pages specified.
+ *
+ * @see is_single()
+ * @see is_singular()
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @param mixed $page Page ID, title, slug, or array of such.
+ * @return bool
+ */
+function is_page( $page = '' ) {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_page( $page );
+}
+
+
+/**
+ * Is the query for paged result and not for the first page?
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool
+ */
+function is_paged() {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_paged();
+}
+
+
+/**
+ * Is the query for the blog homepage?
+ *
+ * This is the page which shows the time based blog content of your site.
+ *
+ * Depends on the site's "Front page displays" Reading Settings 'show_on_front' and 'page_for_posts'.
+ *
+ * If you set a static page for the front page of your site, this function will return
+ * true only on the page you set as the "Posts page".
+ *
+ * @see is_front_page()
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool True if blog view homepage.
+ */
+function is_home() {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_home();
+}
+
+/**
+ * Is the query for a search?
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool
+ */
+function is_search() {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_search();
+}
+
+/**
+ * Is the query for an existing single post?
+ *
+ * Works for any post type, except attachments and pages
+ *
+ * If the $post parameter is specified, this function will additionally
+ * check if the query is for one of the Posts specified.
+ *
+ * @see is_page()
+ * @see is_singular()
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @param mixed $post Post ID, title, slug, or array of such.
+ * @return bool
+ */
+function is_single( $post = '' ) {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_single( $post );
+}
+
+/**
+ * Is the query for a trackback endpoint call?
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool
+ */
+function is_trackback() {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_trackback();
+}
+
+/**
+ * Is the query for an existing single post of any post type (post, attachment, page, ... )?
+ *
+ * If the $post_types parameter is specified, this function will additionally
+ * check if the query is for one of the Posts Types specified.
+ *
+ * @see is_page()
+ * @see is_single()
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @param mixed $post_types Optional. Post Type or array of Post Types
+ * @return bool
+ */
+function is_singular( $post_types = '' ) {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_singular( $post_types );
+}
+
 
 // TODO: ****************************************** functions *************************************************************
 
@@ -3252,6 +3471,393 @@ class HQ_Query {
 
                 return $this->posts;
         }
+
+
+        /**
+         * Is the query a 404 (returns no results)?
+         *
+         * @since 0.0.1
+         *
+         * @return bool
+         */
+        public function is_404() {
+                return (bool) $this->is_404;
+        }
+
+
+        /**
+         * Is the query for the robots file?
+         *
+         * @since 0.0.1
+         *
+         * @return bool
+         */
+        public function is_robots() {
+                return (bool) $this->is_robots;
+        }
+
+
+        /**
+         * Is the query for paged result and not for the first page?
+         *
+         * @since 0.0.1
+         *
+         * @return bool
+         */
+        public function is_paged() {
+                return (bool) $this->is_paged;
+        }
+
+        /**
+         * Is the query for an existing author archive page?
+         *
+         * If the $author parameter is specified, this function will additionally
+         * check if the query is for one of the authors specified.
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $author Optional. User ID, nickname, nicename, or array of User IDs, nicknames, and nicenames
+         * @return bool
+         */
+        public function is_author( $author = '' ) {
+                if ( !$this->is_author )
+                        return false;
+
+                if ( empty($author) )
+                        return true;
+
+                $author_obj = $this->get_queried_object();
+
+                $author = (array) $author;
+
+                if ( in_array( (string) $author_obj->ID, $author ) )
+                        return true;
+                elseif ( in_array( $author_obj->nickname, $author ) )
+                        return true;
+                elseif ( in_array( $author_obj->user_nicename, $author ) )
+                        return true;
+
+                return false;
+        }
+
+
+        /**
+         * Is the query for an existing tag archive page?
+         *
+         * If the $tag parameter is specified, this function will additionally
+         * check if the query is for one of the tags specified.
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $tag Optional. Tag ID, name, slug, or array of Tag IDs, names, and slugs.
+         * @return bool
+         */
+        public function is_tag( $tag = '' ) {
+                if ( ! $this->is_tag )
+                        return false;
+
+                if ( empty( $tag ) )
+                        return true;
+
+                $tag_obj = $this->get_queried_object();
+
+                $tag = (array) $tag;
+
+                if ( in_array( (string) $tag_obj->term_id, $tag ) )
+                        return true;
+                elseif ( in_array( $tag_obj->name, $tag ) )
+                        return true;
+                elseif ( in_array( $tag_obj->slug, $tag ) )
+                        return true;
+
+                return false;
+        }
+
+        /**
+         * Is the query for an existing category archive page?
+         *
+         * If the $category parameter is specified, this function will additionally
+         * check if the query is for one of the categories specified.
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $category Optional. Category ID, name, slug, or array of Category IDs, names, and slugs.
+         * @return bool
+         */
+        public function is_category( $category = '' ) {
+                if ( !$this->is_category )
+                        return false;
+
+                if ( empty($category) )
+                        return true;
+
+                $cat_obj = $this->get_queried_object();
+
+                $category = (array) $category;
+
+                if ( in_array( (string) $cat_obj->term_id, $category ) )
+                        return true;
+                elseif ( in_array( $cat_obj->name, $category ) )
+                        return true;
+                elseif ( in_array( $cat_obj->slug, $category ) )
+                        return true;
+
+                return false;
+        }
+
+
+        /**
+         * Is the query for an existing taxonomy archive page?
+         *
+         * If the $taxonomy parameter is specified, this function will additionally
+         * check if the query is for that specific $taxonomy.
+         *
+         * If the $term parameter is specified in addition to the $taxonomy parameter,
+         * this function will additionally check if the query is for one of the terms
+         * specified.
+         *
+         * @since 0.0.1
+         *
+         * @global array $hq_taxonomies
+         *
+         * @param mixed $taxonomy Optional. Taxonomy slug or slugs.
+         * @param mixed $term     Optional. Term ID, name, slug or array of Term IDs, names, and slugs.
+         * @return bool
+         */
+        public function is_tax( $taxonomy = '', $term = '' ) {
+                global $hq_taxonomies;
+
+                if ( !$this->is_tax )
+                        return false;
+
+                if ( empty( $taxonomy ) )
+                        return true;
+
+                $queried_object = $this->get_queried_object();
+                $tax_array = array_intersect( array_keys( $hq_taxonomies ), (array) $taxonomy );
+                $term_array = (array) $term;
+
+                // Check that the taxonomy matches.
+                if ( ! ( isset( $queried_object->taxonomy ) && count( $tax_array ) && in_array( $queried_object->taxonomy, $tax_array ) ) )
+                        return false;
+
+                // Only a Taxonomy provided.
+                if ( empty( $term ) )
+                        return true;
+
+                return isset( $queried_object->term_id ) &&
+                        count( array_intersect(
+                                array( $queried_object->term_id, $queried_object->name, $queried_object->slug ),
+                                $term_array
+                        ) );
+        }
+
+        /**
+         * Is the query for the blog homepage?
+         *
+         * This is the page which shows the time based blog content of your site.
+         *
+         * Depends on the site's "Front page displays" Reading Settings 'show_on_front' and 'page_for_posts'.
+         *
+         * If you set a static page for the front page of your site, this function will return
+         * true only on the page you set as the "Posts page".
+         *
+         * @see HQ_Query::is_front_page()
+         *
+         * @since 0.0.1
+         *
+         * @return bool True if blog view homepage.
+         */
+        public function is_home() {
+                return (bool) $this->is_home;
+        }
+ 
+        /**
+         * Is the query for a search?
+         *
+         * @since 0.0.1
+         *
+         * @return bool
+         */
+        public function is_search() {
+                return (bool) $this->is_search;
+        }
+
+        /**
+         * Is the query for a feed?
+         *
+         * @since 0.0.1
+         *
+         * @param string|array $feeds Optional feed types to check.
+         * @return bool
+         */
+        public function is_feed( $feeds = '' ) {
+                if ( empty( $feeds ) || ! $this->is_feed )
+                        return (bool) $this->is_feed;
+                $qv = $this->get( 'feed' );
+                if ( 'feed' == $qv )
+                        $qv = get_default_feed();
+                return in_array( $qv, (array) $feeds );
+        }
+
+        /**
+         * Is the query for an existing single post?
+         *
+         * Works for any post type, except attachments and pages
+         *
+         * If the $post parameter is specified, this function will additionally
+         * check if the query is for one of the Posts specified.
+         *
+         * @see HQ_Query::is_page()
+         * @see HQ_Query::is_singular()
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $post Post ID, title, slug, path, or array of such.
+         * @return bool
+         */
+        public function is_single( $post = '' ) {
+                if ( !$this->is_single )
+                        return false;
+
+                if ( empty($post) )
+                        return true;
+
+                $post_obj = $this->get_queried_object();
+
+                $post = (array) $post;
+
+                if ( in_array( (string) $post_obj->ID, $post ) ) {
+                        return true;
+                } elseif ( in_array( $post_obj->post_title, $post ) ) {
+                        return true;
+                } elseif ( in_array( $post_obj->post_name, $post ) ) {
+                        return true;
+                } else {
+                        foreach ( $post as $postpath ) {
+                                if ( ! strpos( $postpath, '/' ) ) {
+                                        continue;
+                                }
+                                $postpath_obj = get_page_by_path( $postpath, OBJECT, $post_obj->post_type );
+
+                                if ( $postpath_obj && ( $postpath_obj->ID == $post_obj->ID ) ) {
+                                        return true;
+                                }
+                        }
+                }
+                return false;
+        }
+
+
+        /**
+         * Is the query for an existing single page?
+         *
+         * If the $page parameter is specified, this function will additionally
+         * check if the query is for one of the pages specified.
+         *
+         * @see HQ_Query::is_single()
+         * @see HQ_Query::is_singular()
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $page Page ID, title, slug, path, or array of such.
+         * @return bool
+         */
+        public function is_page( $page = '' ) {
+                if ( !$this->is_page )
+                        return false;
+
+                if ( empty( $page ) )
+                        return true;
+
+                $page_obj = $this->get_queried_object();
+
+                $page = (array) $page;
+
+                if ( in_array( (string) $page_obj->ID, $page ) ) {
+                        return true;
+                } elseif ( in_array( $page_obj->post_title, $page ) ) {
+                        return true;
+                } elseif ( in_array( $page_obj->post_name, $page ) ) {
+                        return true;
+                } else {
+                        foreach ( $page as $pagepath ) {
+                                if ( ! strpos( $pagepath, '/' ) ) {
+                                        continue;
+                                }
+                                $pagepath_obj = get_page_by_path( $pagepath );
+
+                                if ( $pagepath_obj && ( $pagepath_obj->ID == $page_obj->ID ) ) {
+                                        return true;
+                                }
+                        }
+                }
+
+                return false;
+        }
+
+
+       /**
+         * Is the query for a trackback endpoint call?
+         *
+         * @since 0.0.1
+         *
+         * @return bool
+         */
+        public function is_trackback() {
+                return (bool) $this->is_trackback;
+        }
+
+        /**
+         * Is the query for the front page of the site?
+         *
+         * This is for what is displayed at your site's main URL.
+         *
+         * Depends on the site's "Front page displays" Reading Settings 'show_on_front' and 'page_on_front'.
+         *
+         * If you set a static page for the front page of your site, this function will return
+         * true when viewing that page.
+         *
+         * Otherwise the same as @see HQ_Query::is_home()
+         *
+         * @since 0.0.1
+         *
+         * @return bool True, if front of site.
+         */
+        public function is_front_page() {
+                // most likely case
+                if ( 'posts' == get_option( 'show_on_front') && $this->is_home() )
+                        return true;
+                elseif ( 'page' == get_option( 'show_on_front') && get_option( 'page_on_front' ) && $this->is_page( get_option( 'page_on_front' ) ) )
+                        return true;
+                else
+                        return false;
+        }
+
+
+        /**
+         * Is the query for an existing single post of any post type (post, attachment, page, ... )?
+         *
+         * If the $post_types parameter is specified, this function will additionally
+         * check if the query is for one of the Posts Types specified.
+         *
+         * @see HQ_Query::is_page()
+         * @see HQ_Query::is_single()
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $post_types Optional. Post Type or array of Post Types
+         * @return bool
+         */
+        public function is_singular( $post_types = '' ) {
+                if ( empty( $post_types ) || !$this->is_singular )
+                        return (bool) $this->is_singular;
+
+                $post_obj = $this->get_queried_object();
+
+                return in_array( $post_obj->post_type, (array) $post_types );
+        }
+       
 
 //TODO: *********************************************** functions ***************************************************************************
 

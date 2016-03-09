@@ -202,7 +202,7 @@ function display_setup_form( $error = null ) {
 // Let's check to make sure HQ isn't already installed.
 if ( is_hq_installed() ) {
         display_header();
-        die( '<h1>' . __( 'Already Installed' ) . '</h1><p>' . __( 'You appear to have already installed WordPress. To reinstall please clear your old database tables first.' ) . '</p><p class="step"><a href="../hq-login.php" class="button button-large">' . __( 'Log In' ) . '</a></p></body></html>' );
+        die( '<h1>' . __( 'Already Installed' ) . '</h1><p>' . __( 'You appear to have already installed HiveQueen. To reinstall please clear your old database tables first.' ) . '</p><p class="step"><a href="../hq-login.php" class="button button-large">' . __( 'Log In' ) . '</a></p></body></html>' );
 }
 
 

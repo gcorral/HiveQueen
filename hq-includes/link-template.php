@@ -127,7 +127,8 @@ function get_permalink( $id = 0, $leavename = false ) {
 		$post = $id;
 		$sample = true;
 	} else {
-		$post = get_post($id);
+                //TODO: Goyo no posts
+		//$post = get_post($id);
 		$sample = false;
 	}
 

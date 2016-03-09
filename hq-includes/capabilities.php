@@ -599,33 +599,38 @@ class HQ_User {
 				$db_field = 'ID';
 				break;
 			case 'slug':
-				$user_id = hq_cache_get($value, 'userslugs');
+                                //TODO: Goyo no cache
+				//$user_id = hq_cache_get($value, 'userslugs');
 				$db_field = 'user_nicename';
 				break;
 			case 'email':
-				$user_id = hq_cache_get($value, 'useremail');
+                                //TODO: Goyo no cache
+				//$user_id = hq_cache_get($value, 'useremail');
 				$db_field = 'user_email';
 				break;
 			case 'login':
 				$value = sanitize_user( $value );
-				$user_id = hq_cache_get($value, 'userlogins');
+                                //TODO: Goyo no cache
+				//$user_id = hq_cache_get($value, 'userlogins');
 				$db_field = 'user_login';
 				break;
 			default:
 				return false;
 		}
 
-		if ( false !== $user_id ) {
-			if ( $user = hq_cache_get( $user_id, 'users' ) )
-				return $user;
-		}
+                //TODO: Goyo no cache
+		//if ( false !== $user_id ) {
+	        //		if ( $user = hq_cache_get( $user_id, 'users' ) )
+	        //			return $user;
+		//}
 
 		if ( !$user = $hqdb->get_row( $hqdb->prepare(
 			"SELECT * FROM $hqdb->users WHERE $db_field = %s", $value
 		) ) )
 			return false;
 
-		update_user_caches( $user );
+                //TODO: Goyo no cache
+		//update_user_caches( $user );
 
 		return $user;
 	}

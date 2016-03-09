@@ -1031,7 +1031,9 @@ function get_site_option( $option, $default = false, $use_cache = true ) {
 		return apply_filters( 'default_site_option_' . $option, $default );
 	}
 
-	if ( ! is_multisite() ) {
+        //TODO: Goyo no multisite
+	//if ( ! is_multisite() ) {
+	if ( true ) {
 
 		/** This filter is documented in hq-includes/option.php */
 		$default = apply_filters( 'default_site_option_' . $option, $default );

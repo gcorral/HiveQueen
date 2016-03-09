@@ -1195,5 +1195,455 @@ function setup_userdata($for_user_id = '') {
 }
 
 
+/**
+ * Checks whether the given username exists.
+ *
+ * @since 0.0.1
+ *
+ * @param string $username Username.
+ * @return int|false The user's ID on success, and false on failure.
+ */
+function username_exists( $username ) {
+        if ( $user = get_user_by( 'login', $username ) ) {
+                return $user->ID;
+        }
+        return false;
+}
+
+
+/**
+ * A simpler way of inserting a user into the database.
+ *
+ * Creates a new user with just the username, password, and email. For more
+ * complex user creation use {@see hq_insert_user()} to specify more information.
+ *
+ * @since 0.0.1
+ * @see hq_insert_user() More complete way to create a new user
+ *
+ * @param string $username The user's username.
+ * @param string $password The user's password.
+ * @param string $email    Optional. The user's email. Default empty.
+ * @return int|HQ_Error The new user's ID.
+ */
+function hq_create_user($username, $password, $email = '') {
+        $user_login = hq_slash( $username );
+        $user_email = hq_slash( $email    );
+        $user_pass = $password;
+
+        $userdata = compact('user_login', 'user_email', 'user_pass');
+        return hq_insert_user($userdata);
+}
+
+/**
+ * Insert a user into the database.
+ *
+ * Most of the `$userdata` array fields have filters associated with the values. Exceptions are
+ * 'ID', 'rich_editing', 'comment_shortcuts', 'admin_color', 'use_ssl',
+ * 'user_registered', and 'role'. The filters have the prefix 'pre_user_' followed by the field
+ * name. An example using 'description' would have the filter called, 'pre_user_description' that
+ * can be hooked into.
+ *
+ * @since 0.0.1
+ *
+ * @global hqdb $hqdb HiveQueen database object for queries.
+ *
+ * @param array|object|HQ_User $userdata {
+ *     An array, object, or HQ_User object of user data arguments.
+ *
+ *     @type int         $ID                   User ID. If supplied, the user will be updated.
+ *     @type string      $user_pass            The plain-text user password.
+ *     @type string      $user_login           The user's login username.
+ *     @type string      $user_nicename        The URL-friendly user name.
+ *     @type string      $user_url             The user URL.
+ *     @type string      $user_email           The user email address.
+ *     @type string      $display_name         The user's display name.
+ *                                             Default is the the user's username.
+ *     @type string      $nickname             The user's nickname.
+ *                                             Default is the the user's username.
+ *     @type string      $first_name           The user's first name. For new users, will be used
+ *                                             to build the first part of the user's display name
+ *                                             if `$display_name` is not specified.
+ *     @type string      $last_name            The user's last name. For new users, will be used
+ *                                             to build the second part of the user's display name
+ *                                             if `$display_name` is not specified.
+ *     @type string      $description          The user's biographical description.
+ *     @type string|bool $rich_editing         Whether to enable the rich-editor for the user.
+ *                                             False if not empty.
+ *     @type string|bool $comment_shortcuts    Whether to enable comment moderation keyboard
+ *                                             shortcuts for the user. Default false.
+ *     @type string      $admin_color          Admin color scheme for the user. Default 'fresh'.
+ *     @type bool        $use_ssl              Whether the user should always access the admin over
+ *                                             https. Default false.
+ *     @type string      $user_registered      Date the user registered. Format is 'Y-m-d H:i:s'.
+ *     @type string|bool $show_admin_bar_front Whether to display the Admin Bar for the user on the
+ *                                             site's frontend. Default true.
+ *     @type string      $role                 User's role.
+ * }
+ * @return int|HQ_Error The newly created user's ID or a HQ_Error object if the user could not
+ *                      be created.
+ */
+function hq_insert_user( $userdata ) {
+        global $hqdb;
+        if ( $userdata instanceof stdClass ) {
+                $userdata = get_object_vars( $userdata );
+        } elseif ( $userdata instanceof HQ_User ) {
+                $userdata = $userdata->to_array();
+        }
+        // Are we updating or creating?
+        if ( ! empty( $userdata['ID'] ) ) {
+                $ID = (int) $userdata['ID'];
+                $update = true;
+                $old_user_data = HQ_User::get_data_by( 'id', $ID );
+                // hashed in hq_update_user(), plaintext if called directly
+                $user_pass = $userdata['user_pass'];
+        } else {
+                $update = false;
+                // Hash the password
+                $user_pass = hq_hash_password( $userdata['user_pass'] );
+        }
+
+        $sanitized_user_login = sanitize_user( $userdata['user_login'], true );
+
+        /**
+         * Filter a username after it has been sanitized.
+         *
+         * This filter is called before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $sanitized_user_login Username after it has been sanitized.
+         */
+        $pre_user_login = apply_filters( 'pre_user_login', $sanitized_user_login );
+
+        //Remove any non-printable chars from the login string to see if we have ended up with an empty username
+        $user_login = trim( $pre_user_login );
+
+        if ( empty( $user_login ) ) {
+                return new HQ_Error('empty_user_login', __('Cannot create a user with an empty login name.') );
+        }
+        if ( ! $update && username_exists( $user_login ) ) {
+                return new HQ_Error( 'existing_user_login', __( 'Sorry, that username already exists!' ) );
+        }
+
+        // If a nicename is provided, remove unsafe user characters before
+        // using it. Otherwise build a nicename from the user_login.
+        if ( ! empty( $userdata['user_nicename'] ) ) {
+                $user_nicename = sanitize_user( $userdata['user_nicename'], true );
+        } else {
+                $user_nicename = $user_login;
+        }
+
+        $user_nicename = sanitize_title( $user_nicename );
+
+        // Store values to save in user meta.
+        $meta = array();
+
+        /**
+         * Filter a user's nicename before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $user_nicename The user's nicename.
+         */
+        $user_nicename = apply_filters( 'pre_user_nicename', $user_nicename );
+
+        $raw_user_url = empty( $userdata['user_url'] ) ? '' : $userdata['user_url'];
+
+        /**
+         * Filter a user's URL before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $raw_user_url The user's URL.
+         */
+        $user_url = apply_filters( 'pre_user_url', $raw_user_url );
+
+        $raw_user_email = empty( $userdata['user_email'] ) ? '' : $userdata['user_email'];
+
+        /**
+         * Filter a user's email before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $raw_user_email The user's email.
+         */
+        $user_email = apply_filters( 'pre_user_email', $raw_user_email );
+
+        /*
+         * If there is no update, just check for `email_exists`. If there is an update,
+         * check if current email and new email are the same, or not, and check `email_exists`
+         * accordingly.
+         */
+        if ( ( ! $update || ( ! empty( $old_user_data ) && 0 !== strcasecmp( $user_email, $old_user_data->user_email ) ) )
+                && ! defined( 'HQ_IMPORTING' )
+                && email_exists( $user_email )
+        ) {
+                return new HQ_Error( 'existing_user_email', __( 'Sorry, that email address is already used!' ) );
+        }
+        $nickname = empty( $userdata['nickname'] ) ? $user_login : $userdata['nickname'];
+
+        /**
+         * Filter a user's nickname before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $nickname The user's nickname.
+         */
+        $meta['nickname'] = apply_filters( 'pre_user_nickname', $nickname );
+
+        $first_name = empty( $userdata['first_name'] ) ? '' : $userdata['first_name'];
+
+        /**
+         * Filter a user's first name before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $first_name The user's first name.
+         */
+        $meta['first_name'] = apply_filters( 'pre_user_first_name', $first_name );
+        $last_name = empty( $userdata['last_name'] ) ? '' : $userdata['last_name'];
+
+        /**
+         * Filter a user's last name before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $last_name The user's last name.
+         */
+        $meta['last_name'] = apply_filters( 'pre_user_last_name', $last_name );
+
+        if ( empty( $userdata['display_name'] ) ) {
+                if ( $update ) {
+                        $display_name = $user_login;
+                } elseif ( $meta['first_name'] && $meta['last_name'] ) {
+                        /* translators: 1: first name, 2: last name */
+                        $display_name = sprintf( _x( '%1$s %2$s', 'Display name based on first name and last name' ), $meta['first_name'], $meta['last_name'] );
+                } elseif ( $meta['first_name'] ) {
+                        $display_name = $meta['first_name'];
+                } elseif ( $meta['last_name'] ) {
+                        $display_name = $meta['last_name'];
+                } else {
+                        $display_name = $user_login;
+                }
+        } else {
+                $display_name = $userdata['display_name'];
+        }
+
+        /**
+         * Filter a user's display name before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $display_name The user's display name.
+         */
+        $display_name = apply_filters( 'pre_user_display_name', $display_name );
+
+        $description = empty( $userdata['description'] ) ? '' : $userdata['description'];
+
+        /**
+         * Filter a user's description before the user is created or updated.
+         *
+         * @since 0.0.1
+         *
+         * @param string $description The user's description.
+         */
+        $meta['description'] = apply_filters( 'pre_user_description', $description );
+
+        $meta['rich_editing'] = empty( $userdata['rich_editing'] ) ? 'true' : $userdata['rich_editing'];
+
+        $meta['comment_shortcuts'] = empty( $userdata['comment_shortcuts'] ) || 'false' === $userdata['comment_shortcuts'] ? 'false' : 'true';
+
+        $admin_color = empty( $userdata['admin_color'] ) ? 'fresh' : $userdata['admin_color'];
+        $meta['admin_color'] = preg_replace( '|[^a-z0-9 _.\-@]|i', '', $admin_color );
+
+        $meta['use_ssl'] = empty( $userdata['use_ssl'] ) ? 0 : $userdata['use_ssl'];
+
+        $user_registered = empty( $userdata['user_registered'] ) ? gmdate( 'Y-m-d H:i:s' ) : $userdata['user_registered'];
+        $meta['show_admin_bar_front'] = empty( $userdata['show_admin_bar_front'] ) ? 'true' : $userdata['show_admin_bar_front'];
+
+        $user_nicename_check = $hqdb->get_var( $hqdb->prepare("SELECT ID FROM $hqdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $user_nicename, $user_login));
+
+        if ( $user_nicename_check ) {
+                $suffix = 2;
+                while ($user_nicename_check) {
+                        $alt_user_nicename = $user_nicename . "-$suffix";
+                        $user_nicename_check = $hqdb->get_var( $hqdb->prepare("SELECT ID FROM $hqdb->users WHERE user_nicename = %s AND user_login != %s LIMIT 1" , $alt_user_nicename, $user_login));
+                        $suffix++;
+                }
+                $user_nicename = $alt_user_nicename;
+        }
+
+        $compacted = compact( 'user_pass', 'user_email', 'user_url', 'user_nicename', 'display_name', 'user_registered' );
+        $data = hq_unslash( $compacted );
+
+        if ( $update ) {
+                if ( $user_email !== $old_user_data->user_email ) {
+                        $data['user_activation_key'] = '';
+                }
+                $hqdb->update( $hqdb->users, $data, compact( 'ID' ) );
+                $user_id = (int) $ID;
+        } else {
+                $hqdb->insert( $hqdb->users, $data + compact( 'user_login' ) );
+                $user_id = (int) $hqdb->insert_id;
+        }
+
+        $user = new HQ_User( $user_id );
+
+        // Update user meta.
+        foreach ( $meta as $key => $value ) {
+                update_user_meta( $user_id, $key, $value );
+        }
+
+        foreach ( hq_get_user_contact_methods( $user ) as $key => $value ) {
+                if ( isset( $userdata[ $key ] ) ) {
+                        update_user_meta( $user_id, $key, $userdata[ $key ] );
+                }
+        }
+
+        if ( isset( $userdata['role'] ) ) {
+                $user->set_role( $userdata['role'] );
+        } elseif ( ! $update ) {
+                $user->set_role(get_option('default_role'));
+        }
+        //TODO: Goyo no cache
+        //hq_cache_delete( $user_id, 'users' );
+        //hq_cache_delete( $user_login, 'userlogins' );
+
+        if ( $update ) {
+                /**
+                 * Fires immediately after an existing user is updated.
+                 *
+                 * @since 0.0.1
+                 *
+                 * @param int    $user_id       User ID.
+                 * @param object $old_user_data Object containing user's data prior to update.
+                 */
+                do_action( 'profile_update', $user_id, $old_user_data );
+        } else {
+                /**
+                 * Fires immediately after a new user is registered.
+                 *
+                 * @since 0.0.1
+                 *
+                 * @param int $user_id User ID.
+                 */
+                do_action( 'user_register', $user_id );
+        }
+
+        return $user_id;
+}
+
+
+/**
+ * Checks whether the given email exists.
+ *
+ * @since 0.0.1
+ *
+ * @param string $email Email.
+ * @return int|false The user's ID on success, and false on failure.
+ */
+function email_exists( $email ) {
+        if ( $user = get_user_by( 'email', $email) ) {
+                return $user->ID;
+        }
+        return false;
+}
+
+/**
+ * Retrieve user meta field for a user.
+ *
+ * @since 0.0.1
+ *
+ * @param int    $user_id User ID.
+ * @param string $key     Optional. The meta key to retrieve. By default, returns data for all keys.
+ * @param bool   $single  Whether to return a single value.
+ * @return mixed Will be an array if $single is false. Will be value of meta data field if $single is true.
+ */
+function get_user_meta($user_id, $key = '', $single = false) {
+        return get_metadata('user', $user_id, $key, $single);
+}
+
+
+/**
+ * Update user meta field based on user ID.
+ *
+ * Use the $prev_value parameter to differentiate between meta fields with the
+ * same key and user ID.
+ *
+ * If the meta field for the user does not exist, it will be added.
+ *
+ * @since 0.0.1
+ *
+ * @param int    $user_id    User ID.
+ * @param string $meta_key   Metadata key.
+ * @param mixed  $meta_value Metadata value.
+ * @param mixed  $prev_value Optional. Previous value to check before removing.
+ * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
+ */
+function update_user_meta($user_id, $meta_key, $meta_value, $prev_value = '') {
+        return update_metadata('user', $user_id, $meta_key, $meta_value, $prev_value);
+}
+
+
+/**
+ * Set up the user contact methods.
+ *
+ * Default contact methods were removed in 3.6. A filter dictates contact methods.
+ *
+ * @since 0.0.1
+ *
+ * @param HQ_User $user Optional. HQ_User object.
+ * @return array Array of contact methods and their labels.
+ */
+function hq_get_user_contact_methods( $user = null ) {
+        $methods = array();
+        if ( get_site_option( 'initial_db_version' ) < 23588 ) {
+                $methods = array(
+                        'aim'    => __( 'AIM' ),
+                        'yim'    => __( 'Yahoo IM' ),
+                        'jabber' => __( 'Jabber / Google Talk' )
+                );
+        }
+
+        /**
+         * Filter the user contact methods.
+         *
+         * @since 0.0.1
+         *
+         * @param array   $methods Array of contact methods and their labels.
+         * @param HQ_User $user    HQ_User object.
+         */
+        return apply_filters( 'user_contactmethods', $methods, $user );
+}
+
+/**
+ * The old private function for setting up user contact methods.
+ *
+ * @since 0.0.1
+ * @access private
+ */
+function _hq_get_user_contactmethods( $user = null ) {
+        return hq_get_user_contact_methods( $user );
+}
+
+
+/**
+ * Add meta data field to a user.
+ *
+ * Post meta data is called "Custom Fields" on the Administration Screens.
+ *
+ * @since 0.0.1
+ *
+ * @param int    $user_id    User ID.
+ * @param string $meta_key   Metadata name.
+ * @param mixed  $meta_value Metadata value.
+ * @param bool   $unique     Optional, default is false. Whether the same key should not be added.
+ * @return int|false Meta ID on success, false on failure.
+ */
+function add_user_meta($user_id, $meta_key, $meta_value, $unique = false) {
+        return add_metadata('user', $user_id, $meta_key, $meta_value, $unique);
+}
+
+
 //TODO: **************************** functions ************************************************************
 

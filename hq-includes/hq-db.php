@@ -2165,6 +2165,8 @@ class hqdb {
 
                 $table_parts = explode( '.', $table );
                 $table = '`' . implode( '`.`', $table_parts ) . '`';
+                //DEBUG: Goyo
+                //print("Aqui ====>");
                 $results = $this->get_results( "SHOW FULL COLUMNS FROM $table" );
                 if ( ! $results ) {
                         return new HQ_Error( 'hqdb_get_table_charset_failure' );

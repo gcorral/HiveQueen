@@ -795,19 +795,17 @@ function _hq_render_title_tag() {
 }
 
 /**
- * Display or retrieve page title for all areas of blog.
+ * Display or retrieve page title for all areas of site.
  *
  * By default, the page title will display the separator before the page title,
- * so that the blog title will be before the page title. This is not good for
- * title display, since the blog title shows up on most tabs and not what is
+ * so that the site title will be before the page title. This is not good for
+ * title display, since the site title shows up on most tabs and not what is
  * important, which is the page that the user is looking at.
  *
- * There are also SEO benefits to having the blog title after or to the 'right'
- * or the page title. However, it is mostly common sense to have the blog title
+ * There are also SEO benefits to having the site title after or to the 'right'
+ * or the page title. However, it is mostly common sense to have the site title
  * to the right with most browsers supporting tabs. You can achieve this by
- * using the seplocation parameter and setting the value to 'right'. This change
- * was introduced around 2.5.0, in case backwards compatibility of themes is
- * important.
+ * using the seplocation parameter and setting the value to 'right'. 
  *
  * @since 0.0.1
  *
@@ -838,6 +836,8 @@ function hq_title( $sep = '&raquo;', $display = true, $seplocation = '' ) {
 	}
 
 	// If there's a post type archive
+        //TODO: Goyo no posts
+        /*
 	if ( is_post_type_archive() ) {
 		$post_type = get_query_var( 'post_type' );
 		if ( is_array( $post_type ) )
@@ -846,13 +846,17 @@ function hq_title( $sep = '&raquo;', $display = true, $seplocation = '' ) {
 		if ( ! $post_type_object->has_archive )
 			$title = post_type_archive_title( '', false );
 	}
+        */
 
 	// If there's a category or tag
 	if ( is_category() || is_tag() ) {
 		$title = single_term_title( '', false );
+                $title = 'Aqui';
 	}
 
 	// If there's a taxonomy
+        //TODO: Goyo no taxonomy
+        /*
 	if ( is_tax() ) {
 		$term = get_queried_object();
 		if ( $term ) {
@@ -860,6 +864,7 @@ function hq_title( $sep = '&raquo;', $display = true, $seplocation = '' ) {
 			$title = single_term_title( $tax->labels->name . $t_sep, false );
 		}
 	}
+        */
 
 	// If there's an author
 	if ( is_author() && ! is_post_type_archive() ) {
@@ -868,19 +873,27 @@ function hq_title( $sep = '&raquo;', $display = true, $seplocation = '' ) {
 			$title = $author->display_name;
 	}
 
-	// Post type archives with has_archive should override terms.
+	// Post type archives with has_archive should override terms. 
+        //TODO: Goyo no posts
+        /*
 	if ( is_post_type_archive() && $post_type_object->has_archive )
 		$title = post_type_archive_title( '', false );
+        */
 
 	// If there's a month
+        //TODO: !!!
+        /*
 	if ( is_archive() && !empty($m) ) {
 		$my_year = substr($m, 0, 4);
 		$my_month = $hq_locale->get_month(substr($m, 4, 2));
 		$my_day = intval(substr($m, 6, 2));
 		$title = $my_year . ( $my_month ? $t_sep . $my_month : '' ) . ( $my_day ? $t_sep . $my_day : '' );
 	}
+        */
 
 	// If there's a year
+        //TODO: !!!
+        /* 
 	if ( is_archive() && !empty($year) ) {
 		$title = $year;
 		if ( !empty($monthnum) )
@@ -888,12 +901,16 @@ function hq_title( $sep = '&raquo;', $display = true, $seplocation = '' ) {
 		if ( !empty($day) )
 			$title .= $t_sep . zeroise($day, 2);
 	}
+       */
 
 	// If it's a search
+        //TODO: !!!
+        /*
 	if ( is_search() ) {
-		/* translators: 1: separator, 2: search phrase */
+		// translators: 1: separator, 2: search phrase 
 		$title = sprintf(__('Search Results %1$s %2$s'), $t_sep, strip_tags($search));
 	}
+        */
 
 	// If it's a 404 page
 	if ( is_404() ) {

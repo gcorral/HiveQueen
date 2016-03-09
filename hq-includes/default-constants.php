@@ -158,3 +158,155 @@ function hq_templating_constants() {
 }
 
 
+/**
+ * Defines plugin directory HiveQueen constants
+ *
+ * Defines must-use plugin directory constants, which may be overridden in the sunrise.php drop-in
+ *
+ * @since 0.0.1
+ */
+function hq_plugin_directory_constants() {
+        if ( !defined('HQ_CONTENT_URL') )
+                define( 'HQ_CONTENT_URL', get_option('siteurl') . '/hq-content'); // full url - HQ_CONTENT_DIR is defined further up
+
+        /**
+         * Allows for the plugins directory to be moved from the default location.
+         *
+         * @since 0.0.1
+         */
+        if ( !defined('HQ_PLUGIN_DIR') )
+                define( 'HQ_PLUGIN_DIR', HQ_CONTENT_DIR . '/plugins' ); // full path, no trailing slash
+
+        /**
+         * Allows for the plugins directory to be moved from the default location.
+         *
+         * @since 0.0.1
+         */
+        if ( !defined('HQ_PLUGIN_URL') )
+                define( 'HQ_PLUGIN_URL', HQ_CONTENT_URL . '/plugins' ); // full url, no trailing slash
+
+        /**
+         * Allows for the plugins directory to be moved from the default location.
+         *
+         * @since 0.0.1
+         * @deprecated
+         */
+        if ( !defined('PLUGINDIR') )
+                define( 'PLUGINDIR', 'hq-content/plugins' ); // Relative to ABSPATH. For back compat.
+
+        /**
+         * Allows for the mu-plugins directory to be moved from the default location.
+         *
+         * @since 0.0.1
+         */
+        if ( !defined('HQMU_PLUGIN_DIR') )
+                define( 'HQMU_PLUGIN_DIR', HQ_CONTENT_DIR . '/mu-plugins' ); // full path, no trailing slash
+
+        /**
+         * Allows for the mu-plugins directory to be moved from the default location.
+         *
+         * @since 0.0.1
+         */
+        if ( !defined('HQMU_PLUGIN_URL') )
+                define( 'HQMU_PLUGIN_URL', HQ_CONTENT_URL . '/mu-plugins' ); // full url, no trailing slash
+        /**
+         * Allows for the mu-plugins directory to be moved from the default location.
+         *
+         * @since 0.0.1
+         * @deprecated
+         */
+        if ( !defined( 'MUPLUGINDIR' ) )
+                define( 'MUPLUGINDIR', 'hq-content/mu-plugins' ); // Relative to ABSPATH. For back compat.
+}
+
+/**
+ * Defines cookie related HiveQueen constants
+ *
+ * Defines constants after multisite is loaded.
+ * @since 0.0.1
+ */
+function hq_cookie_constants() {
+        /**
+         * Used to guarantee unique hash cookies
+         *
+         * @since 0.0.1
+         */
+        if ( !defined( 'COOKIEHASH' ) ) {
+                $siteurl = get_site_option( 'siteurl' );
+                if ( $siteurl )
+                        define( 'COOKIEHASH', md5( $siteurl ) );
+                else
+                        define( 'COOKIEHASH', '' );
+        }
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('USER_COOKIE') )
+                define('USER_COOKIE', 'wordpressuser_' . COOKIEHASH);
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('PASS_COOKIE') )
+                define('PASS_COOKIE', 'wordpresspass_' . COOKIEHASH);
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('AUTH_COOKIE') )
+                define('AUTH_COOKIE', 'wordpress_' . COOKIEHASH);
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('SECURE_AUTH_COOKIE') )
+                define('SECURE_AUTH_COOKIE', 'wordpress_sec_' . COOKIEHASH);
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('LOGGED_IN_COOKIE') )
+                define('LOGGED_IN_COOKIE', 'wordpress_logged_in_' . COOKIEHASH);
+
+       /**
+         * @since 0.0.1
+         */
+        if ( !defined('TEST_COOKIE') )
+                define('TEST_COOKIE', 'wordpress_test_cookie');
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('COOKIEPATH') )
+                define('COOKIEPATH', preg_replace('|https?://[^/]+|i', '', get_option('home') . '/' ) );
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('SITECOOKIEPATH') )
+                define('SITECOOKIEPATH', preg_replace('|https?://[^/]+|i', '', get_option('siteurl') . '/' ) );
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('ADMIN_COOKIE_PATH') )
+                define( 'ADMIN_COOKIE_PATH', SITECOOKIEPATH . 'hq-admin' );
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('PLUGINS_COOKIE_PATH') )
+                define( 'PLUGINS_COOKIE_PATH', preg_replace('|https?://[^/]+|i', '', HQ_PLUGIN_URL)  );
+
+        /**
+         * @since 0.0.1
+         */
+        if ( !defined('COOKIE_DOMAIN') )
+                define('COOKIE_DOMAIN', false);
+}
+
+
+
+// *************************************************************************************************************
+

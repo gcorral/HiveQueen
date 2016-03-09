@@ -143,7 +143,7 @@ require( ABSPATH . HQINC . '/class-hq-theme.php' );
 require( ABSPATH . HQINC . '/template.php' );
 require( ABSPATH . HQINC . '/user.php' );
 //require( ABSPATH . HQINC . '/session.php' );
-//require( ABSPATH . HQINC . '/meta.php' );
+require( ABSPATH . HQINC . '/meta.php' );
 require( ABSPATH . HQINC . '/general-template.php' );
 require( ABSPATH . HQINC . '/link-template.php' );
 //require( ABSPATH . HQINC . '/author-template.php' );
@@ -156,7 +156,7 @@ require( ABSPATH . HQINC . '/link-template.php' );
 //require( ABSPATH . HQINC . '/category-template.php' );
 //require( ABSPATH . HQINC . '/comment.php' );
 //require( ABSPATH . HQINC . '/comment-template.php' );
-//require( ABSPATH . HQINC . '/rewrite.php' );
+require( ABSPATH . HQINC . '/rewrite.php' );
 //require( ABSPATH . HQINC . '/feed.php' );
 //require( ABSPATH . HQINC . '/bookmark.php' );
 //require( ABSPATH . HQINC . '/bookmark-template.php' );
@@ -169,11 +169,11 @@ require( ABSPATH . HQINC . '/script-loader.php' );
 //require( ABSPATH . HQINC . '/canonical.php' );
 //require( ABSPATH . HQINC . '/shortcodes.php' );
 //require( ABSPATH . HQINC . '/class-wp-embed.php' );
-//require( ABSPATH . HQINC . '/media.php' );
-//require( ABSPATH . HQINC . '/http.php' );
-//require( ABSPATH . HQINC . '/class-http.php' );
-//require( ABSPATH . HQINC . '/widgets.php' );
-//require( ABSPATH . HQINC . '/nav-menu.php' );
+require( ABSPATH . HQINC . '/media.php' );
+require( ABSPATH . HQINC . '/http.php' );
+require( ABSPATH . HQINC . '/class-http.php' );
+require( ABSPATH . HQINC . '/widgets.php' );
+require( ABSPATH . HQINC . '/nav-menu.php' );
 //require( ABSPATH . HQINC . '/nav-menu-template.php' );
 //require( ABSPATH . HQINC . '/admin-bar.php' );
 
@@ -190,11 +190,9 @@ if ( is_multisite() ) {
 
 // Define constants that rely on the API to obtain the default value.
 // Define must-use plugin directory constants, which may be overridden in the sunrise.php drop-in.
-/* TODO: not plugins 
-wp_plugin_directory_constants();
+hq_plugin_directory_constants();
 
 $GLOBALS['hq_plugin_paths'] = array();
-*/
 
 // Load must-use plugins.
 /* TODO: not plugins 
@@ -227,9 +225,7 @@ if ( is_multisite() )
 */
 
 // Define constants after multisite is loaded.
-/* TODO: not multisite
 hq_cookie_constants();
-*/
 
 // Define and enforce our SSL constants
 // TODO: no ssl
@@ -320,10 +316,9 @@ $GLOBALS['hq_query'] = $GLOBALS['hq_the_query'];
 /**
  * Holds the HiveQueen Rewrite object for creating pretty URLs
  * @global object $hq_rewrite
- * @since 1.5.0
+ * @since 0.0.1
  */
-// TODO: ???
-//$GLOBALS['hq_rewrite'] = new HQ_Rewrite();
+$GLOBALS['hq_rewrite'] = new HQ_Rewrite();
 
 /**
  * HiveQueen Object
