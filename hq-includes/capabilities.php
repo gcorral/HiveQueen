@@ -1047,7 +1047,9 @@ class HQ_User {
 		$caps = call_user_func_array( 'map_meta_cap', $args );
 
 		// Multisite super admin has all caps by definition, Unless specifically denied.
-		if ( is_multisite() && is_super_admin( $this->ID ) ) {
+                //TODO: Goyo no multisite
+		//if ( is_multisite() && is_super_admin( $this->ID ) ) {
+		if ( false && is_super_admin( $this->ID ) ) {
 			if ( in_array('do_not_allow', $caps) )
 				return false;
 			return true;
@@ -1331,7 +1333,9 @@ function map_meta_cap( $cap, $user_id ) {
 		// Disallow unfiltered_html for all users, even admins and super admins.
 		if ( defined( 'DISALLOW_UNFILTERED_HTML' ) && DISALLOW_UNFILTERED_HTML )
 			$caps[] = 'do_not_allow';
-		elseif ( is_multisite() && ! is_super_admin( $user_id ) )
+                //TODO: Goyo no multisite
+		//elseif ( is_multisite() && ! is_super_admin( $user_id ) )
+		elseif ( false && ! is_super_admin( $user_id ) )
 			$caps[] = 'do_not_allow';
 		else
 			$caps[] = $cap;

@@ -2362,7 +2362,9 @@ function feed_links_extra( $args = array() ) {
 			$title = sprintf( $args['singletitle'], get_bloginfo('name'), $args['separator'], the_title_attribute( array( 'echo' => false ) ) );
 			$href = get_post_comments_feed_link( $post->ID );
 		}
-	} elseif ( is_post_type_archive() ) {
+        //TODO: Goyo no posts
+	//} elseif ( is_post_type_archive() ) {
+	} elseif ( false ) {
 		$post_type = get_query_var( 'post_type' );
 		if ( is_array( $post_type ) )
 			$post_type = reset( $post_type );
@@ -2392,7 +2394,9 @@ function feed_links_extra( $args = array() ) {
 	} elseif ( is_search() ) {
 		$title = sprintf( $args['searchtitle'], get_bloginfo('name'), $args['separator'], get_search_query( false ) );
 		$href = get_search_feed_link();
-	} elseif ( is_post_type_archive() ) {
+        //TODO: Goyo no posts
+	//} elseif ( is_post_type_archive() ) {
+	} elseif ( false ) {
 		$title = sprintf( $args['posttypetitle'], get_bloginfo('name'), $args['separator'], post_type_archive_title( '', false ) );
 		$post_type_obj = get_queried_object();
 		if ( $post_type_obj )

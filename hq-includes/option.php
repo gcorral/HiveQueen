@@ -344,9 +344,11 @@ function update_option( $option, $value, $autoload = null ) {
 		$alloptions = hq_load_alloptions();
 		if ( isset( $alloptions[$option] ) ) {
 			$alloptions[ $option ] = $serialized_value;
-			hq_cache_set( 'alloptions', $alloptions, 'options' );
-		} else {
-			hq_cache_set( $option, $serialized_value, 'options' );
+                        //TODO: Goyo no cache
+			//hq_cache_set( 'alloptions', $alloptions, 'options' );
+                //TODO: Goyo no cache
+		//} else {
+	        //	hq_cache_set( $option, $serialized_value, 'options' );
 		}
 	}
 
@@ -445,9 +447,11 @@ function add_option( $option, $value = '', $deprecated = '', $autoload = 'yes' )
 		if ( 'yes' == $autoload ) {
 			$alloptions = hq_load_alloptions();
 			$alloptions[ $option ] = $serialized_value;
-			hq_cache_set( 'alloptions', $alloptions, 'options' );
-		} else {
-			hq_cache_set( $option, $serialized_value, 'options' );
+                        //TODO: Goyo no cache 
+			//hq_cache_set( 'alloptions', $alloptions, 'options' );
+                //TODO: Goyo no cache 
+		//} else {
+		//	hq_cache_set( $option, $serialized_value, 'options' );
 		}
 	}
 

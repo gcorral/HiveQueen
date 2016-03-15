@@ -13,7 +13,7 @@ if ( !isset($hq_did_header) ) {
 	require_once( dirname(__FILE__) . '/hq-load.php' );
 
 	hq();
-
+ 
 	require_once( ABSPATH . HQINC . '/template-loader.php' );
 
 }

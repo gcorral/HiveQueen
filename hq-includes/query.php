@@ -1629,8 +1629,12 @@ class HQ_Query {
                 $this->is_singular = $this->is_single || $this->is_page || $this->is_attachment;
                 // Done correcting is_* for page_on_front and page_for_posts
 
-                if ( '404' == $qv['error'] )
+                if ( '404' == $qv['error'] ){
+ 
+                        //print("Is set 404");
+
                         $this->set_404();
+                }
 
                 $this->query_vars_hash = md5( serialize( $this->query_vars ) );
                 $this->query_vars_changed = false;
@@ -3481,6 +3485,7 @@ class HQ_Query {
          * @return bool
          */
         public function is_404() {
+
                 return (bool) $this->is_404;
         }
 

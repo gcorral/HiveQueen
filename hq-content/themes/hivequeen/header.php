@@ -40,7 +40,7 @@
 
 	// Add a page number if necessary:
 	if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() )
-		echo esc_html( ' | ' . sprintf( __( 'Page %s', 'twentyeleven' ), max( $paged, $page ) ) );
+		echo esc_html( ' | ' . sprintf( __( 'Page %s', 'hivequeentheme' ), max( $paged, $page ) ) );
 
 	?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11" />
@@ -94,6 +94,7 @@
 						$header_image_width = HEADER_IMAGE_WIDTH;
 					}
 					?>
+                        <div id="page_img" align="center">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
 				<?php
 					/*
@@ -101,7 +102,9 @@
 					 * Check if this is a post or page, if it has a thumbnail, and if it's a big one
 					 */
 					if ( is_singular() && has_post_thumbnail( $post->ID ) &&
-							( /* $src, $width, $height */ $image = hq_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), array( $header_image_width, $header_image_width ) ) ) &&
+							( /* $src, $width, $height */ 
+                                                          $image = hq_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),
+                                                                                                array( $header_image_width, $header_image_width ) ) ) &&
 							$image[1] >= $header_image_width ) :
 						// Houston, we have a new header image!
 						echo get_the_post_thumbnail( $post->ID, 'post-thumbnail' );
@@ -117,9 +120,11 @@
 						?>
 					<img src="<?php header_image(); ?>" width="<?php echo esc_attr( $header_image_width ); ?>" 
                                                                             height="<?php echo esc_attr( $header_image_height ); ?>" 
-                                                                            alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" />
+                                                                            alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>"
+                                                                            style="width:200px;height:200px;" align="center" />
 				<?php endif; // end check for featured image or standard header ?>
 			</a>
+                        </div>
 			<?php endif; // end check for removed header image ?>
 
 			<?php
@@ -134,18 +139,24 @@
 			?>
 				<?php //TODO: !!! get_search_form(); ?>
 			<?php endif; ?>
-
+               
 			<nav id="access" role="navigation">
-				<h3 class="assistive-text"><?php _e( 'Main menu', 'twentyeleven' ); ?></h3>
+				<h3 class="assistive-text"><?php _e( 'Main menu', 'hivequeen' ); ?></h3>
 				<?php /* Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff. */ ?>
-				<div class="skip-link"><a class="assistive-text" href="#content"><?php _e( 'Skip to primary content', 'twentyeleven' ); ?></a></div>
+				<div class="skip-link">
+                                   <a class="assistive-text" href="#content"><?php _e( 'Skip to primary content', 'hivequeen' ); ?></a>
+                                </div>
 				<?php if ( ! is_singular() ) : ?>
-					<div class="skip-link"><a class="assistive-text" href="#secondary"><?php _e( 'Skip to secondary content', 'twentyeleven' ); ?></a></div>
+					<div class="skip-link">
+                                           <a class="assistive-text" href="#secondary"><?php _e( 'Skip to secondary content', 'hivequeen' ); ?></a>
+                                        </div>
 				<?php endif; ?>
-				<?php /* Our navigation menu. If one isn't filled out, hq_nav_menu falls back to hq_page_menu. The menu assigned to the primary location is the one used. If one isn't assigned, the menu with the lowest ID is used. */ ?>
+				<?php /* Our navigation menu. If one isn't filled out, hq_nav_menu falls back to hq_page_menu. 
+                                         The menu assigned to the primary location is the one used. If one isn't assigned, the 
+                                         menu with the lowest ID is used. */ ?>
 				<?php hq_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
-			</nav><!-- #access -->
+                        </nav>
+                 <!-- #access -->
 	</header><!-- #branding -->
-
 
 	<div id="main">

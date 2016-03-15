@@ -3,6 +3,8 @@
  * Loads the correct template based on the visitor's url
  * @package HiveQueen
  */
+
+
 if ( defined('HQ_USE_THEMES') && HQ_USE_THEMES )
 	/**
 	 * Fires before determining which template to load.
@@ -10,6 +12,7 @@ if ( defined('HQ_USE_THEMES') && HQ_USE_THEMES )
 	 * @since 0.0.1
 	 */
 	do_action( 'template_redirect' );
+
 
 /**
  * Filter whether to allow 'HEAD' requests to generate content.
@@ -23,6 +26,7 @@ if ( defined('HQ_USE_THEMES') && HQ_USE_THEMES )
  */
 if ( 'HEAD' === $_SERVER['REQUEST_METHOD'] && apply_filters( 'exit_on_http_head', true ) )
 	exit();
+
 
 // Process feeds and trackbacks even if not using themes.
 if ( is_robots() ) :
@@ -42,14 +46,18 @@ elseif ( is_trackback() ) :
 endif;
 
 if ( defined('HQ_USE_THEMES') && HQ_USE_THEMES ) :
+        
+        //print("Llega Aqui ====>");
+
 	$template = false;
 	if     ( is_404()            && $template = get_404_template()            ) :
 	elseif ( is_search()         && $template = get_search_template()         ) :
 	elseif ( is_front_page()     && $template = get_front_page_template()     ) :
 	elseif ( is_home()           && $template = get_home_template()           ) :
-	elseif ( is_post_type_archive() && $template = get_post_type_archive_template() ) :
-	elseif ( is_tax()            && $template = get_taxonomy_template()       ) :
-	elseif ( is_attachment()     && $template = get_attachment_template()     ) :
+        //TODO: Goyo 
+	//elseif ( is_post_type_archive() && $template = get_post_type_archive_template() ) :
+	//elseif ( is_tax()            && $template = get_taxonomy_template()       ) :
+	//elseif ( is_attachment()     && $template = get_attachment_template()     ) :
 		remove_filter('the_content', 'prepend_attachment');
 	elseif ( is_single()         && $template = get_single_template()         ) :
 	elseif ( is_page()           && $template = get_page_template()           ) :
@@ -57,9 +65,10 @@ if ( defined('HQ_USE_THEMES') && HQ_USE_THEMES ) :
 	elseif ( is_category()       && $template = get_category_template()       ) :
 	elseif ( is_tag()            && $template = get_tag_template()            ) :
 	elseif ( is_author()         && $template = get_author_template()         ) :
-	elseif ( is_date()           && $template = get_date_template()           ) :
-	elseif ( is_archive()        && $template = get_archive_template()        ) :
-	elseif ( is_comments_popup() && $template = get_comments_popup_template() ) :
+        //TODO: Goyo
+	//elseif ( is_date()           && $template = get_date_template()           ) :
+	//elseif ( is_archive()        && $template = get_archive_template()        ) :
+	//elseif ( is_comments_popup() && $template = get_comments_popup_template() ) :
 	elseif ( is_paged()          && $template = get_paged_template()          ) :
 	else :
 		$template = get_index_template();

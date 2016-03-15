@@ -2986,7 +2986,9 @@ function plugins_url( $path = '', $plugin = '' ) {
  * @return string Site url link with optional path appended.
 */
 function network_site_url( $path = '', $scheme = null ) {
-	if ( ! is_multisite() )
+        //TODO: Goyo no multisite
+	//if ( ! is_multisite() )
+	if ( true )
 		return site_url($path, $scheme);
 
 	$current_site = get_current_site();

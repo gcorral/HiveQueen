@@ -176,6 +176,8 @@ function has_filter($tag, $function_to_check = false) {
 function apply_filters( $tag, $value ) {
         global $hq_filter, $merged_filters, $hq_current_filter;
 
+        //printf("Tag: %s", $tag);
+ 
         $args = array();
 
         // Do 'all' actions first.
@@ -237,6 +239,8 @@ function apply_filters( $tag, $value ) {
  */
 function apply_filters_ref_array($tag, $args) {
         global $hq_filter, $merged_filters, $hq_current_filter;
+
+        //print("Aqui =====>");
 
         // Do 'all' actions first
         if ( isset($hq_filter['all']) ) {
@@ -543,10 +547,13 @@ function did_action($tag) {
 function do_action_ref_array($tag, $args) {
         global $hq_filter, $hq_actions, $merged_filters, $hq_current_filter;
 
+        //print("do_action_ref_array - Begin  ====>");
+
         if ( ! isset($hq_actions[$tag]) )
                 $hq_actions[$tag] = 1;
         else
                 ++$hq_actions[$tag];
+
 
         // Do 'all' actions first
         if ( isset($hq_filter['all']) ) {
@@ -555,11 +562,16 @@ function do_action_ref_array($tag, $args) {
                 _hq_call_all_hook($all_args);
         }
 
+
         if ( !isset($hq_filter[$tag]) ) {
+
+                //print("do_action_ref_array - Aqui  ====>");
+
                 if ( isset($hq_filter['all']) )
                         array_pop($hq_current_filter);
                 return;
         }
+
 
         if ( !isset($hq_filter['all']) )
                 $hq_current_filter[] = $tag;
@@ -580,6 +592,8 @@ function do_action_ref_array($tag, $args) {
         } while ( next($hq_filter[$tag]) !== false );
 
         array_pop($hq_current_filter);
+
+        //print("do_action_ref_array - End  ====>");
 }
 
 /**

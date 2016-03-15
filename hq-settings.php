@@ -76,8 +76,7 @@ if ( HQ_CACHE )
 hq_set_lang_dir();
 
 // Load early HiveQueen files.
-// TODO: by the way
-//require( ABSPATH . HQINC . '/compat.php' );
+require( ABSPATH . HQINC . '/compat.php' );
 require( ABSPATH . HQINC . '/functions.php' );
 require( ABSPATH . HQINC . '/class-hq.php' );
 require( ABSPATH . HQINC . '/class-hq-error.php' );
@@ -97,9 +96,7 @@ hq_set_hqdb_vars();
 //hq_start_object_cache();
 
 // Attach the default filters.
-/* TODO: disable 
 require( ABSPATH . HQINC . '/default-filters.php' );
-*/
 
 // Initialize multisite if enabled.
 /* TODO: disable multisite seems have no sense in HiveQueen
@@ -142,7 +139,7 @@ require( ABSPATH . HQINC . '/theme.php' );
 require( ABSPATH . HQINC . '/class-hq-theme.php' );
 require( ABSPATH . HQINC . '/template.php' );
 require( ABSPATH . HQINC . '/user.php' );
-//require( ABSPATH . HQINC . '/session.php' );
+require( ABSPATH . HQINC . '/session.php' );
 require( ABSPATH . HQINC . '/meta.php' );
 require( ABSPATH . HQINC . '/general-template.php' );
 require( ABSPATH . HQINC . '/link-template.php' );
@@ -157,7 +154,7 @@ require( ABSPATH . HQINC . '/link-template.php' );
 //require( ABSPATH . HQINC . '/comment.php' );
 //require( ABSPATH . HQINC . '/comment-template.php' );
 require( ABSPATH . HQINC . '/rewrite.php' );
-//require( ABSPATH . HQINC . '/feed.php' );
+require( ABSPATH . HQINC . '/feed.php' );
 //require( ABSPATH . HQINC . '/bookmark.php' );
 //require( ABSPATH . HQINC . '/bookmark-template.php' );
 require( ABSPATH . HQINC . '/kses.php' );
@@ -174,7 +171,7 @@ require( ABSPATH . HQINC . '/http.php' );
 require( ABSPATH . HQINC . '/class-http.php' );
 require( ABSPATH . HQINC . '/widgets.php' );
 require( ABSPATH . HQINC . '/nav-menu.php' );
-//require( ABSPATH . HQINC . '/nav-menu-template.php' );
+require( ABSPATH . HQINC . '/nav-menu-template.php' );
 //require( ABSPATH . HQINC . '/admin-bar.php' );
 
 
@@ -243,7 +240,7 @@ create_initial_post_types();
 
 // Register the default theme directory root
 // TODO: redefine theme 
-//register_theme_directory( get_theme_root() );
+register_theme_directory( get_theme_root() );
 
 // Load active plugins.
 /* TODO: not pluings 
@@ -293,9 +290,8 @@ hq_magic_quotes();
  *
  * @since 0.0.1
  */
-/* TODO: not cookies 
-do_action( 'sanitize_comment_cookies' );
-*/
+//TODO: !!!
+//do_action( 'sanitize_comment_cookies' );
 
 /**
  * HiveQueen Query object
@@ -332,9 +328,7 @@ $GLOBALS['hq'] = new HQ();
  * @global object $hq_widget_factory
  * @since 0.0.1
  */
-/* TODO: ??? disable
 $GLOBALS['hq_widget_factory'] = new HQ_Widget_Factory();
-*/
 
 /**
  * HiveQueen User Roles

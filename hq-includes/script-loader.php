@@ -789,9 +789,14 @@ function hq_prototype_before_jquery( $js_array ) {
  */
 function hq_just_in_time_script_localization() {
 
+        //TODO: !!!
+	//hq_localize_script( 'autosave', 'autosaveL10n', array(
+        //	'autosaveInterval' => AUTOSAVE_INTERVAL,
+	//	'blog_id' => get_current_blog_id(),
+	//) );
 	hq_localize_script( 'autosave', 'autosaveL10n', array(
-		'autosaveInterval' => AUTOSAVE_INTERVAL,
-		'blog_id' => get_current_blog_id(),
+        	'autosaveInterval' => AUTOSAVE_INTERVAL,
+		'blog_id' => 1,
 	) );
 
 }

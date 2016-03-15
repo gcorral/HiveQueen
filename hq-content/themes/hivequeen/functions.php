@@ -125,7 +125,7 @@ function hivequeen_setup() {
 		 *
 		 * @param int The default header image width in pixels. Default 1000.
 		 */
-		'width' => apply_filters( 'hivequeen_header_image_width', 1000 ),
+		'width' => apply_filters( 'hivequeen_header_image_width', 200 ),
 		/**
 		 * Filter the Twenty Eleven default header image height.
 		 *
@@ -133,7 +133,7 @@ function hivequeen_setup() {
 		 *
 		 * @param int The default header image height in pixels. Default 288.
 		 */
-		'height' => apply_filters( 'hivequeen_header_image_height', 288 ),
+		'height' => apply_filters( 'hivequeen_header_image_height', 200 ),
 		// Support flexible heights.
 		'flex-height' => true,
 		// Random image rotation by default.
@@ -171,59 +171,70 @@ function hivequeen_setup() {
 	 */
 	add_image_size( 'large-feature', $custom_header_support['width'], $custom_header_support['height'], true );
 	// Used for featured posts if a large-feature doesn't exist.
-	add_image_size( 'small-feature', 500, 300 );
+	//add_image_size( 'small-feature', 500, 300 );
+	add_image_size( 'small-feature', 200, 200 );
 
 	// Default custom headers packaged with the theme. %s is a placeholder for the theme template directory URI.
 	register_default_headers( array(
+		'queen-bee' => array(
+			'url' => '%s/images/headers/queen-bee-162026_960_720.png',
+			'thumbnail_url' => '%s/images/headers/wheel-thumbnail.jpg',
+			/* translators: header image description */
+			'description' => __( 'Queen-Bee', 'hivequeen' )
+		)
+	 ) );
+         /*
+		),
 		'wheel' => array(
 			'url' => '%s/images/headers/wheel.jpg',
 			'thumbnail_url' => '%s/images/headers/wheel-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description
 			'description' => __( 'Wheel', 'hivequeen' )
 		),
 		'shore' => array(
 			'url' => '%s/images/headers/shore.jpg',
 			'thumbnail_url' => '%s/images/headers/shore-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Shore', 'hivequeen' )
 		),
 		'trolley' => array(
 			'url' => '%s/images/headers/trolley.jpg',
 			'thumbnail_url' => '%s/images/headers/trolley-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Trolley', 'hivequeen' )
 		),
 		'pine-cone' => array(
 			'url' => '%s/images/headers/pine-cone.jpg',
 			'thumbnail_url' => '%s/images/headers/pine-cone-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Pine Cone', 'hivequeen' )
 		),
 		'chessboard' => array(
 			'url' => '%s/images/headers/chessboard.jpg',
 			'thumbnail_url' => '%s/images/headers/chessboard-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Chessboard', 'hivequeen' )
 		),
 		'lanterns' => array(
 			'url' => '%s/images/headers/lanterns.jpg',
 			'thumbnail_url' => '%s/images/headers/lanterns-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Lanterns', 'hivequeen' )
 		),
 		'willow' => array(
 			'url' => '%s/images/headers/willow.jpg',
 			'thumbnail_url' => '%s/images/headers/willow-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Willow', 'hivequeen' )
 		),
 		'hanoi' => array(
 			'url' => '%s/images/headers/hanoi.jpg',
 			'thumbnail_url' => '%s/images/headers/hanoi-thumbnail.jpg',
-			/* translators: header image description */
+			// translators: header image description 
 			'description' => __( 'Hanoi Plant', 'hivequeen' )
 		)
 	) );
+        */
 }
 endif; // hivequeen_setup
 

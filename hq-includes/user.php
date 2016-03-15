@@ -206,7 +206,9 @@ function hq_authenticate_cookie($user, $username, $password) {
  * @return HQ_User|HQ_Error HQ_User on success, HQ_Error if the user is considered a spammer.
  */
 function hq_authenticate_spam_check( $user ) {
-        if ( $user instanceof HQ_User && is_multisite() ) {
+        //TODO: Goyo no multisite
+        //if ( $user instanceof HQ_User && is_multisite() ) {
+        if ( $user instanceof HQ_User && false ) {
                 /**
                  * Filter whether the user has been marked as a spammer.
                  *

@@ -48,8 +48,7 @@ require_once(ABSPATH . 'hq-admin/includes/admin-filters.php');
 //require_once(ABSPATH . 'hq-admin/includes/misc.php');
 
 /** HiveQueen Plugin Administration API */
-//TODO: disable 
-//require_once(ABSPATH . 'hq-admin/includes/plugin.php');
+require_once(ABSPATH . 'hq-admin/includes/plugin.php');
 
 /** HiveQueen Post Administration API */
 //TODO: not need

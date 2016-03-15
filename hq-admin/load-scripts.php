@@ -5,7 +5,8 @@
  *
  * Set this to error_reporting( -1 ) for debugging.
  */
-error_reporting(0);
+//TODO: Debug
+error_reporting(-1);
 
 /** Set ABSPATH for execution */
 define( 'ABSPATH', dirname(dirname(__FILE__)) . '/' );
