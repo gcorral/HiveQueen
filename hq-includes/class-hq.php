@@ -546,12 +546,11 @@ class HQ {
          *
          * @global HQ_Query $hq_the_query
          */
-        //TODO: Goyo no posts
-        //public function query_posts() {
-        //        global $hq_the_query;
-        //        $this->build_query_string();
-        //        $hq_the_query->query($this->query_vars);
-        //}
+        public function query_posts() {
+                global $hq_the_query;
+                $this->build_query_string();
+                $hq_the_query->query($this->query_vars);
+        }
 
         /**
          * Set the Headers for 404, if nothing is found for requested URL.
@@ -623,11 +622,13 @@ class HQ {
          * @param string|array $query_args Passed to {@link parse_request()}
          */
         public function main($query_args = '') {
+
+                print("hq->main(): Begin");
+
                 $this->init();
                 $this->parse_request($query_args);
                 $this->send_headers();
-                //TODO: Goyo no posts
-                //$this->query_posts();
+                $this->query_posts();
                 $this->handle_404();
                 $this->register_globals();
 
@@ -644,6 +645,8 @@ class HQ {
                 //if (!is_user_logged_in()) {
                 //   auth_redirect();
                 //}
+
+                print("hq->main(): End");
 
         }
 }

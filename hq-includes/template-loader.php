@@ -47,10 +47,8 @@ endif;
 
 if ( defined('HQ_USE_THEMES') && HQ_USE_THEMES ) :
         
-        //print("Llega Aqui ====>");
-
 	$template = false;
-	if     ( is_404()            && $template = get_404_template()            ) :
+	if     ( is_404()            && $template = get_404_template()            ) : print("is_444 !!! ===>");
 	elseif ( is_search()         && $template = get_search_template()         ) :
 	elseif ( is_front_page()     && $template = get_front_page_template()     ) :
 	elseif ( is_home()           && $template = get_home_template()           ) :

@@ -1992,7 +1992,7 @@ function hq_ext2type( $ext ) {
                 'image'       => array( 'jpg', 'jpeg', 'jpe',  'gif',  'png',  'bmp',   'tif',  'tiff', 'ico' ),
                 'audio'       => array( 'aac', 'ac3',  'aif',  'aiff', 'm3a',  'm4a',   'm4b',  'mka',  'mp1',  'mp2',  'mp3', 'ogg', 'oga', 'ram', 'wav', 'wma' ),
                 'video'       => array( '3g2',  '3gp', '3gpp', 'asf', 'avi',  'divx', 'dv',   'flv',  'm4v',   'mkv',  'mov',  'mp4',  'mpeg', 'mpg', 'mpv', 'ogm', 'ogv', 'qt',  'rm', 'vob', 'wmv' ),
-                'document'    => array( 'doc', 'docx', 'docm', 'dotm', 'odt',  'pages', 'pdf',  'xps',  'oxps', 'rtf',  'wp', 'wpd', 'psd', 'xcf' ),
+                'document'    => array( 'doc', 'docx', 'docm', 'dotm', 'odt',  'pages', 'pdf',  'xps',  'oxps', 'rtf',  'hq', 'hqd', 'psd', 'xcf' ),
                 'spreadsheet' => array( 'numbers',     'ods',  'xls',  'xlsx', 'xlsm',  'xlsb' ),
                 'interactive' => array( 'swf', 'key',  'ppt',  'pptx', 'pptm', 'pps',   'ppsx', 'ppsm', 'sldx', 'sldm', 'odp' ),
                 'text'        => array( 'asc', 'csv',  'tsv',  'txt' ),
@@ -2237,7 +2237,7 @@ function hq_get_mime_types() {
         'odb' => 'application/vnd.oasis.opendocument.database',
         'odf' => 'application/vnd.oasis.opendocument.formula',
         // WordPerfect formats.
-        'wp|wpd' => 'application/wordperfect',
+        'hq|hqd' => 'application/wordperfect',
         // iWork formats.
         'key' => 'application/vnd.apple.keynote',
         'numbers' => 'application/vnd.apple.numbers',
@@ -3078,6 +3078,94 @@ function hq_json_encode( $data, $options = 0, $depth = 512 ) {
  */
 function send_frame_options_header() {
         @header( 'X-Frame-Options: SAMEORIGIN' );
+}
+
+
+
+/**
+ * Perform sanity checks on data that shall be encoded to JSON.
+ *
+ * @ignore
+ * @since 0.0.1
+ * @access private
+ *
+ * @see hq_json_encode()
+ *
+ * @param mixed $data  Variable (usually an array or object) to encode as JSON.
+ * @param int   $depth Maximum depth to walk through $data. Must be greater than 0.
+ * @return mixed The sanitized data that shall be encoded to JSON.
+ */
+function _hq_json_sanity_check( $data, $depth ) {
+        if ( $depth < 0 ) {
+                throw new Exception( 'Reached depth limit' );
+        }
+
+        if ( is_array( $data ) ) {
+                $output = array();
+                foreach ( $data as $id => $el ) {
+                        // Don't forget to sanitize the ID!
+                        if ( is_string( $id ) ) {
+                                $clean_id = _hq_json_convert_string( $id );
+                        } else {
+                                $clean_id = $id;
+                        }
+
+                        // Check the element type, so that we're only recursing if we really have to.
+                        if ( is_array( $el ) || is_object( $el ) ) {
+                                $output[ $clean_id ] = _hq_json_sanity_check( $el, $depth - 1 );
+                        } elseif ( is_string( $el ) ) {
+                                $output[ $clean_id ] = _hq_json_convert_string( $el );
+                        } else {
+                                $output[ $clean_id ] = $el;
+                        }
+                }
+        } elseif ( is_object( $data ) ) {
+                $output = new stdClass;
+                foreach ( $data as $id => $el ) {
+                        if ( is_string( $id ) ) {
+                                $clean_id = _hq_json_convert_string( $id );
+                        } else {
+                                $clean_id = $id;
+                        }
+
+                        if ( is_array( $el ) || is_object( $el ) ) {
+                                $output->$clean_id = _hq_json_sanity_check( $el, $depth - 1 );
+                        } elseif ( is_string( $el ) ) {
+                                $output->$clean_id = _hq_json_convert_string( $el );
+                        } else {
+                                $output->$clean_id = $el;
+                        }
+                }
+        } elseif ( is_string( $data ) ) {
+                return _hq_json_convert_string( $data );
+        } else {
+                return $data;
+        }
+
+        return $output;
+}
+
+
+/**
+ * gmt_offset modification for smart timezone handling.
+ *
+ * Overrides the gmt_offset option if we have a timezone_string available.
+ *
+ * @since 0.0.1
+ *
+ * @return float|false Timezone GMT offset, false otherwise.
+ */
+function hq_timezone_override_offset() {
+        if ( !$timezone_string = get_option( 'timezone_string' ) ) {
+                return false;
+        }
+
+        $timezone_object = timezone_open( $timezone_string );
+        $datetime_object = date_create();
+        if ( false === $timezone_object || false === $datetime_object ) {
+                return false;
+        }
+        return round( timezone_offset_get( $timezone_object, $datetime_object ) / HOUR_IN_SECONDS, 2 );
 }
 
 

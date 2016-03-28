@@ -111,7 +111,37 @@ CREATE TABLE $hqdb->options (
  autoload varchar(20) NOT NULL default 'yes',
  PRIMARY KEY  (option_id),
  UNIQUE KEY option_name (option_name)
-) $charset_collate;";
+) $charset_collate;
+CREATE TABLE $hqdb->posts (
+  ID bigint(20) unsigned NOT NULL auto_increment,
+  post_author bigint(20) unsigned NOT NULL default '0',
+  post_date datetime NOT NULL default '0000-00-00 00:00:00',
+  post_date_gmt datetime NOT NULL default '0000-00-00 00:00:00',
+  post_content longtext NOT NULL,
+  post_title text NOT NULL,
+  post_excerpt text NOT NULL,
+  post_status varchar(20) NOT NULL default 'publish',
+  comment_status varchar(20) NOT NULL default 'open',
+  ping_status varchar(20) NOT NULL default 'open',
+  post_password varchar(20) NOT NULL default '',
+  post_name varchar(200) NOT NULL default '',
+  to_ping text NOT NULL,
+  pinged text NOT NULL,
+  post_modified datetime NOT NULL default '0000-00-00 00:00:00',
+  post_modified_gmt datetime NOT NULL default '0000-00-00 00:00:00',
+  post_content_filtered longtext NOT NULL,
+  post_parent bigint(20) unsigned NOT NULL default '0',
+  guid varchar(255) NOT NULL default '',
+  menu_order int(11) NOT NULL default '0',
+  post_type varchar(20) NOT NULL default 'post',
+  post_mime_type varchar(100) NOT NULL default '',
+  comment_count bigint(20) NOT NULL default '0',
+  PRIMARY KEY  (ID),
+  KEY post_name (post_name($max_index_length)),
+  KEY type_status_date (post_type,post_status,post_date,ID),
+  KEY post_parent (post_parent),
+  KEY post_author (post_author)
+) $charset_collate;\n";
 
 
         /*

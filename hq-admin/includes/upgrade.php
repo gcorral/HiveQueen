@@ -174,24 +174,23 @@ function hq_install_defaults( $user_id ) {
 		$first_post = __( 'Welcome to HiveQueen. This is your first post. Edit or delete it, then start writing!' );
 	}
 
-        //TODO: Goyo no post table
-	//$hqdb->insert( $hqdb->posts, array(
-	//	'post_author' => $user_id,
-	//	'post_date' => $now,
-	//	'post_date_gmt' => $now_gmt,
-	//	'post_content' => $first_post,
-	//	'post_excerpt' => '',
-	//	'post_title' => __('Hello world!'),
-	//	/* translators: Default post slug */
-	//	'post_name' => sanitize_title( _x('hello-world', 'Default post slug') ),
-	//	'post_modified' => $now,
-	//	'post_modified_gmt' => $now_gmt,
-	//	'guid' => $first_post_guid,
-	//	'comment_count' => 1,
-	//	'to_ping' => '',
-	//	'pinged' => '',
-	//	'post_content_filtered' => ''
-	//));
+	$hqdb->insert( $hqdb->posts, array(
+		'post_author' => $user_id,
+		'post_date' => $now,
+		'post_date_gmt' => $now_gmt,
+		'post_content' => $first_post,
+		'post_excerpt' => '',
+		'post_title' => __('Hello world!'),
+		/* translators: Default post slug */
+		'post_name' => sanitize_title( _x('hello-world', 'Default post slug') ),
+		'post_modified' => $now,
+		'post_modified_gmt' => $now_gmt,
+		'guid' => $first_post_guid,
+		'comment_count' => 1,
+		'to_ping' => '',
+		'pinged' => '',
+		'post_content_filtered' => ''
+	));
 
         //TODO: Goyo no term_relationships table
 	//$hqdb->insert( $hqdb->term_relationships, array('term_taxonomy_id' => $cat_tt_id, 'object_id' => 1) );

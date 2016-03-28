@@ -1496,8 +1496,11 @@ class HQ_Query {
                         }
 
                         $this->query_vars_hash = false;
-                        $this->parse_tax_query( $qv );
+                        //TODO: Goyo no taxonomy
+                        //$this->parse_tax_query( $qv );
 
+                        //TODO: Goyo no taxonomy
+                        /*
                         foreach ( $this->tax_query->queries as $tax_query ) {
                                 if ( ! is_array( $tax_query ) ) {
                                         continue;
@@ -1517,6 +1520,7 @@ class HQ_Query {
                                 }
                         }
                         unset( $tax_query );
+                        */
 
                         if ( empty($qv['author']) || ($qv['author'] == '0') ) {
                                 $this->is_author = false;
@@ -1659,6 +1663,7 @@ class HQ_Query {
          *
          * @param array &$q The query variables
          */
+        /* TODO: Goyo no tax 
         public function parse_tax_query( &$q ) {
                 if ( ! empty( $q['tax_query'] ) && is_array( $q['tax_query'] ) ) {
                         $tax_query = $q['tax_query'];
@@ -1857,15 +1862,16 @@ class HQ_Query {
 
                 $this->tax_query = new HQ_Tax_Query( $tax_query );
 
-                /**
-                 * Fires after taxonomy-related query vars have been parsed.
-                 *
-                 * @since 0.0.1
-                 *
-                 * @param HQ_Query $this The HQ_Query instance.
-                 */
+                //
+                // Fires after taxonomy-related query vars have been parsed.
+                // 
+                // @since 0.0.1
+                //
+                // @param HQ_Query $this The HQ_Query instance.
+                //
                 do_action( 'parse_tax_query', $this );
         }
+        */
 
         /**
          * Generate SQL for the WHERE clause based on passed search terms.
@@ -2521,6 +2527,8 @@ class HQ_Query {
                 $search = apply_filters_ref_array( 'posts_search', array( $search, &$this ) );
 
                 // Taxonomies
+                //TODO: Goyo no taxonomy
+                /*
                 if ( !$this->is_singular ) {
                         $this->parse_tax_query( $q );
 
@@ -2529,8 +2537,11 @@ class HQ_Query {
                         $join .= $clauses['join'];
                         $where .= $clauses['where'];
                 }
+                */
 
-                if ( $this->is_tax ) {
+                //TODO: Goyo no taxonomy
+                //if ( $this->is_tax ) {
+                if ( false ) {
                         if ( empty($post_type) ) {
                                 // Do a fully inclusive search for currently registered post types of queried taxonomies
                                 $post_type = array();
@@ -3862,7 +3873,23 @@ class HQ_Query {
 
                 return in_array( $post_obj->post_type, (array) $post_types );
         }
-       
+
+       /**
+        * Sets up the HiveQueen query by parsing query string.
+        *
+        * @since 0.0.1
+        * @access public
+        *
+        * @param string $query URL query string.
+        * @return array List of posts.
+        */
+       public function query( $query ) {
+                $this->init();
+                $this->query = $this->query_vars = hq_parse_args( $query );
+                return $this->get_posts();
+        }
+
+        
 
 //TODO: *********************************************** functions ***************************************************************************
 

@@ -36,16 +36,14 @@ require_once(ABSPATH . 'hq-admin/includes/admin-filters.php');
 //require_once(ABSPATH . 'hq-admin/includes/image.php');
 
 /** HiveQueen Media Administration API */
-//TODO: disable
-//require_once(ABSPATH . 'hq-admin/includes/media.php');
+require_once(ABSPATH . 'hq-admin/includes/media.php');
 
 /** HiveQueen Import Administration API */
 //TODO: disable
 //require_once(ABSPATH . 'hq-admin/includes/import.php');
 
 /** HiveQueen Misc Administration API */
-//TODO: disable
-//require_once(ABSPATH . 'hq-admin/includes/misc.php');
+require_once(ABSPATH . 'hq-admin/includes/misc.php');
 
 /** HiveQueen Plugin Administration API */
 require_once(ABSPATH . 'hq-admin/includes/plugin.php');

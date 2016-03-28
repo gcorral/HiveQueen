@@ -17,19 +17,16 @@ get_header(); ?>
 		<div id="primary">
 			<div id="content" role="main">
 
-			<?php if (false) : //TODO: if ( have_posts() ) : ?>
+			<?php if ( have_posts() ) : ?>
 
 				<?php hivequeen_content_nav( 'nav-above' ); ?>
 
 				<?php /* Start the Loop */ ?>
-                                //TODO: Goyo no posts 
-                                <!--
-				<?php //TODO: while ( have_posts() ) : the_post(); ?>
+				<?php while ( have_posts() ) : the_post(); ?>
 
-					<?php //TODO: get_template_part( 'content', get_post_format() ); ?>
+					<?php get_template_part( 'content', get_post_format() ); ?>
 
-				<?php //TODO: endwhile; ?>
-                                -->
+				<?php endwhile; ?>
 
 				<?php hivequeen_content_nav( 'nav-below' ); ?>
 

@@ -280,7 +280,7 @@ class hqdb {
          * @see hqdb::tables()
          * @var array
          */
-        var $global_tables = array( 'users', 'site', 'hosts', 'playbooks', 'tasks', 'alerts', 'options' );
+        var $global_tables = array( 'users', 'site', 'hosts', 'playbooks', 'tasks', 'alerts', 'options', 'posts' );
 
         /**
          * HiveQueen Hosts table
@@ -340,6 +340,15 @@ class hqdb {
          * @var string
          */
         public $options;
+
+        /**
+         * HiveQueen Posts table
+         *
+         * @since 0.0.1
+         * @access public
+         * @var string
+         */
+        public $posts;
 
        /**
          * Format specifiers for DB columns. Columns not listed here default to %s. Initialized during HQ load.

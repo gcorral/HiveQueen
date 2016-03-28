@@ -249,7 +249,7 @@ class HQ_Scripts extends HQ_Dependencies {
 	public function set_group( $handle, $recursion, $group = false ) {
 
                 //DEBUG: Goyo
-                printf("set_group: %s", $handle);
+                //printf("set_group: %s", $handle);
 
 		if ( $this->registered[$handle]->args === 1 )
 			$grp = 1;
@@ -260,7 +260,7 @@ class HQ_Scripts extends HQ_Dependencies {
 			$grp = $group;
 
                 //DEBUG: Goyo
-                printf("set_group: %s", $grp);
+                //printf("set_group: %s", $grp);
 
 		return parent::set_group( $handle, $recursion, $grp );
 	}
