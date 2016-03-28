@@ -159,7 +159,10 @@ function insert_with_markers( $filename, $marker, $insertion ) {
  * @global HQ_Rewrite $hq_rewrite
  */
 function save_mod_rewrite_rules() {
-	if ( is_multisite() )
+       
+        //TODO: Goyo no multisite 
+	//if ( is_multisite() )
+	if ( false )
 		return;
 
 	global $hq_rewrite;
@@ -192,7 +195,9 @@ function save_mod_rewrite_rules() {
  * @return bool True if web.config was updated successfully
  */
 function iis7_save_url_rewrite_rules(){
-	if ( is_multisite() )
+        //TODO: Goyo no multisite
+	//if ( is_multisite() )
+	if ( false )
 		return;
 
 	global $hq_rewrite;

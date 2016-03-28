@@ -28,8 +28,7 @@ require_once(ABSPATH . 'hq-admin/includes/admin-filters.php');
 //require_once(ABSPATH . 'hq-admin/includes/comment.php');
 
 /** HiveQueen Administration File API */
-//TODO: disable
-//require_once(ABSPATH . 'hq-admin/includes/file.php');
+require_once(ABSPATH . 'hq-admin/includes/file.php');
 
 /** HiveQueen Image Administration API */
 //TODO: disable

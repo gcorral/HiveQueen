@@ -3168,6 +3168,74 @@ function hq_timezone_override_offset() {
         return round( timezone_offset_get( $timezone_object, $datetime_object ) / HOUR_IN_SECONDS, 2 );
 }
 
+/**
+ * Does the specified module exist in the Apache config?
+ *
+ * @since 0.0.1
+ *
+ * @global bool $is_apache
+ *
+ * @param string $mod     The module, e.g. mod_rewrite.
+ * @param bool   $default Optional. The default return value if the module is not found. Default false.
+ * @return bool Whether the specified module is loaded.
+ */
+function apache_mod_loaded($mod, $default = false) {
+        global $is_apache;
+
+        if ( !$is_apache )
+                return false;
+
+        if ( function_exists( 'apache_get_modules' ) ) {
+                $mods = apache_get_modules();
+                if ( in_array($mod, $mods) )
+                        return true;
+        } elseif ( function_exists( 'phpinfo' ) && false === strpos( ini_get( 'disable_functions' ), 'phpinfo' ) ) {
+                        ob_start();
+                        phpinfo(8);
+                        $phpinfo = ob_get_clean();
+                        if ( false !== strpos($phpinfo, $mod) )
+                                return true;
+        }
+        return $default;
+}
+
+
+/**
+ * Check if IIS 7+ supports pretty permalinks.
+ *
+ * @since 0.0.1
+ *
+ * @global bool $is_iis7
+ *
+ * @return bool Whether IIS7 supports permalinks.
+ */
+function iis7_supports_permalinks() {
+        global $is_iis7;
+
+        $supports_permalinks = false;
+        if ( $is_iis7 ) {
+                /* First we check if the DOMDocument class exists. If it does not exist, then we cannot
+                 * easily update the xml configuration file, hence we just bail out and tell user that
+                 * pretty permalinks cannot be used.
+                 *
+                 * Next we check if the URL Rewrite Module 1.1 is loaded and enabled for the web site. When
+                 * URL Rewrite 1.1 is loaded it always sets a server variable called 'IIS_UrlRewriteModule'.
+                 * Lastly we make sure that PHP is running via FastCGI. This is important because if it runs
+                 * via ISAPI then pretty permalinks will not work.
+                 */
+                $supports_permalinks = class_exists('DOMDocument') && isset($_SERVER['IIS_UrlRewriteModule']) && ( PHP_SAPI == 'cgi-fcgi' );
+        }
+
+        /**
+         * Filter whether IIS 7+ supports pretty permalinks.
+         *
+         * @since 0.0.1
+         *
+         * @param bool $supports_permalinks Whether IIS7 supports permalinks. Default false.
+         */
+        return apply_filters( 'iis7_supports_permalinks', $supports_permalinks );
+}
+
 
 //TODO: ****************************************** Functions ********************************************************
 

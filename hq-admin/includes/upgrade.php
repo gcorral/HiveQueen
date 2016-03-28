@@ -349,7 +349,7 @@ function hq_install_maybe_enable_pretty_permalinks() {
 		$test_url = get_permalink( 1 );
 
 		if ( ! $test_url ) {
-			$test_url = home_url( '/wordpress-check-for-rewrites/' );
+			$test_url = home_url( '/hivequeen-check-for-rewrites/' );
 		}
 
 		/*
