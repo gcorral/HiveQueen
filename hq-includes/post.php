@@ -660,8 +660,10 @@ final class HQ_Post {
 		$post_id = (int) $post_id;
 		if ( ! $post_id )
 			return false;
-
-		$_post = hq_cache_get( $post_id, 'posts' );
+                
+                //TODO: Goyo no cache
+		//$_post = hq_cache_get( $post_id, 'posts' );
+                $_post = NULL;
 
 		if ( ! $_post ) {
 			$_post = $hqdb->get_row( $hqdb->prepare( "SELECT * FROM $hqdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
@@ -670,7 +672,8 @@ final class HQ_Post {
 				return false;
 
 			$_post = sanitize_post( $_post, 'raw' );
-			hq_cache_add( $_post->ID, $_post, 'posts' );
+                        //TODO: Goyo no Cache
+			//hq_cache_add( $_post->ID, $_post, 'posts' );
 		} elseif ( empty( $_post->filter ) ) {
 			$_post = sanitize_post( $_post, 'raw' );
 		}
@@ -6007,30 +6010,5 @@ function _update_term_count_on_transition_post_status( $new_status, $old_status,
 	foreach ( (array) get_object_taxonomies( $post->post_type ) as $taxonomy ) {
 		$tt_ids = hq_get_object_terms( $post->ID, $taxonomy, array( 'fields' => 'tt_ids' ) );
 		hq_update_term_count( $tt_ids, $taxonomy );
-	}
-}
-
-/**
- * Adds any posts from the given ids to the cache that do not already exist in cache
- *
- * @since 0.0.1
- * @access private
- *
- * @see update_post_caches()
- *
- * @global hqdb $hqdb
- *
- * @param array $ids               ID list
- * @param bool  $update_term_cache Optional. Whether to update the term cache. Default true.
- * @param bool  $update_meta_cache Optional. Whether to update the meta cache. Default true.
- */
-function _prime_post_caches( $ids, $update_term_cache = true, $update_meta_cache = true ) {
-	global $hqdb;
-
-	$non_cached_ids = _get_non_cached_ids( $ids, 'posts' );
-	if ( !empty( $non_cached_ids ) ) {
-		$fresh_posts = $hqdb->get_results( sprintf( "SELECT $hqdb->posts.* FROM $hqdb->posts WHERE ID IN (%s)", join( ",", $non_cached_ids ) ) );
-
-		update_post_caches( $fresh_posts, 'any', $update_term_cache, $update_meta_cache );
 	}
 }

@@ -17,7 +17,7 @@ class HQ {
          */
          //TODO: Fix
          //public $public_query_vars = array('m', 'p', 'posts', 'w', 'cat', 'withcomments', 'withoutcomments', 's', 'search', 'exact', 'sentence', 'calendar', 'page', 'paged', 'more', 'tb', 'pb', 'author', 'order', 'orderby', 'year', 'monthnum', 'day', 'hour', 'minute', 'second', 'name', 'category_name', 'tag', 'feed', 'author_name', 'static', 'pagename', 'page_id', 'error', 'comments_popup', 'attachment', 'attachment_id', 'subpost', 'subpost_id', 'preview', 'robots', 'taxonomy', 'term', 'cpage', 'post_type');
-         public $public_query_vars = array('m', 'p', 'posts', 'w', 'cat', 'withcomments', 'withoutcomments', 's', 'search', 'exact', 'sentence', 'calendar', 'page', 'paged', 'more', 'tb', 'pb', 'author', 'order', 'orderby', 'year', 'monthnum', 'day', 'hour', 'minute', 'second', 'name', 'category_name', 'tag', 'feed', 'author_name', 'static', 'pagename', 'page_id', 'error', 'comments_popup', 'attachment', 'attachment_id', 'subpost', 'subpost_id', 'preview', 'robots', 'taxonomy', 'term', 'cpage', 'post_type');
+         public $public_query_vars = array('m', 'p', 'posts', 'w', 'cat', 's', 'search', 'exact', 'sentence', 'calendar', 'page', 'paged', 'more', 'tb', 'pb', 'author', 'order', 'orderby', 'year', 'monthnum', 'day', 'hour', 'minute', 'second', 'name', 'category_name', 'tag', 'feed', 'author_name', 'static', 'pagename', 'page_id', 'error', 'attachment', 'attachment_id', 'subpost', 'subpost_id', 'preview', 'robots', 'taxonomy', 'term', 'cpage', 'post_type');
 
         /**
          * Private query variables.
@@ -28,8 +28,8 @@ class HQ {
          * @var array
          */
          //TODO: Fix
-         //public $private_query_vars = array( 'offset', 'posts_per_page', 'posts_per_archive_page', 'showposts', 'nopaging', 'post_type', 'post_status', 'category__in', 'category__not_in', 'category__and', 'tag__in', 'tag__not_in', 'tag__and', 'tag_slug__in', 'tag_slug__and', 'tag_id', 'post_mime_type', 'perm', 'comments_per_page', 'post__in', 'post__not_in', 'post_parent', 'post_parent__in', 'post_parent__not_in' );
-         public $private_query_vars = array( 'offset', 'posts_per_page', 'posts_per_archive_page', 'showposts', 'nopaging', 'post_type', 'post_status', 'category__in', 'category__not_in', 'category__and', 'tag__in', 'tag__not_in', 'tag__and', 'tag_slug__in', 'tag_slug__and', 'tag_id', 'post_mime_type', 'perm', 'comments_per_page', 'post__in', 'post__not_in', 'post_parent', 'post_parent__in', 'post_parent__not_in' );
+         //public $private_query_vars = array( 'offset', 'posts_per_page', 'posts_per_archive_page', 'showposts', 'nopaging', 'post_type', 'post_status', 'category__in', 'category__not_in', 'category__and', 'tag__in', 'tag__not_in', 'tag__and', 'tag_slug__in', 'tag_slug__and', 'tag_id', 'post_mime_type', 'perm', comments_per_page', 'post__in', 'post__not_in', 'post_parent', 'post_parent__in', 'post_parent__not_in' );
+         public $private_query_vars = array( 'offset', 'posts_per_page', 'posts_per_archive_page', 'showposts', 'nopaging', 'post_type', 'post_status', 'category__in', 'category__not_in', 'category__and', 'tag__in', 'tag__not_in', 'tag__and', 'tag_slug__in', 'tag_slug__and', 'tag_id', 'post_mime_type', 'perm', 'post__in', 'post__not_in', 'post_parent', 'post_parent__in', 'post_parent__not_in' );
 
         /**
          * Extra query variables set by the user.
@@ -263,10 +263,9 @@ class HQ {
                  */
                 $this->public_query_vars = apply_filters( 'query_vars', $this->public_query_vars );
 
-                //TODO: Goyo no posts
-                //foreach ( get_post_types( array(), 'objects' ) as $post_type => $t )
-                //        if ( $t->query_var )
-                //                $post_type_query_vars[$t->query_var] = $post_type;
+                foreach ( get_post_types( array(), 'objects' ) as $post_type => $t )
+                        if ( $t->query_var )
+                                $post_type_query_vars[$t->query_var] = $post_type;
 
                 foreach ( $this->public_query_vars as $hqvar ) {
                         if ( isset( $this->extra_query_vars[$hqvar] ) )
@@ -371,20 +370,21 @@ class HQ {
                         $headers['Content-Type'] = get_option('html_type') . '; charset=' . get_option('blog_charset');
                 } else {
                         // We're showing a feed, so HQ is indeed the only thing that last changed
-                        if ( !empty($this->query_vars['withcomments'])
-                                || false !== strpos( $this->query_vars['feed'], 'comments-' )
-                                || ( empty($this->query_vars['withoutcomments'])
-                                        && ( !empty($this->query_vars['p'])
-                                                || !empty($this->query_vars['name'])
-                                                || !empty($this->query_vars['page_id'])
-                                                || !empty($this->query_vars['pagename'])
-                                                || !empty($this->query_vars['attachment'])
-                                                || !empty($this->query_vars['attachment_id'])
-                                        )
-                                )
-                        )
-                                $hq_last_modified = mysql2date('D, d M Y H:i:s', get_lastcommentmodified('GMT'), 0).' GMT';
-                        else
+                        //TODO: Goyo no commnets
+                        //if ( !empty($this->query_vars['withcomments'])
+                        //        || false !== strpos( $this->query_vars['feed'], 'comments-' )
+                        //        || ( empty($this->query_vars['withoutcomments'])
+                        //                && ( !empty($this->query_vars['p'])
+                        //                        || !empty($this->query_vars['name'])
+                        //                        || !empty($this->query_vars['page_id'])
+                        //                        || !empty($this->query_vars['pagename'])
+                        //                        || !empty($this->query_vars['attachment'])
+                        //                        || !empty($this->query_vars['attachment_id'])
+                        //               )
+                        //        )
+                        //)
+                        //        $hq_last_modified = mysql2date('D, d M Y H:i:s', get_lastcommentmodified('GMT'), 0).' GMT';
+                        //else
                                 $hq_last_modified = mysql2date('D, d M Y H:i:s', get_lastpostmodified('GMT'), 0).' GMT';
                         $hq_etag = '"' . md5($hq_last_modified) . '"';
                         $headers['Last-Modified'] = $hq_last_modified;
@@ -476,6 +476,9 @@ class HQ {
                         }
                 }
 
+                //TODO: Goyo debug
+                //printf("build_query_string: %s", $this->query_string);
+
                 if ( has_filter( 'query_string' ) ) {  // Don't bother filtering and parsing if no plugins are hooked in.
                         /**
                          * Filter the query string before parsing.
@@ -488,6 +491,7 @@ class HQ {
                         $this->query_string = apply_filters( 'query_string', $this->query_string );
                         parse_str($this->query_string, $this->query_vars);
                 }
+
         }
 
         /**
@@ -589,9 +593,8 @@ class HQ {
                         }
 
                         // Don't 404 for these queries if they matched an object.
-                        //TODO: Goyo no posts
-                        //if ( ( is_tag() || is_category() || is_tax() || is_post_type_archive() ) && get_queried_object() ) {
-                        if ( ( is_tag() || is_category() || is_tax() ) && get_queried_object() ) {
+                        if ( ( is_tag() || is_category() || is_tax() || is_post_type_archive() ) && get_queried_object() ) {
+                        //if ( ( is_tag() || is_category() || is_tax() ) && get_queried_object() ) {
                                 status_header( 200 );
                                 return;
                         }
@@ -626,11 +629,15 @@ class HQ {
                 print("hq->main(): Begin");
 
                 $this->init();
+
+
                 $this->parse_request($query_args);
                 $this->send_headers();
                 $this->query_posts();
                 $this->handle_404();
                 $this->register_globals();
+ 
+                 
 
                 /**
                  * Fires once the HiveQueen environment has been set up.
@@ -649,6 +656,7 @@ class HQ {
                 print("hq->main(): End");
 
         }
+
 }
 
 /**
@@ -658,7 +666,7 @@ class HQ {
  */
 class HQ_MatchesMapRegex {
         /**
-         * store for matches
+         * store for matche
          *
          * @access private
          * @var array

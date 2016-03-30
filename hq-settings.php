@@ -144,7 +144,7 @@ require( ABSPATH . HQINC . '/meta.php' );
 require( ABSPATH . HQINC . '/general-template.php' );
 require( ABSPATH . HQINC . '/link-template.php' );
 //require( ABSPATH . HQINC . '/author-template.php' );
-//require( ABSPATH . HQINC . '/post.php' );
+require( ABSPATH . HQINC . '/post.php' );
 //require( ABSPATH . HQINC . '/post-template.php' );
 //require( ABSPATH . HQINC . '/revision.php' );
 //require( ABSPATH . HQINC . '/post-formats.php' );

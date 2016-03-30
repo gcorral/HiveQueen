@@ -147,29 +147,6 @@ function is_archive() {
         return $hq_query->is_archive();
 }
 
-/**
- * Is the query for an existing post type archive page?
- *
- * @since 0.0.1
- *
- * @global HQ_Query $hq_query
- *
- * @param string|array $post_types Optional. Post type or array of posts types to check against.
- * @return bool
- */
-//TODO: Goyo no posts
-/*
-function is_post_type_archive( $post_types = '' ) {
-        global $hq_query;
-
-        if ( ! isset( $hq_query ) ) {
-                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
-                return false;
-        }
-
-        return $hq_query->is_post_type_archive( $post_types );
-}
-*/
 
 /**
  * Is the query for an existing attachment page?
@@ -636,6 +613,43 @@ function is_singular( $post_types = '' ) {
         }
 
         return $hq_query->is_singular( $post_types );
+}
+
+
+/**
+ * Whether current HiveQueeb query has results to loop over.
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @return bool
+ */
+function have_posts() {
+        global $hq_query;
+        return $hq_query->have_posts();
+}
+
+
+/**
+ * Is the query for an existing post type archive page?
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ *
+ * @param string|array $post_types Optional. Post type or array of posts types to check against.
+ * @return bool
+ */
+function is_post_type_archive( $post_types = '' ) {
+        global $hq_query;
+
+        if ( ! isset( $hq_query ) ) {
+                _doing_it_wrong( __FUNCTION__, __( 'Conditional query tags do not work before the query is run. Before then, they always return false.' ), '3.1' );
+                return false;
+        }
+
+        return $hq_query->is_post_type_archive( $post_types );
 }
 
 
@@ -3323,7 +3337,8 @@ class HQ_Query {
                         if ( $ids ) {
                                 $this->posts = $ids;
                                 $this->set_found_posts( $q, $limits );
-                                _prime_post_caches( $ids, $q['update_post_term_cache'], $q['update_post_meta_cache'] );
+                                //TODO: Goyo no cache
+                                //_prime_post_caches( $ids, $q['update_post_term_cache'], $q['update_post_meta_cache'] );
                         } else {
                                 $this->posts = array();
                         }
@@ -3889,7 +3904,98 @@ class HQ_Query {
                 return $this->get_posts();
         }
 
-        
+
+       /**
+        * Set up the amount of found posts and the number of pages (if limit clause was used)
+        * for the current query.
+        *
+        * @since 0.0.1
+        * @access private
+        *
+        * @global hqdb $hqdb
+        */
+       private function set_found_posts( $q, $limits ) {
+                global $hqdb;
+
+                // Bail if posts is an empty array. Continue if posts is an empty string,
+                // null, or false to accommodate caching plugins that fill posts later.
+                if ( $q['no_found_rows'] || ( is_array( $this->posts ) && ! $this->posts ) )
+                        return;
+
+                if ( ! empty( $limits ) ) {
+                        /**
+                         * Filter the query to run for retrieving the found posts.
+                         *
+                         * @param string   $found_posts The query to run to find the found posts.
+                         * @param HQ_Query &$this       The HQ_Query instance (passed by reference).
+                         */
+                        $this->found_posts = $hqdb->get_var( apply_filters_ref_array( 'found_posts_query', array( 'SELECT FOUND_ROWS()', &$this ) ) );
+                } else {
+                        $this->found_posts = count( $this->posts );
+                }
+
+                /**
+                 * Filter the number of found posts for the query.
+                 *
+                 * @param int      $found_posts The number of posts found.
+                 * @param HQ_Query &$this       The HQ_Query instance (passed by reference).
+                 */
+                $this->found_posts = apply_filters_ref_array( 'found_posts', array( $this->found_posts, &$this ) );
+
+                if ( ! empty( $limits ) )
+                        $this->max_num_pages = ceil( $this->found_posts / $q['posts_per_page'] );
+        }
+
+    
+        /**
+         * Whether there are more posts available in the loop.
+         *
+         * Calls action 'loop_end', when the loop is complete.
+         *
+         * @since 0.0.1
+         * @access public
+         *
+         * @return bool True if posts are available, false if end of loop.
+         */
+        public function have_posts() {
+                if ( $this->current_post + 1 < $this->post_count ) {
+                        return true;
+                } elseif ( $this->current_post + 1 == $this->post_count && $this->post_count > 0 ) {
+                        /**
+                         * Fires once the loop has ended.
+                         *
+                         * @param HQ_Query &$this The HQ_Query instance (passed by reference).
+                         */
+                        do_action_ref_array( 'loop_end', array( &$this ) );
+                        // Do some cleaning up after the loop
+                        $this->rewind_posts();
+                }
+
+                $this->in_the_loop = false;
+                return false;
+        }
+
+
+ 	/**
+         * Is the query for an existing post type archive page?
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $post_types Optional. Post type or array of posts types to check against.
+         * @return bool
+         */
+        public function is_post_type_archive( $post_types = '' ) {
+                if ( empty( $post_types ) || ! $this->is_post_type_archive )
+                        return (bool) $this->is_post_type_archive;
+
+                $post_type = $this->get( 'post_type' );
+                if ( is_array( $post_type ) )
+                        $post_type = reset( $post_type );
+                $post_type_object = get_post_type_object( $post_type );
+
+                return in_array( $post_type_object->name, (array) $post_types );
+        }
+
 
 //TODO: *********************************************** functions ***************************************************************************
 
