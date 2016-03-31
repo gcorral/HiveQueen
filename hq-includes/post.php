@@ -3500,7 +3500,8 @@ function hq_insert_post( $postarr, $hq_error = false ) {
 		}
 	}
 
-	clean_post_cache( $post_ID );
+        //TODO: Goyo no cache
+	//clean_post_cache( $post_ID );
 
 	$post = get_post( $post_ID );
 
@@ -5607,6 +5608,8 @@ function _get_last_post_time( $timezone, $field ) {
  *
  * @param array $posts Array of post objects, passed by reference.
  */
+//TODO: Goyo no cache
+/*
 function update_post_cache( &$posts ) {
 	if ( ! $posts )
 		return;
@@ -5614,6 +5617,7 @@ function update_post_cache( &$posts ) {
 	foreach ( $posts as $post )
 		hq_cache_add( $post->ID, $post, 'posts' );
 }
+*/
 
 /**
  * Will clean the post in the cache.
@@ -5684,6 +5688,8 @@ function clean_post_cache( $post ) {
  * @param bool   $update_term_cache Optional. Whether to update the term cache. Default true.
  * @param bool   $update_meta_cache Optional. Whether to update the meta cache. Default true.
  */
+//TODO: Goyo no caches
+/*
 function update_post_caches( &$posts, $post_type = 'post', $update_term_cache = true, $update_meta_cache = true ) {
 	// No point in doing all this work if we didn't match any posts.
 	if ( !$posts )
@@ -5719,6 +5725,7 @@ function update_post_caches( &$posts, $post_type = 'post', $update_term_cache = 
 	if ( $update_meta_cache )
 		update_postmeta_cache($post_ids);
 }
+*/
 
 /**
  * Updates metadata cache for list of post IDs.

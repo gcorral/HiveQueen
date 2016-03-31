@@ -553,6 +553,14 @@ class HQ {
         public function query_posts() {
                 global $hq_the_query;
                 $this->build_query_string();
+
+
+                //Goyo: Debug
+                //printf("query_vars:  ");
+                //foreach ( (array) array_keys($this->query_vars) as $hqvar) {
+ 	        //		printf("hqvar => s", $hqvar);
+                //}
+
                 $hq_the_query->query($this->query_vars);
         }
 
@@ -633,7 +641,9 @@ class HQ {
 
                 $this->parse_request($query_args);
                 $this->send_headers();
+
                 $this->query_posts();
+
                 $this->handle_404();
                 $this->register_globals();
  

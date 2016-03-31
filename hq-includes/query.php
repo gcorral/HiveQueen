@@ -2227,7 +2227,11 @@ class HQ_Query {
         public function get_posts() {
                 global $hqdb;
 
+                //Goyo: Debug
+                print("get_posts: Begin");
+
                 $this->parse_query();
+
 
                 /**
                  * Fires after the query variable object is created, but before the actual query is run.
@@ -2242,15 +2246,19 @@ class HQ_Query {
                  */
                 do_action_ref_array( 'pre_get_posts', array( &$this ) );
 
+
                 // Shorthand.
                 $q = &$this->query_vars;
+
 
                 // Fill again in case pre_get_posts unset some vars.
                 $q = $this->fill_query_vars($q);
 
+
                 // Parse meta query
                 $this->meta_query = new HQ_Meta_Query();
                 $this->meta_query->parse_query_vars( $q );
+
 
                 // Set a flag if a pre_get_posts hook changed the query vars.
                 $hash = md5( serialize( $this->query_vars ) );
@@ -2532,8 +2540,6 @@ class HQ_Query {
 
                /**
                  * Filter the search SQL that is used in the WHERE clause of HQ_Query.
-                 *
-                 * @since 0.0.1
                  *
                  * @param string   $search Search SQL for WHERE clause.
                  * @param HQ_Query $this   The current HQ_Query object.
@@ -3027,6 +3033,8 @@ class HQ_Query {
                                 $where = "AND 0";
                 }
 
+               
+
                 $pieces = array( 'where', 'groupby', 'join', 'orderby', 'distinct', 'fields', 'limits' );
 
                 /*
@@ -3475,13 +3483,13 @@ class HQ_Query {
                          * Filter the array of retrieved posts after they've been fetched and
                          * internally processed.
                          *
-                         * @since 0.0.1
-                         *
                          * @param array    $posts The array of retrieved posts.
                          * @param HQ_Query &$this The HQ_Query instance (passed by reference).
                          */
                         $this->posts = apply_filters_ref_array( 'the_posts', array( $this->posts, &$this ) );
                 }
+                //Goyo: Debug
+                //print("get_posts: AQui");
 
                 // Ensure that any posts added/modified via one of the filters above are
                 // of the type HQ_Post and are filtered.
@@ -3490,8 +3498,10 @@ class HQ_Query {
 
                         $this->posts = array_map( 'get_post', $this->posts );
 
-                        if ( $q['cache_results'] )
-                                update_post_caches($this->posts, $post_type, $q['update_post_term_cache'], $q['update_post_meta_cache']);
+                        //TODO: Goyo no caches
+                        //
+                        //if ( $q['cache_results'] )
+                        //        update_post_caches($this->posts, $post_type, $q['update_post_term_cache'], $q['update_post_meta_cache']);
 
                         $this->post = reset( $this->posts );
                 } else {
@@ -3899,8 +3909,18 @@ class HQ_Query {
         * @return array List of posts.
         */
        public function query( $query ) {
+
+
                 $this->init();
                 $this->query = $this->query_vars = hq_parse_args( $query );
+
+                //Goyo: Debug
+                //printf("querys:  ");
+                //foreach ( (array) array_keys($query) as $hqvar) {
+                //foreach ( (array) array_keys($this->query) as $hqvar) {
+                //              printf("hqvar => %s", $hqvar);
+                //}
+
                 return $this->get_posts();
         }
 
