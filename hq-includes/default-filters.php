@@ -399,7 +399,8 @@ add_filter( 'style_loader_src', 'hq_style_loader_src', 10, 2 );
 //add_action( 'template_redirect', 'hq_redirect_admin_locations', 1000 );
 
 // Shortcodes
-add_filter( 'the_content', 'do_shortcode', 11 ); // AFTER hqautop()
+//TODO: Goyo no shortcode
+//add_filter( 'the_content', 'do_shortcode', 11 ); // AFTER hqautop()
 
 // Media
 add_action( 'hq_playlist_scripts', 'hq_playlist_scripts' );

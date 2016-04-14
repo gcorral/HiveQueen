@@ -196,10 +196,10 @@ function hq_install_defaults( $user_id ) {
 	//$hqdb->insert( $hqdb->term_relationships, array('term_taxonomy_id' => $cat_tt_id, 'object_id' => 1) );
 
 	// Default comment
-	$first_comment_author = __('Mr HiveQueen');
-	$first_comment_url = 'https://wordpress.org/';
-	$first_comment = __('Hi, this is a comment.
-To delete a comment, just log in and view the post&#039;s comments. There you will have the option to edit or delete them.');
+        //TODO: Goyo no commment
+	//$first_comment_author = __('Mr HiveQueen');
+	//$first_comment_url = 'https://github.com/gcorral/hivequeen';
+	//$first_comment = __('Hi, this is a comment.  To delete a comment, just log in and view the post&#039;s comments. There you will have the option to edit or delete them.');
 
  
         //TODO: Goyo no multisite
@@ -224,7 +224,6 @@ To delete a comment, just log in and view the post&#039;s comments. There you wi
 
 	// First Page
         //TODO: Goyo no post
-        /*
 	$first_page = sprintf( __( "This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:
 
 <blockquote>Hi there! I'm a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin' caught in the rain.)</blockquote>
@@ -234,7 +233,6 @@ To delete a comment, just log in and view the post&#039;s comments. There you wi
 <blockquote>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</blockquote>
 
 As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to delete this page and create new pages for your content. Have fun!" ), admin_url() );
-       */
 
        //TODO: Goyo no multisite
        //if ( is_multisite() )
@@ -242,7 +240,6 @@ As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to d
 		$first_page = get_site_option( 'first_page', $first_page );
 
         //TODO: Goyo no posts table 
-        /*
 	$first_post_guid = get_option('home') . '/?page_id=2';
 	$hqdb->insert( $hqdb->posts, array(
 		'post_author' => $user_id,
@@ -262,19 +259,20 @@ As a new HiveQueen user, you should go to <a href=\"%s\">your dashboard</a> to d
 		'pinged' => '',
 		'post_content_filtered' => ''
 	));
-        */
 
         //TODO: Goyo no postmeta table       
- 	//$hqdb->insert( $hqdb->postmeta, array( 'post_id' => 2, 'meta_key' => '_hq_page_template', 'meta_value' => 'default' ) );
+ 	$hqdb->insert( $hqdb->postmeta, array( 'post_id' => 2, 'meta_key' => '_hq_page_template', 'meta_value' => 'default' ) );
 
+
+        //TODO: !!!
 	// Set up default widgets for default theme.
-	update_option( 'widget_search', array ( 2 => array ( 'title' => '' ), '_multiwidget' => 1 ) );
-	update_option( 'widget_recent-posts', array ( 2 => array ( 'title' => '', 'number' => 5 ), '_multiwidget' => 1 ) );
-	update_option( 'widget_recent-comments', array ( 2 => array ( 'title' => '', 'number' => 5 ), '_multiwidget' => 1 ) );
-	update_option( 'widget_archives', array ( 2 => array ( 'title' => '', 'count' => 0, 'dropdown' => 0 ), '_multiwidget' => 1 ) );
-	update_option( 'widget_categories', array ( 2 => array ( 'title' => '', 'count' => 0, 'hierarchical' => 0, 'dropdown' => 0 ), '_multiwidget' => 1 ) );
-	update_option( 'widget_meta', array ( 2 => array ( 'title' => '' ), '_multiwidget' => 1 ) );
-	update_option( 'sidebars_widgets', array ( 'hq_inactive_widgets' => array (), 'sidebar-1' => array ( 0 => 'search-2', 1 => 'recent-posts-2', 2 => 'recent-comments-2', 3 => 'archives-2', 4 => 'categories-2', 5 => 'meta-2', ), 'array_version' => 3 ) );
+	//update_option( 'widget_search', array ( 2 => array ( 'title' => '' ), '_multiwidget' => 1 ) );
+	//update_option( 'widget_recent-posts', array ( 2 => array ( 'title' => '', 'number' => 5 ), '_multiwidget' => 1 ) );
+	//update_option( 'widget_recent-comments', array ( 2 => array ( 'title' => '', 'number' => 5 ), '_multiwidget' => 1 ) );
+	//update_option( 'widget_archives', array ( 2 => array ( 'title' => '', 'count' => 0, 'dropdown' => 0 ), '_multiwidget' => 1 ) );
+	//update_option( 'widget_categories', array ( 2 => array ( 'title' => '', 'count' => 0, 'hierarchical' => 0, 'dropdown' => 0 ), '_multiwidget' => 1 ) );
+	//update_option( 'widget_meta', array ( 2 => array ( 'title' => '' ), '_multiwidget' => 1 ) );
+	//update_option( 'sidebars_widgets', array ( 'hq_inactive_widgets' => array (), 'sidebar-1' => array ( 0 => 'search-2', 1 => 'recent-posts-2', 2 => 'recent-comments-2', 3 => 'archives-2', 4 => 'categories-2', 5 => 'meta-2', ), 'array_version' => 3 ) );
 
         //TODO: Goyo no multisite
 	//if ( ! is_multisite() )

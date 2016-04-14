@@ -56,17 +56,25 @@ function login_header( $title = 'Log In', $message = '', $hq_error = '' ) {
 	if ( $shake_error_codes && $hq_error->get_error_code() && in_array( $hq_error->get_error_code(), $shake_error_codes ) )
 		add_action( 'login_head', 'hq_shake_js', 12 );
 
-	?><!DOCTYPE html>
-	<!--[if IE 8]>
-		<html xmlns="http://www.w3.org/1999/xhtml" class="ie8" <?php language_attributes(); ?>>
-	<![endif]-->
-	<!--[if !(IE 8) ]><!-->
-		<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
-	<!--<![endif]-->
-	<head>
-	<meta http-equiv="Content-Type" content="<?php bloginfo('html_type'); ?>; charset=<?php bloginfo('charset'); ?>" />
-	<title><?php bloginfo('name'); ?> &rsaquo; <?php echo $title; ?></title>
-	<?php
+
+        ?><!DOCTYPE html>
+        <!--[if IE 6]>
+        <html id="ie6" <?php language_attributes(); ?>>
+        <![endif]-->
+        <!--[if IE 7]>
+        <html id="ie7" <?php language_attributes(); ?>>
+        <![endif]-->
+        <!--[if IE 8]>
+        <html id="ie8" <?php language_attributes(); ?>>
+        <![endif]-->
+        <!--[if !(IE 6) & !(IE 7) & !(IE 8)]><!-->
+        <html <?php language_attributes(); ?>>
+        <!--<![endif]-->
+        <head>
+        <meta charset="<?php bloginfo( 'charset' ); ?>" />
+        <meta name="viewport" content="width=device-width" />
+        <title><?php
+
 
 	hq_admin_css( 'login', true );
 

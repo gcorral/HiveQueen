@@ -652,6 +652,30 @@ function is_post_type_archive( $post_types = '' ) {
         return $hq_query->is_post_type_archive( $post_types );
 }
 
+/**
+ * Iterate the post index in the loop.
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ */
+function the_post() {
+        global $hq_query;
+        $hq_query->the_post();
+}
+
+/**
+ * Rewind the loop posts.
+ *
+ * @since 0.0.1
+ *
+ * @global HQ_Query $hq_query
+ */
+function rewind_posts() {
+        global $hq_query;
+        $hq_query->rewind_posts();
+}
+
 
 // TODO: ****************************************** functions *************************************************************
 
@@ -2228,7 +2252,7 @@ class HQ_Query {
                 global $hqdb;
 
                 //Goyo: Debug
-                print("get_posts: Begin");
+                //print("get_posts: Begin");
 
                 $this->parse_query();
 
@@ -4015,6 +4039,270 @@ class HQ_Query {
 
                 return in_array( $post_type_object->name, (array) $post_types );
         }
+
+
+        /**
+         * Sets up the current post.
+         *
+         * Retrieves the next post, sets up the post, sets the 'in the loop'
+         * property to true.
+         *
+         * @since 0.0.1
+         * @access public
+         *
+         * @global HQ_Post $post
+         */
+        public function the_post() {
+                global $post;
+                $this->in_the_loop = true;
+
+                if ( $this->current_post == -1 ) // loop has just started
+                        /**
+                         * Fires once the loop is started.
+                         *
+                         * @param HQ_Query &$this The HQ_Query instance (passed by reference).
+                         */
+                        do_action_ref_array( 'loop_start', array( &$this ) );
+
+                $post = $this->next_post();
+                $this->setup_postdata( $post );
+        }
+
+
+        /**
+         * Set up the next post and iterate current post index.
+         *
+         * @since 0.0.1
+         * @access public
+         *
+         * @return HQ_Post Next post.
+         */
+        public function next_post() {
+
+                $this->current_post++;
+
+                $this->post = $this->posts[$this->current_post];
+                return $this->post;
+        }
+
+
+        /**
+         * Set up global post data.
+         *
+         * @since 0.0.1
+         *
+         * @global int             $id
+         * @global HQ_User         $authordata
+         * @global string|int|bool $currentday
+         * @global string|int|bool $currentmonth
+         * @global int             $page
+         * @global array           $pages
+         * @global int             $multipage
+         * @global int             $more
+         * @global int             $numpages
+         *
+         * @param HQ_Post $post Post data.
+         * @return true True when finished.
+         */
+        public function setup_postdata( $post ) {
+                global $id, $authordata, $currentday, $currentmonth, $page, $pages, $multipage, $more, $numpages;
+
+                $id = (int) $post->ID;
+
+                $authordata = get_userdata($post->post_author);
+
+                $currentday = mysql2date('d.m.y', $post->post_date, false);
+                $currentmonth = mysql2date('m', $post->post_date, false);
+                $numpages = 1;
+                $multipage = 0;
+                $page = $this->get( 'page' );
+                if ( ! $page )
+                        $page = 1;
+
+                /*
+                 * Force full post content when viewing the permalink for the $post,
+                 * or when on an RSS feed. Otherwise respect the 'more' tag.
+                 */
+                if ( $post->ID === get_queried_object_id() && ( $this->is_page() || $this->is_single() ) ) {
+                        $more = 1;
+                } elseif ( $this->is_feed() ) {
+                        $more = 1;
+                } else {
+                        $more = 0;
+                }
+              
+                $content = $post->post_content;
+                if ( false !== strpos( $content, '<!--nextpage-->' ) ) {
+                        if ( $page > 1 )
+                                $more = 1;
+                        $content = str_replace( "\n<!--nextpage-->\n", '<!--nextpage-->', $content );
+                        $content = str_replace( "\n<!--nextpage-->", '<!--nextpage-->', $content );
+                        $content = str_replace( "<!--nextpage-->\n", '<!--nextpage-->', $content );
+
+                        // Ignore nextpage at the beginning of the content.
+                        if ( 0 === strpos( $content, '<!--nextpage-->' ) )
+                                $content = substr( $content, 15 );
+
+                        $pages = explode('<!--nextpage-->', $content);
+                        $numpages = count($pages);
+                        if ( $numpages > 1 )
+                                $multipage = 1;
+                } else {
+                        $pages = array( $post->post_content );
+                }
+
+                /**
+                 * Fires once the post data has been setup.
+                 *
+                 * @param HQ_Post  &$post The Post object (passed by reference).
+                 * @param HQ_Query &$this The current Query object (passed by reference).
+                 */
+                do_action_ref_array( 'the_post', array( &$post, &$this ) );
+
+                return true;
+        }
+
+        /**
+         * Retrieve ID of the current queried object.
+         *
+         * @since 0.0.1
+         * @access public
+         *
+         * @return int
+         */
+        public function get_queried_object_id() {
+                $this->get_queried_object();
+
+                if ( isset($this->queried_object_id) ) {
+                        return $this->queried_object_id;
+                }
+
+                return 0;
+        }
+
+
+       /**
+        * Retrieve queried object.
+        *
+        * If queried object is not set, then the queried object will be set from
+        * the category, tag, taxonomy, posts page, single post, page, or author
+        * query variable. After it is set up, it will be returned.
+        *
+        * @since 0.0.1
+        * @access public
+        *
+        * @return object
+        */
+        public function get_queried_object() {
+                if ( isset($this->queried_object) )
+                        return $this->queried_object;
+
+                $this->queried_object = null;
+                $this->queried_object_id = 0;
+
+                if ( $this->is_category || $this->is_tag || $this->is_tax ) {
+                        if ( $this->is_category ) {
+                                if ( $this->get( 'cat' ) ) {
+                                        $term = get_term( $this->get( 'cat' ), 'category' );
+                                } elseif ( $this->get( 'category_name' ) ) {
+                                        $term = get_term_by( 'slug', $this->get( 'category_name' ), 'category' );
+                                }
+                        } elseif ( $this->is_tag ) {
+                                if ( $this->get( 'tag_id' ) ) {
+                                        $term = get_term( $this->get( 'tag_id' ), 'post_tag' );
+                                } elseif ( $this->get( 'tag' ) ) {
+                                        $term = get_term_by( 'slug', $this->get( 'tag' ), 'post_tag' );
+                                }
+                        } else {
+                                // For other tax queries, grab the first term from the first clause.
+                                $tax_query_in_and = hq_list_filter( $this->tax_query->queried_terms, array( 'operator' => 'NOT IN' ), 'NOT' );
+
+                                if ( ! empty( $tax_query_in_and ) ) {
+                                        $queried_taxonomies = array_keys( $tax_query_in_and );
+                                        $matched_taxonomy = reset( $queried_taxonomies );
+                                        $query = $tax_query_in_and[ $matched_taxonomy ];
+
+                                        if ( $query['terms'] ) {
+                                                if ( 'term_id' == $query['field'] ) {
+                                                        $term = get_term( reset( $query['terms'] ), $matched_taxonomy );
+                                                } else {
+                                                        $term = get_term_by( $query['field'], reset( $query['terms'] ), $matched_taxonomy );
+                                                }
+                                        }
+                                }
+                        }
+
+                        if ( ! empty( $term ) && ! is_hq_error( $term ) )  {
+                                $this->queried_object = $term;
+                                $this->queried_object_id = (int) $term->term_id;
+
+                                if ( $this->is_category && 'category' === $this->queried_object->taxonomy )
+                                        _make_cat_compat( $this->queried_object );
+                        }
+                } elseif ( $this->is_post_type_archive ) {
+                        $post_type = $this->get( 'post_type' );
+                        if ( is_array( $post_type ) )
+                                $post_type = reset( $post_type );
+                        $this->queried_object = get_post_type_object( $post_type );
+                } elseif ( $this->is_posts_page ) {
+                        $page_for_posts = get_option('page_for_posts');
+                        $this->queried_object = get_post( $page_for_posts );
+                        $this->queried_object_id = (int) $this->queried_object->ID;
+                } elseif ( $this->is_singular && ! empty( $this->post ) ) {
+                        $this->queried_object = $this->post;
+                        $this->queried_object_id = (int) $this->post->ID;
+                } elseif ( $this->is_author ) {
+                        $this->queried_object_id = (int) $this->get('author');
+                        $this->queried_object = get_userdata( $this->queried_object_id );
+                }
+
+                return $this->queried_object;
+        }
+
+        /**
+         * Is the query for an existing attachment page?
+         *
+         * @since 0.0.1
+         *
+         * @param mixed $attachment Attachment ID, title, slug, or array of such.
+         * @return bool
+         */
+        public function is_attachment( $attachment = '' ) {
+                if ( ! $this->is_attachment ) {
+                        return false;
+                }
+
+                if ( empty( $attachment ) ) {
+                        return true;
+                }
+
+                $attachment = (array) $attachment;
+
+                $post_obj = $this->get_queried_object();
+
+                if ( in_array( (string) $post_obj->ID, $attachment ) ) {
+                        return true;
+                } elseif ( in_array( $post_obj->post_title, $attachment ) ) {
+                        return true;
+                } elseif ( in_array( $post_obj->post_name, $attachment ) ) {
+                        return true;
+                }
+                return false;
+        }
+
+        /**
+         * Rewind the posts and reset post index.
+         *
+         * @since 0.0.1
+         * @access public
+         */
+        public function rewind_posts() {
+                $this->current_post = -1;
+                if ( $this->post_count > 0 ) {
+                        $this->post = $this->posts[0];
+                }
+        }
+
 
 
 //TODO: *********************************************** functions ***************************************************************************

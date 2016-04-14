@@ -1427,15 +1427,12 @@ function add_theme_support( $feature ) {
 
 	switch ( $feature ) {
 		case 'post-formats' :
-                        //TODO: Goyo no posts
-                        /*
 			if ( is_array( $args[0] ) ) {
 				$post_formats = get_post_format_slugs();
 				unset( $post_formats['standard'] );
 
 				$args[0] = array_intersect( $args[0], array_keys( $post_formats ) );
 			}
-                        */
 			break;
 
 		case 'html5' :

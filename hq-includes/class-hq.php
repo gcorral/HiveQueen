@@ -634,7 +634,8 @@ class HQ {
          */
         public function main($query_args = '') {
 
-                print("hq->main(): Begin");
+                //Goyo Debug
+                //print("hq->main(): Begin");
 
                 $this->init();
 
@@ -663,7 +664,8 @@ class HQ {
                 //   auth_redirect();
                 //}
 
-                print("hq->main(): End");
+                //Goyo debug
+                //print("hq->main(): End");
 
         }
 
