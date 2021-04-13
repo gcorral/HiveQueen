@@ -7,7 +7,7 @@ from HiveQueenRest.models import Clients
 from HiveQueenRest.serializers import HiveQueenRestSerializer
 
 @api_view(['GET', 'POST'])
-def clien_list(request):
+def clients_list(request):
     """
     List all clients, or create a new Client.
     """
