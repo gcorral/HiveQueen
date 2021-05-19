@@ -3,7 +3,6 @@ Created on 8 abr. 2021
 
 @author: user
 '''
-#import unittest
 from django.test import TestCase
 import datetime
 

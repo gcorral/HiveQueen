@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Hive Queen</h1>
+  <p>Welcome to HiveQueen, a website developed by <em>Gregorio Corral</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The hive has the following clients:</p>
+  <ul>
+    <li><strong>Clients:</strong> {{ num_clients }}</li>
+  </ul>
+{% endblock %}

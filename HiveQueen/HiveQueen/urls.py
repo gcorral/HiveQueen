@@ -1,4 +1,4 @@
-"""HiveQueen URL Configuration
+"""hivequeen URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -15,8 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('rest/', include('HiveQueenRest.urls')),
 ]
+
+urlpatterns += [
+    path('colony/', include('colony.urls')),
+]
+
+urlpatterns += [
+    path('', RedirectView.as_view(url='colony/', permanent=True)),
+]
+
+#Add Django site authentication urls (for login, logout, password management)
+
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
+]
+

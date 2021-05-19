@@ -7,6 +7,7 @@ Created on 7 abr. 2021
 
 import datetime
 from sqlparse.sql import Begin
+from _operator import truediv
 
 class TimeFrame:
     '''
@@ -53,6 +54,7 @@ class TimeFrame:
         
         self.__timeEnd = end
        
+       
     def __eq__(self, other):
         if not isinstance(other, TimeFrame):
             raise Exception("Invalid type argument: other")
@@ -60,7 +62,53 @@ class TimeFrame:
         if self.__timeBegin == other.getBegin() and self.__timeEnd == other.getEnd():
             return True
         else:
-            return False   
+            return False 
+        
+        
+    def __lt__(self, other):
+        if not isinstance(other, TimeFrame):
+            raise Exception("Invalid type argument: other")
+        
+        if self.getBegin() < other.getBegin():
+            return True
+        else:
+            return False
+        
+        
+    def __le__(self, other):
+        if not isinstance(other, TimeFrame):
+            raise Exception("Invalid type argument: other")
+               
+        if self.getBegin() < other.getBegin() or self == other:
+            return True
+        else:
+            return False
+    
+    def __gt__(self, other):
+        if not isinstance(other, TimeFrame):
+            raise Exception("Invalid type argument: other")
+        
+        if self.getEnd() > other.getEnd():
+            return True
+        else:
+            return False
+ 
+         
+    def __ge__(self, other):
+        if not isinstance(other, TimeFrame):
+            raise Exception("Invalid type argument: other")
+        
+        if self.getEnd() > other.getEnd() or self == other:
+            return True
+        else:
+            return False
+ 
+    def __ne__(self, other):
+        if not isinstance(other, TimeFrame):
+            raise Exception("Invalid type argument: other")
+        
+        return not self == other
+    
     
     def isOverlapping(self,other):
         
