@@ -11,3 +11,7 @@ from . import views
 urlpatterns = [ 
     path('', views.index, name='index'),
 ]
+
+urlpatterns += [
+    path('client/add/', views.add_client, name='add-client'),
+]
