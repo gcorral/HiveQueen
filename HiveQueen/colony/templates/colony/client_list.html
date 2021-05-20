@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Client List</h1>
+  
+  {% if perms.colony.can_add_client %} 
+    <a href="{% url 'add-client' %}">Add</a>  
+  {% endif %}
+  
+  {% if client_list %}
+  <ul>
+    {% for client in client_list %}
+      <li>
+        <a href="{{ client.get_absolute_url }}">{{ client.name }}.{{ client.domain }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no clients in the colony.</p>
+  {% endif %} 
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Name: {{ client.name }}</h1>
+
+  <p><strong>Domain:</strong> {{ client.domain }}</p> 
+  <p><strong>Space:</strong> {{ client.space }}</p>
+  
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Network Interfaces</h4>
+
+    {% for netif in client.netaddress_set.all %}
+      <hr>
+      <p class="text-muted"><strong>Address:</strong> {{ netif.ip_add }}</p>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Space(models.Model):
     """Model representing a spaces in  witch locate clients."""
@@ -26,6 +27,10 @@ class Client(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.name}.{self.domain}'   
+    
+    def get_absolute_url(self):
+        """Returns the url to access a particular client."""
+        return reverse('client-detail', args=[str(self.id)])
 
   
 class NetAddress(models.Model):    

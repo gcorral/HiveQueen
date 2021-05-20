@@ -6,12 +6,13 @@ Created on 19 may. 2021
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 import validators
 
 class AddClientForm(forms.Form):
-    name = forms.TextInput(help_text="Enter client name.")
-    domain = forms.TextInput(help_text="Enter domain name.")
-    
+    name = forms.CharField(help_text="Enter client name.")
+    domain = forms.CharField(help_text="Enter domain name.")
+   
     
     def clean_domain(self):
         domain = self.cleaned_data['domain']
