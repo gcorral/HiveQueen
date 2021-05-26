@@ -1,0 +1,52 @@
+{% load static %}	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>Hive Queen</title>{% endblock %}
+  <meta charset="utf-8">
+  {# <meta name="viewport" content="width=device-width, initial-scale=1"> #}
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="icon" href="{% static 'img/favicon.png' %}">
+  <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontello-2f186091/css/fontello.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+  <!-- Add additional CSS in static file -->
+  {% if user.is_authenticated and user.is_admin %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
+    {% elif user.is_authenticated and user.is_groupmng %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/groupmng.css' %}">
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/viewer.css' %}"> 
+    {% endif %}
+</head>
+<body>
+  <div class="container my-4">
+   <div class="row justify-content-center">
+    <div class="col-md-10 col-sm-12">
+     <div class="row">
+      <div class="col-6">
+        <h1 class="logo">
+         <a href="{% url 'index' %}">
+           Hive Queen
+           {% if user.is_authenticated %}
+              {% if user.is_admin %}
+                 <span class="icon-feather" data-toggle="tooltip" data-placement="right" title="Admin profile"></span>
+              {% elif user.is_groupmng %}
+                 <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Group Management profile"></span>
+              {% else %}
+                 <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Viewer profile"></span>
+              {% endif %}
+           {% else %}
+              <a href="{% url 'login' %}">log in</a>
+           {% endif %}   
+         </a>
+        </h1>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+</body>
+</html>

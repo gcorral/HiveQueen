@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Spaces List</h1>
+  
+  {% if perms.colony.can_add_space %} 
+    <a href="{% url 'add-space' %}">Add</a>  
+  {% endif %}
+  
+  {% if space_list %}
+  <ul>
+    {% for space in space_list %}
+      <li>
+        <a href="{{ space.get_absolute_url }}">{{ space.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no spaces in the hive.</p>
+  {% endif %} 
+{% endblock %}

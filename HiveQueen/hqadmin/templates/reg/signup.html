@@ -1,0 +1,11 @@
+{# {% extends "base.html" %} #}
+{# {% extends "base_generic.html" %} #}
+{% extends "base_test.html" %}
+
+{% block content %}
+  <h2>Sign up for a free account</h2>
+  <p class="lead">Select below the type of account you want to create</p>
+  <a href="{% url 'viewer_signup' %}" class="btn btn-viewer btn-lg" role="button">I'm a Viewer</a>
+  <a href="{% url 'groupmng_signup' %}" class="btn btn-groupmng btn-lg" role="button">I'm a Group Management</a>
+  <a href="{% url 'admin_signup' %}" class="btn btn-admin btn-lg" role="button">I'm a Admin</a>
+{% endblock %}

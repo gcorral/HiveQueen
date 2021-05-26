@@ -18,8 +18,12 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('rest/', include('HiveQueenRest.urls')),
+    #path('admin/', admin.site.urls),
+    #path('rest/', include('HiveQueenRest.urls')),
+]
+
+urlpatterns += [
+    path('hqadmin/', include('hqadmin.urls')),
 ]
 
 urlpatterns += [

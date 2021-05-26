@@ -9,7 +9,6 @@ class ClientAdmin(admin.ModelAdmin):
 
 #admin.site.register(Client)
 admin.site.register(Client, ClientAdmin)
-
 admin.site.register(NetAddress)
 admin.site.register(Space)
 

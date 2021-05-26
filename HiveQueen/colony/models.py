@@ -12,6 +12,10 @@ class Space(models.Model):
         """String for representing the Model object."""
         return self.name
  
+    def get_absolute_url(self):
+        """Returns the url to access a particular space."""
+        return reverse('space-detail', args=[str(self.id)])
+
 
 class Client(models.Model):
     """Model representing a clients to include in the colony."""  
@@ -36,7 +40,8 @@ class Client(models.Model):
 class NetAddress(models.Model):    
     """Model representing a network address of a client."""
     
-    client = models.ForeignKey(Client, on_delete=models.RESTRICT, null=True)
+    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, blank=True)
+    
     
     #NET_TYPE_ADDR = (
     #    ('IPv4', 'IPv4'),
@@ -52,3 +57,7 @@ class NetAddress(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.ip_add
+    
+    def get_absolute_url(self):
+        """Returns the url to access a particular NetAddress."""
+        return reverse('netaddress-detail', args=[str(self.id)])

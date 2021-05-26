@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Net Address List</h1>
+  
+  {% if perms.colony.can_add_netaddress %} 
+    <a href="{% url 'add-netaddress' %}">Add</a>  
+  {% endif %}
+  
+  {% if netaddress_list %}
+  <ul>
+    {% for addr in netaddress_list %}
+      <li>
+        <a href="{{ addr.get_absolute_url }}">{{ addr.ip_add }}</a> 
+           <!-- Client: <a href="{{ addr.client }}>addr.client</a> -->
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no address for the colony.</p>
+  {% endif %} 
+{% endblock %}

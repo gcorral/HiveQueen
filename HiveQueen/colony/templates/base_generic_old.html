@@ -16,7 +16,9 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'clients' %}">All Clients</a></li>
+          <li><a href="{% url 'clients' %}">clients</a></li>
+          <li><a href="{% url 'spaces' %}">spaces</a></li>
+          <li><a href="{% url 'netaddresses' %}">net addresses</a></li>
           
           {% if user.is_authenticated %}
              <li>User: {{ user.get_username }}</li>

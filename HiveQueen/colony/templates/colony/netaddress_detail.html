@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Address: {{ netaddress.ip_add }}</h1>
+   
+  <p>
+  {% if perms.colony.can_delete_netaddress %} 
+    <a href="{% url 'netaddress-delete' pk=netaddress.id %}">Delete</a>  
+  {% endif %}
+  {% if perms.colony.can_update_netaddress %} 
+    <a href="{% url 'netaddress-update' pk=netaddress.id %}">Edit</a>  
+  {% endif %}
+  </p>
+ 
+  {% if netaddress.client %} 
+   <a href="{% url 'client-detail' pk=netaddress.client.id %}">
+     {{ netaddress.client.name }}.{{ netaddress.client.domain}}
+   </a>
+  {% endif %} 
+ 
+
+{% endblock %}

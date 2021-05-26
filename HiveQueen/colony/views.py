@@ -18,9 +18,14 @@ def index(request):
     
     # Generate counts of some of the main objects
     num_clients = Client.objects.all().count()
+    num_addresses = NetAddress.objects.all().count()
+    num_spaces = Space.objects.all().count()
+    
     
     context = {
         'num_clients': num_clients,
+        'num_spaces': num_spaces,
+        'num_addresses': num_addresses,
     }
     
     # Render the HTML template index.html with the data in the context variable
@@ -50,7 +55,7 @@ def add_client(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             client.name = form.cleaned_data['name']
-            client.name = form.cleaned_data['domain']
+            client.domain = form.cleaned_data['domain']
             client.save()
             
             # redirect to a new URL:
@@ -66,6 +71,16 @@ def add_client(request):
     }
 
     return render(request, 'colony/add_client.html', context)
+ 
+
+class ClientUpdate(UpdateView):
+    model = Client
+    fields = ['name', 'domain', 'space']
+    
+
+class ClientDelete(DeleteView):
+    model = Client
+    success_url = reverse_lazy('clients')  
       
  
 class SpaceListView(generic.ListView):
@@ -81,9 +96,11 @@ class SpaceCreate(CreateView):
     fields = ['name']
     #initial = {'date_of_death': '11/06/2020'}
 
+
 class SpaceUpdate(UpdateView):
     model = Space
     fields = ['name']
+
 
 class SpaceDelete(DeleteView):
     model = Space
@@ -94,21 +111,42 @@ class NetAddressListView(generic.ListView):
     model = NetAddress
 
 
+@login_required
+def netaddress_list(request):
+    """View function for list netaddresses."""
+    
+    context = {
+    }
+    
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'netaddress_list.html', context=context)
+    
+
 class NetAddressDetailView(generic.DetailView):
     model = NetAddress 
+ 
+ 
+@login_required
+def netaddress_detail(request, pk):
+    """View function for netaddress detail.""" 
     
+    context = {
+    }
+ 
+    # Render the HTML template index.html with the data in the context variable
+    return render(request, 'colony/netaddress_detail.html', context=context)
           
 class NetAddressCreate(CreateView):
     model = NetAddress
-    fields = ['client', 'ip_add']
+    fields = ['ip_add']
     #initial = {'date_of_death': '11/06/2020'}
 
 
 class NetAddressUpdate(UpdateView):
-    model = Space
+    model = NetAddress
     fields = ['client', 'ip_add']
 
 
 class NetAddressDelete(DeleteView):
-    model = Space
+    model = NetAddress
     success_url = reverse_lazy('netaddresses')    

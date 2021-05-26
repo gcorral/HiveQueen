@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Name: {{ space.name }}</h1>
+
+  <p>
+  {% if perms.colony.can_delete_space %} 
+    <a href="{% url 'space-delete' pk=space.id %}">Delete</a>  
+  {% endif %}
+  {% if perms.colony.can_update_space %} 
+    <a href="{% url 'space-update' pk=space.id %}">Edit</a>  
+  {% endif %}
+  </p>
+  
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Clients:</h4>
+
+    {% for client in space.client_set.all %}
+      <hr>
+      <a href="{{ client.get_absolute_url }}">{{ client.name }}.{{ client.domain }}</a>
+    {% endfor %}
+  </div>
+  
+{% endblock %}
