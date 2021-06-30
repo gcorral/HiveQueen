@@ -29,13 +29,15 @@ def index(request):
     }
     
     # Render the HTML template index.html with the data in the context variable
-    return render(request, 'index.html', context=context)
+    #return render(request, 'index.html', context=context)
+    return render(request, 'material-dashboard-django/index.html', context=context)
 
-
+#@login_required
 class ClientListView(generic.ListView):
     model = Client
 
 
+#@login_required
 class ClientDetailView(generic.DetailView):
     model = Client
 
@@ -72,41 +74,51 @@ def add_client(request):
 
     return render(request, 'colony/add_client.html', context)
  
-
+ 
+#@login_required
+#@permission_required('colony.client.can_change_client', raise_exception=True)
 class ClientUpdate(UpdateView):
     model = Client
     fields = ['name', 'domain', 'space']
     
-
+    
+#@login_required
+#@permission_required('colony.client.can_delete_client', raise_exception=True)
 class ClientDelete(DeleteView):
     model = Client
     success_url = reverse_lazy('clients')  
-      
- 
+           
+#@login_required 
 class SpaceListView(generic.ListView):
     model = Space
 
-
+#@login_required
 class SpaceDetailView(generic.DetailView):
     model = Space 
+
     
-          
+#@login_required
+#@permission_required('colony.space.can_add_space', raise_exception=True)          
 class SpaceCreate(CreateView):
     model = Space
     fields = ['name']
     #initial = {'date_of_death': '11/06/2020'}
 
 
+#@login_required
+#@permission_required('colony.space.can_change_space', raise_exception=True)
 class SpaceUpdate(UpdateView):
     model = Space
     fields = ['name']
 
-
+#@login_required
+#@permission_required('colony.space.can_delete_space', raise_exception=True)
 class SpaceDelete(DeleteView):
     model = Space
     success_url = reverse_lazy('spaces')  
 
-    
+
+#@login_required     
 class NetAddressListView(generic.ListView):
     model = NetAddress
 
@@ -121,7 +133,7 @@ def netaddress_list(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'netaddress_list.html', context=context)
     
-
+#@login_required 
 class NetAddressDetailView(generic.DetailView):
     model = NetAddress 
  
@@ -135,18 +147,23 @@ def netaddress_detail(request, pk):
  
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'colony/netaddress_detail.html', context=context)
+ 
           
+#@login_required
+#@permission_required('colony.netaddress.can_add_netaddress', raise_exception=True)          
 class NetAddressCreate(CreateView):
     model = NetAddress
     fields = ['ip_add']
     #initial = {'date_of_death': '11/06/2020'}
 
-
+#@login_required
+#@permission_required('colony.netaddress.can_change_netaddress', raise_exception=True)
 class NetAddressUpdate(UpdateView):
     model = NetAddress
     fields = ['client', 'ip_add']
 
-
+#@login_required
+#@permission_required('colony.netaddress.can_delete_netaddress', raise_exception=True)
 class NetAddressDelete(DeleteView):
     model = NetAddress
     success_url = reverse_lazy('netaddresses')    

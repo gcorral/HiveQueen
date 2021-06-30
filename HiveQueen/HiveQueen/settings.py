@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timezone
 import os
 #import pathlib
 
@@ -33,17 +34,50 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
+    'django_saml2_auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'colony.apps.ColonyConfig',
     'hqadmin.apps.HqAdminConfig',
-    #'rest_framework',
+    'rest_framework',
+    'rest_framework_jwt',
+    'rest_hq',
     #'HiveQueenRest.apps.HiveQueenRestConfig',
 ]
+
+'''
+SAML2_AUTH = {
+  'METADATA_LOCAL_FILE_PATH': '/code/app/metadata_idp.xml',
+  'ASSERTION_URL': 'https://BACKEND.example.com',
+  'ENTITY_ID': 'https://BACKEND.example.com.com/sso/acs/',
+  'DEFAULT_NEXT_URL': '/',
+  'USE_JWT': True,
+  'FRONTEND_URL': 'https://FRONTEND.example.com',
+}
+'''
+
+
+REST_FRAMEWORK = {
+'DEFAULT_AUTHENTICATION_CLASSES':['rest_framework.authentication.BasicAuthentication', 
+                                  'rest_framework_jwt.authentication.JSONWebTokenAuthentication'],
+'DEFAULT_PERMISSION_CLASSES':['rest_framework.permissions.IsAuthenticated', 
+                              'rest_framework.permissions.DjangoModelPermissions'],
+'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+'PAGE_SIZE':1
+ }
+
+'''
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timezone.timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': timezone.timedelta(hours=8),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+'''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,10 +113,19 @@ WSGI_APPLICATION = 'HiveQueen.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hivequeendb',
+        'USER': 'root',
+        'PASSWORD': 'V9ySWUbG8Ld3Sqc9tZqd' 
     }
 }
 
@@ -141,12 +184,13 @@ STATICFILES_DIRS = [
 AUTH_USER_MODEL = 'hqadmin.User'
 
 LOGIN_URL = 'login'
-
 LOGOUT_URL = 'logout'
 
 LOGIN_REDIRECT_URL = '/colony'
-
 LOGOUT_REDIRECT_URL = '/colony'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/colony'
+#LOGIN_REDIRECT_URL = '/colony'
+
+LOGIN_REDIRECT_URL = "home"   # Route defined in colony/urls.py
+LOGOUT_REDIRECT_URL = "home"  # Route defined in colony/urls.py

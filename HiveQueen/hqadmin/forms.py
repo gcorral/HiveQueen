@@ -4,10 +4,24 @@ Created on 24 may. 2021
 @author: user
 '''
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.db import transaction
 
 from hqadmin.models import Groupmng, User
+#from hqadmin import models
+#import hqadmin.models
+
+class AddUserForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        #model = hqadmin.models.User
+        model = User
+
+
+class UserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email')    
+
 
 class AdminSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

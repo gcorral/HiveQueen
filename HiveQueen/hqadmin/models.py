@@ -6,6 +6,11 @@ class User(AbstractUser):
     is_groupmng = models.BooleanField(default=False)
     is_viewer = models.BooleanField(default=False)
     
+    #username = None
+    
+    def __str__(self):
+        return self.username
+    
 
 class Groupmng(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

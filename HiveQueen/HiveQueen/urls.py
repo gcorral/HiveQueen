@@ -15,16 +15,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from django.views.generic import RedirectView
 
+from rest_framework_jwt.views import refresh_jwt_token
+import django_saml2_auth.views
+
 urlpatterns = [
-    #path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
+      
+    #path("", include("authentication.urls")), # Auth routes - login / register
     #path('rest/', include('HiveQueenRest.urls')),
 ]
 
 urlpatterns += [
+    url(r'^jwt_refresh', refresh_jwt_token),
+    url(r'^sso/', include('django_saml2_auth.urls')),
     path('hqadmin/', include('hqadmin.urls')),
 ]
+
 
 urlpatterns += [
     path('colony/', include('colony.urls')),
@@ -38,5 +47,9 @@ urlpatterns += [
 
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
+]
+
+urlpatterns += [
+    path('api/', include('rest_hq.urls')),
 ]
 

@@ -22,5 +22,10 @@ def clients_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
+ 
+ 
+def client_detail(request,pk):   
+    try:
+        client = Client.objects.get(pk=pk)
+    except Client.DoesNoExist:  
+        return Response(status.HTTP_404_NOT_FOUND)  
