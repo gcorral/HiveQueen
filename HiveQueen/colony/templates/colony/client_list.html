@@ -46,10 +46,14 @@
                     </a>   
                 </button>
                 <button type="button" rel="tooltip" class="btn btn-success">
-                    <i class="material-icons">edit</i>
+                    <a href="{% url 'clients-update' pk=client.id %}">
+                     <i class="material-icons">edit</i>
+                    </a> 
                 </button>
                 <button type="button" rel="tooltip" class="btn btn-danger">
-                    <i class="material-icons">close</i>
+                    <a href="{% url 'clients-delete' pk=client.id %}">
+                     <i class="material-icons">close</i>
+                    </a> 
                 </button>
               </td>
            </tr>

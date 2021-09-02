@@ -80,6 +80,7 @@ def add_client(request):
 class ClientUpdate(UpdateView):
     model = Client
     fields = ['name', 'domain', 'space']
+    success_url = reverse_lazy('clients')
     
     
 #@login_required
