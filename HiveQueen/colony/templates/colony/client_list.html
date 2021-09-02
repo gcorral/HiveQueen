@@ -1,22 +1,75 @@
 {# extends "base_generic.html" #} 
 {% extends "material-dashboard-django/layouts/base.html" %}
 
+{% block title %} Clients {% endblock %} 
+
 {% block content %}
-  <h1>Client List</h1>
+  <!-- <h1>Client List</h1> -->
   
   {% if perms.colony.can_add_client %} 
-    <a href="{% url 'add-client' %}">Add</a>  
+    <div class="card-icon">
+       <a href="{% url 'add-clients' %}">
+        <i class="material-icons">add</i>
+        Add Client
+       </a>
+    </div>
   {% endif %}
   
-  {% if client_list %}
+  <table class="table">
+      <thead>
+           <tr>
+              <!-- <th class="text-center">#</th> -->
+              <th>Name</th>
+              <th>Domain</th>
+              <!--
+              <th>Since</th>
+              <th class="text-right">Salary</th>
+              <th class="text-right">Actions</th>
+              -->
+          </tr>
+     </thead>
+     <tbody>
+        {% if client_list %} 
+          {% for client in client_list %}
+           <tr>
+              <!-- <td class="text-center">1</td> -->
+              <td>{{ client.name }}</td>
+              <td>{{ client.domain }}</td>
+              <!--
+              <td>2013</td>
+              <td class="text-right">&euro; 99,225</td>
+              -->
+              <td class="td-actions text-right">
+                <button type="button" rel="tooltip" class="btn btn-info">
+                    <a href="{% url 'clients-detail' pk=client.id %}">
+                       <i class="material-icons">computer</i>
+                    </a>   
+                </button>
+                <button type="button" rel="tooltip" class="btn btn-success">
+                    <i class="material-icons">edit</i>
+                </button>
+                <button type="button" rel="tooltip" class="btn btn-danger">
+                    <i class="material-icons">close</i>
+                </button>
+              </td>
+           </tr>
+          {% endfor %} 
+        {% else %}
+           <tr>
+            <td>There are no clients in the colony.</td>
+           </tr> 
+        {% endif %}   
+     </tbody>
+  </table>             
+  
+  <!--
   <ul>
-    {% for client in client_list %}
+    {# for client in client_list #}
       <li>
         <a href="{{ client.get_absolute_url }}">{{ client.name }}.{{ client.domain }}</a>
       </li>
-    {% endfor %}
+    {# endfor #}
   </ul>
-  {% else %}
-    <p>There are no clients in the colony.</p>
-  {% endif %} 
+  -->
+  
 {% endblock %}

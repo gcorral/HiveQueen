@@ -1,14 +1,15 @@
-{% extends "base_generic.html" %}
+{# {% extends "base_generic.html" %} #}
+{% extends "material-dashboard-django/layouts/base.html" %}
 
 {% block content %}
   <h1>Name: {{ client.name }}</h1>
 
   <p>
   {% if perms.colony.can_delete_client %} 
-    <a href="{% url 'client-delete' pk=client.id %}">Delete</a>  
+    <a href="{% url 'clients-delete' pk=client.id %}">Delete</a>  
   {% endif %}
   {% if perms.colony.can_update_client %} 
-    <a href="{% url 'client-update' pk=client.id %}">Edit</a>  
+    <a href="{% url 'clients-update' pk=client.id %}">Edit</a>  
   {% endif %}
   </p>
 

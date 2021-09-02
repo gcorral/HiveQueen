@@ -1,6 +1,6 @@
 {% extends "material-dashboard-django/layouts/base.html" %}
 
-{% block title %} Dashboard {% endblock %} 
+{% block title %} Dashboard 2 {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -14,7 +14,7 @@
             <div class="card-icon">
               <i class="material-icons">computer</i>
             </div>
-            <p class="card-category">Clients</p>
+            <p class="card-category">Population</p>
             <h3 class="card-title"> {{ num_clients }}
               <!-- <small>GB</small> -->
             </h3>
@@ -24,7 +24,7 @@
               <!-- <i class="material-icons text-danger">list</i> -->
               <i class="material-icons">list</i>
               <!-- TODO: -->
-              <a href="{% url 'clients' %}">List Clients</a>
+              <a href="{% url 'clients' %}">List of clients</a>
             </div>
           </div>
         </div>

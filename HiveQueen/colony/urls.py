@@ -15,10 +15,10 @@ urlpatterns = [
 
 urlpatterns += [
     path('clients/', views.ClientListView.as_view(), name='clients'),
-    path('clients/add/', views.add_client, name='add-client'),
-    path('clients/<str:pk>', views.ClientDetailView.as_view(), name='client-detail'),
-    path('clients/<str:pk>/update/', views.ClientUpdate.as_view(), name='client-update'),
-    path('clients/<str:pk>/delete/', views.ClientDelete.as_view(), name='client-delete'),
+    path('clients/add/', views.add_client, name='add-clients'),
+    path('clients/<str:pk>/', views.ClientDetailView.as_view(), name='clients-detail'),
+    path('clients/<str:pk>/update/', views.ClientUpdate.as_view(), name='clients-update'),
+    path('clients/<str:pk>/delete/', views.ClientDelete.as_view(), name='clients-delete'),
 ]
 
 urlpatterns += [

@@ -39,6 +39,10 @@ urlpatterns += [
     path('colony/', include('colony.urls')),
 ]
 
+#urlpatterns += [
+#    path('index/', include('colony.urls')),
+#]
+
 urlpatterns += [
     path('', RedirectView.as_view(url='colony/', permanent=True)),
 ]
